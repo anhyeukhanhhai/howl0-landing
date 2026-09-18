@@ -1,0 +1,24 @@
+# howl0 landing page
+
+A responsive landing page for howl0, built with Next.js App Router, TypeScript, Tailwind CSS and focused custom CSS. The approved identity assets are in `public/brand/howl0/`.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:3000. Quality checks: `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm run build`, `npm run test:visual`, and `npm run test:a11y`. Run the visual and accessibility scripts while the development server is running. They cover desktop, tablet, mobile, interactions, reduced motion, anchors, Vietnamese font loading and WCAG automated checks.
+
+## Waitlist integration
+
+`src/lib/waitlist.ts` is a development adapter. It sends and stores **no data** and reports that submissions are unavailable. Connect an approved HTTPS endpoint there, add the required privacy notice, and return only after the service confirms storage. The form then shows “You’re in the loop.” Do not put API credentials in client code.
+
+## Before public launch
+
+- Connect the waitlist service and confirm the required consent and privacy copy.
+- Replace footer contact, privacy, terms and social placeholder text with approved destinations.
+- Set `NEXT_PUBLIC_SITE_URL` to the approved production URL to enable absolute canonical and social preview image URLs.
+
+No remote is configured in the starter repository. Deployment can use a Git provider after a remote is added, or a Next.js compatible host. For a Vercel preview, import this repository, set the root to `/`, and deploy the feature branch.

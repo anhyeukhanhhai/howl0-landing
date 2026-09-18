@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="240" viewBox="0 0 760 240" role="img" aria-label="howl0 homework link chip">
+  <defs><mask id="slot" maskUnits="userSpaceOnUse" x="514" y="-4" width="160" height="218"><rect x="514" y="-4" width="160" height="218" fill="#fff"/><path d="M594 105L801.3-34.8 733.8-102.3Z" fill="#000"/></mask></defs>
+  <rect x="4" y="4" width="752" height="232" rx="54" fill="#FFFFFF" stroke="#E6D2CA" stroke-width="8"/>
+  <svg x="57" y="48" width="106" height="144" viewBox="514 -4 160 218">
+    <path mask="url(#slot)" fill="#A92E5D" fill-rule="evenodd" d="M530 105C530 29 542.8 10 594 10S658 29 658 105 645.2 200 594 200 530 181 530 105ZM566 102C566 53.2 571.2 41 592 41S618 53.2 618 102 612.8 163 592 163 566 150.8 566 102Z"/>
+  </svg>
+  <text x="218" y="143" font-family="Arial, sans-serif" font-size="46" font-weight="700" fill="#2A1B22">howl0.link/practice</text>
+</svg>
