@@ -9,11 +9,15 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Quality checks: `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm run build`, `npm run test:visual`, and `npm run test:a11y`. Run the visual and accessibility scripts while the development server is running. They cover desktop, tablet, mobile, interactions, reduced motion, anchors, Vietnamese font loading and WCAG automated checks.
+Open http://localhost:3000. Quality checks: `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm run build`, `npm run test:visual`, and `npm run test:a11y`. Run the visual and accessibility scripts while the server is running. The visual script checks eleven viewports from 390×844 through 3440×1440, anchors, scene order, bounding boxes, scroll phases, tabs, FAQ, waitlist, and reduced motion. Screenshots are written to ignored `.qa/revision/`.
 
 ## Scroll storytelling
 
-The page uses native `scroll` events with passive listeners and one animation-frame update per visible scene. `src/hooks/useScrollProgress.ts` writes a CSS progress property without re-rendering React on each frame; `ScrollScene` shares that behaviour across selected sections. The Practice Loop draws an open SVG route and moves its link marker directly from scroll progress. It holds the composition for about 330vh on desktop and 285vh on tablet. On mobile the section becomes a shorter sequential layout, with stage emphasis triggered as each item enters the viewport. Reduced motion shows the complete static route and every stage without pinning or parallax. The reference recording is not shipped with the site.
+The sequence is Promise → Practice Loop → Problem → Mechanics → One-Link Difference → Audiences → Belief → Participation. The hero shows a five-second CSS loop preview, using the same five stages as Section 01. It pauses when out of view or when the browser tab is hidden. The full Practice Loop draws an open SVG route and moves its link marker from scroll progress in either direction.
+
+The page uses passive `scroll` listeners and one animation-frame update per visible scene. `src/hooks/useScrollProgress.ts` writes a CSS progress property without re-rendering React per frame; it remeasures after resize, orientation changes, font loading, and page restoration. `ScrollScene` shares this behaviour. `Reveal` gives selected short groups a one-time entrance; text stays visible afterward. The One-Link scene has explicit entrance, readable hold, transformation, and resolved phases. Audience text remains in normal flow during tab changes.
+
+At widths above 1100px, the hero uses a bounded two-column grid and the One-Link scene pins its comparison. Between 901px and 1100px, the hero keeps a smaller two-column composition; narrower tablets stack it. The Practice Loop pins for about 330vh on desktop and 285vh on tablet, with its art and row sizes capped by viewport height. Below 761px the hero preview becomes compact, the Practice Loop becomes a shorter sequential layout, and the fragmented route stacks vertically. Text stays within the centred 1320px content area on ultrawide displays. Reduced motion shows the completed preview, a static five-stage Practice Loop, and both complete routes without parallax or pinning. The reference recording is not shipped with the site.
 
 ## Waitlist integration
 

@@ -386,129 +386,6 @@ img {
   );
   flex: 1;
 }
-.motion-section {
-  padding: 95px 0 125px;
-}
-.motion {
-  background: var(--white);
-  border: 1px solid rgba(42, 27, 34, 0.12);
-  border-radius: 28px;
-  overflow: hidden;
-  box-shadow: 0 25px 70px rgba(42, 27, 34, 0.06);
-}
-.motion-top,
-.motion-footer {
-  padding: 21px 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-.motion-top {
-  border-bottom: 1px solid rgba(42, 27, 34, 0.1);
-}
-.motion-counter {
-  font: 700 0.8rem Archivo;
-  color: var(--berry);
-  letter-spacing: 0.12em;
-}
-.motion-scene {
-  min-height: 320px;
-  padding: 35px 5%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 7%;
-}
-.motion-glyph {
-  position: relative;
-  width: min(100%, 280px);
-  aspect-ratio: 1;
-  margin: auto;
-}
-.motion-glyph img {
-  width: 100%;
-  height: 100%;
-}
-.motion-link {
-  position: absolute;
-  top: 43%;
-  left: -12%;
-  padding: 12px 18px;
-  border-radius: 50px;
-  background: var(--paper);
-  border: 1px solid rgba(169, 46, 93, 0.3);
-  color: var(--berry);
-  font-size: 0.78rem;
-  font-weight: 700;
-  white-space: nowrap;
-}
-.motion-title {
-  font: 700 clamp(2rem, 3vw, 3.5rem)/1.06 Archivo;
-  letter-spacing: -0.05em;
-  margin: 15px 0;
-}
-.motion-copy > p:last-child {
-  line-height: 1.6;
-  color: rgba(42, 27, 34, 0.7);
-}
-.motion-footer {
-  border-top: 1px solid rgba(42, 27, 34, 0.1);
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-.motion-controls {
-  display: flex;
-  gap: 6px;
-}
-.motion-controls button {
-  border: 1px solid rgba(42, 27, 34, 0.18);
-  border-radius: 50px;
-  background: var(--white);
-  padding: 10px 15px;
-  min-height: 44px;
-}
-.motion-controls button:hover {
-  background: var(--paper);
-}
-.motion-controls span {
-  color: var(--berry);
-  margin-left: 10px;
-}
-.progress-track {
-  height: 5px;
-  background: var(--paper);
-}
-.progress-track span {
-  display: block;
-  height: 100%;
-  background: var(--berry);
-  transition: width 0.45s var(--ease);
-}
-.motion-static {
-  padding: 28px;
-}
-.motion-static ol {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  list-style: none;
-  padding: 0;
-}
-.motion-static li {
-  padding: 16px;
-  border: 1px solid rgba(42, 27, 34, 0.15);
-  border-radius: 12px;
-  display: grid;
-  gap: 8px;
-}
-.motion-static li strong {
-  color: var(--berry);
-}
-.motion-static li span {
-  font-size: 0.8rem;
-  line-height: 1.5;
-}
 .dark-section {
   background: var(--ink);
   color: var(--white);
@@ -1270,34 +1147,11 @@ img {
   .hero-baseline {
     padding: 0 0 25px;
   }
-  .motion-section {
-    padding: 85px 0;
-  }
   .section-intro {
     margin-bottom: 40px;
   }
   .section-intro h2 {
     margin: 15px 0;
-  }
-  .motion-scene {
-    grid-template-columns: 1fr;
-    min-height: 410px;
-    text-align: center;
-    gap: 0;
-    padding: 20px;
-  }
-  .motion-glyph {
-    width: 170px;
-  }
-  .motion-copy .motion-title {
-    font-size: 2rem;
-  }
-  .motion-footer {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-  .motion-static ol {
-    grid-template-columns: repeat(2, 1fr);
   }
   .problem {
     padding: 90px 0 50px;
@@ -1457,16 +1311,6 @@ img {
   .hero-link-chip {
     left: 2%;
     width: 75%;
-  }
-  .motion-top,
-  .motion-footer {
-    padding: 18px;
-  }
-  .motion-top .eyebrow {
-    font-size: 0.58rem;
-  }
-  .motion-static ol {
-    grid-template-columns: 1fr;
   }
   .tablist button {
     font-size: 0.82rem;

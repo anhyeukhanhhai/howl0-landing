@@ -22,6 +22,7 @@ export function useScrollProgress<T extends HTMLElement>(
     let frame = 0;
     let lastStage = -1;
     let active = true;
+    let disposed = false;
     const measure = () => {
       frame = 0;
       if (!active) return;
@@ -58,15 +59,30 @@ export function useScrollProgress<T extends HTMLElement>(
       { rootMargin: "25% 0px" },
     );
     observer.observe(element);
-    const onMotion = () => request();
+    const onMotion = () => {
+      if (disposed) return;
+      active = true;
+      request();
+    };
+    const resizeObserver = new ResizeObserver(onMotion);
+    resizeObserver.observe(element);
     window.addEventListener("scroll", request, { passive: true });
-    window.addEventListener("resize", request, { passive: true });
+    window.addEventListener("resize", onMotion, { passive: true });
+    window.addEventListener("pageshow", onMotion);
+    window.addEventListener("orientationchange", onMotion);
+    window.visualViewport?.addEventListener("resize", onMotion);
+    document.fonts.ready.then(onMotion).catch(() => {});
     reduced.addEventListener("change", onMotion);
     request();
     return () => {
+      disposed = true;
       observer.disconnect();
+      resizeObserver.disconnect();
       window.removeEventListener("scroll", request);
-      window.removeEventListener("resize", request);
+      window.removeEventListener("resize", onMotion);
+      window.removeEventListener("pageshow", onMotion);
+      window.removeEventListener("orientationchange", onMotion);
+      window.visualViewport?.removeEventListener("resize", onMotion);
       reduced.removeEventListener("change", onMotion);
       if (frame) cancelAnimationFrame(frame);
     };

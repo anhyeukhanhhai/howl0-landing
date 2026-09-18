@@ -1,11 +1,12 @@
 import { Navigation } from "@/components/Navigation";
-import { HeroMotion } from "@/components/HeroMotion";
+import { HeroLoopPreview } from "@/components/HeroLoopPreview";
 import { AudienceTabs } from "@/components/AudienceTabs";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { Faq } from "@/components/Faq";
 import { ScatterSignal } from "@/components/ScatterSignal";
 import { ScrollScene } from "@/components/ScrollScene";
 import { PracticeLoop } from "@/components/PracticeLoop";
+import { Reveal } from "@/components/Reveal";
 const stages = [
   ["01", "Share", "The teacher creates homework and shares a link."],
   [
@@ -41,10 +42,8 @@ export default function Home() {
               </p>
               <h1>
                 Music homework,
-                <br />
-                <em>shared and submitted</em>
-                <br />
-                in one simple link<span className="period">.</span>
+                <br /> <em>shared and submitted</em>
+                <br /> in one simple link<span className="period">.</span>
               </h1>
               <p className="hero-lead">
                 howl0 is building a calmer way for teachers to assign practice,
@@ -55,7 +54,7 @@ export default function Home() {
                 <a className="button button-primary" href="#waitlist">
                   Join the waitlist <span aria-hidden="true">↗</span>
                 </a>
-                <a className="text-link" href="#motion">
+                <a className="text-link" href="#practice-loop">
                   Watch how it works <span aria-hidden="true">↘</span>
                 </a>
               </div>
@@ -63,25 +62,16 @@ export default function Home() {
                 A little less friction. A lot more room to learn.
               </p>
             </div>
-            <div className="hero-visual" aria-hidden="true">
+            <div className="hero-visual">
               <div className="hero-loop">
                 <img
                   src="/brand/howl0/02-symbols/howl0-return-loop-master.svg"
                   alt=""
                   fetchPriority="high"
+                  aria-hidden="true"
                 />
               </div>
-              <div className="hero-link-chip">
-                <span className="tiny-label">HOMEWORK LINK</span>
-                <strong>howl0.link/practice</strong>
-                <span className="chip-arrow">↗</span>
-              </div>
-              <div className="hero-tiny hero-tiny-top">
-                CREATE A TASK <span>01</span>
-              </div>
-              <div className="hero-tiny hero-tiny-bottom">
-                SEND THE SIGNAL <span>02</span>
-              </div>
+              <HeroLoopPreview />
             </div>
           </div>
           <div className="hero-baseline wrap">
@@ -90,20 +80,7 @@ export default function Home() {
             <span>STUDENT</span>
           </div>
         </ScrollScene>
-        <section
-          className="motion-section wrap"
-          aria-labelledby="motion-heading"
-        >
-          <div className="section-intro compact">
-            <p className="eyebrow">01 / A SIMPLE SIGNAL</p>
-            <h2 id="motion-heading">See the loop come together.</h2>
-            <p>
-              From a teacher’s task to a student’s next step, one link keeps the
-              story moving.
-            </p>
-          </div>
-          <HeroMotion />
-        </section>
+        <PracticeLoop />
         <ScrollScene
           id="why-howl0"
           mode="pin"
@@ -132,14 +109,14 @@ export default function Home() {
         </ScrollScene>
         <section id="how-it-works" className="workflow section-pad">
           <div className="wrap">
-            <div className="section-intro">
+            <Reveal className="section-intro" variant="fadeUp">
               <p className="eyebrow">03 / HOW IT WORKS</p>
               <h2>
                 From assignment to improvement,{" "}
                 <em>without the app-switching.</em>
               </h2>
               <p>Four connected moments. One clearer practice conversation.</p>
-            </div>
+            </Reveal>
             <ol className="flow-list">
               {stages.map(([n, title, copy]) => (
                 <li key={n}>
@@ -159,10 +136,12 @@ export default function Home() {
             </ol>
           </div>
         </section>
-        <PracticeLoop />
-        <ScrollScene className="differentiator diff-scroll section-pad">
+        <ScrollScene
+          mode="pin"
+          className="differentiator diff-scroll section-pad"
+        >
           <div className="wrap">
-            <p className="eyebrow">05 / THE ONE-LINK DIFFERENCE</p>
+            <p className="eyebrow">04 / THE ONE-LINK DIFFERENCE</p>
             <div className="diff-heading">
               <h2>
                 Students shouldn’t need to learn a platform before they can{" "}
@@ -206,12 +185,12 @@ export default function Home() {
         </ScrollScene>
         <section id="who-its-for" className="audiences section-pad">
           <div className="wrap">
-            <div className="section-intro">
-              <p className="eyebrow">06 / ONE LOOP, THREE VIEWS</p>
+            <Reveal className="section-intro" variant="fadeUp">
+              <p className="eyebrow">05 / ONE LOOP, THREE VIEWS</p>
               <h2>
                 One practice loop, <em>understood from every side.</em>
               </h2>
-            </div>
+            </Reveal>
             <AudienceTabs />
           </div>
         </section>
@@ -221,7 +200,7 @@ export default function Home() {
           className="belief belief-scroll surface-noise"
         >
           <div className="wrap belief-inner">
-            <p className="eyebrow light">07 / OUR BELIEF</p>
+            <p className="eyebrow light">06 / OUR BELIEF</p>
             <h2>
               Feedback is a <em>signal,</em>
               <br />
@@ -254,7 +233,7 @@ export default function Home() {
         <section className="building section-pad">
           <div className="wrap building-grid">
             <div>
-              <p className="eyebrow">08 / BUILDING IN THE OPEN</p>
+              <p className="eyebrow">07 / BUILDING IN THE OPEN</p>
               <h2>We’re building howl0 with music educators and learners.</h2>
               <p>
                 howl0 is currently in development. We’re working with teachers,
@@ -282,7 +261,7 @@ export default function Home() {
         >
           <div className="wrap waitlist-grid">
             <div>
-              <p className="eyebrow light">09 / STAY IN THE LOOP</p>
+              <p className="eyebrow light">08 / STAY IN THE LOOP</p>
               <h2>
                 Join the next <em>practice loop.</em>
               </h2>
@@ -298,7 +277,7 @@ export default function Home() {
         <section id="faq" className="faq section-pad">
           <div className="wrap faq-grid">
             <div>
-              <p className="eyebrow">10 / GOOD QUESTIONS</p>
+              <p className="eyebrow">09 / GOOD QUESTIONS</p>
               <h2>
                 A little more <em>clarity.</em>
               </h2>

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 const items = [
-  ["How it works", "#how-it-works"],
+  ["How it works", "#practice-loop"],
   ["Why howl0", "#why-howl0"],
   ["Who it’s for", "#who-its-for"],
   ["Our belief", "#our-belief"],

@@ -1,33 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef } from "react";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
-
-const steps = [
-  {
-    word: "Share",
-    phrase: "The teacher creates homework and shares a link.",
-  },
-  {
-    word: "Practise",
-    phrase: "A practice moment becomes a submission.",
-  },
-  {
-    word: "Submit",
-    phrase:
-      "The student opens the link and uploads an existing audio or video recording.",
-  },
-  {
-    word: "Respond",
-    phrase:
-      "The teacher reviews the submission and provides organised feedback.",
-  },
-  {
-    word: "Improve",
-    phrase: "The student understands what to practise next.",
-  },
-];
-const route =
-  "M 176 126 C 312 28 510 67 594 198 C 682 335 598 491 446 514 C 288 538 145 455 120 323 C 106 250 126 197 146 172";
+import { practiceRoute, practiceSteps } from "@/lib/practiceLoop";
 
 export function PracticeLoop() {
   const root = useRef<HTMLElement>(null);
@@ -59,32 +33,44 @@ export function PracticeLoop() {
   useScrollProgress(root, { mode: "pin", onProgress: update });
   useEffect(() => {
     const element = root.current;
-    if (
-      !element ||
-      !window.matchMedia("(max-width: 760px)").matches ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    )
-      return;
+    if (!element) return;
+    const mobile = window.matchMedia("(max-width: 760px)");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const items = Array.from(element.querySelectorAll(".practice-step"));
-    const observer = new IntersectionObserver(
-      () => {
-        const target = window.innerHeight * 0.55;
-        const nearest = items
-          .map((item, index) => ({ index, rect: item.getBoundingClientRect() }))
-          .filter(
-            ({ rect }) => rect.bottom > 70 && rect.top < window.innerHeight,
-          )
-          .sort(
-            (a, b) =>
-              Math.abs((a.rect.top + a.rect.bottom) / 2 - target) -
-              Math.abs((b.rect.top + b.rect.bottom) / 2 - target),
-          )[0];
-        if (nearest) element.dataset.stage = String(nearest.index);
-      },
-      { threshold: [0, 0.5, 1] },
-    );
-    items.forEach((item) => observer.observe(item));
-    return () => observer.disconnect();
+    let observer: IntersectionObserver | undefined;
+    const setup = () => {
+      observer?.disconnect();
+      if (!mobile.matches || reduced.matches) return;
+      observer = new IntersectionObserver(
+        () => {
+          const target = window.innerHeight * 0.55;
+          const nearest = items
+            .map((item, index) => ({
+              index,
+              rect: item.getBoundingClientRect(),
+            }))
+            .filter(
+              ({ rect }) => rect.bottom > 70 && rect.top < window.innerHeight,
+            )
+            .sort(
+              (a, b) =>
+                Math.abs((a.rect.top + a.rect.bottom) / 2 - target) -
+                Math.abs((b.rect.top + b.rect.bottom) / 2 - target),
+            )[0];
+          if (nearest) element.dataset.stage = String(nearest.index);
+        },
+        { threshold: [0, 0.5, 1] },
+      );
+      items.forEach((item) => observer?.observe(item));
+    };
+    mobile.addEventListener("change", setup);
+    reduced.addEventListener("change", setup);
+    setup();
+    return () => {
+      observer?.disconnect();
+      mobile.removeEventListener("change", setup);
+      reduced.removeEventListener("change", setup);
+    };
   }, []);
   return (
     <section
@@ -96,7 +82,7 @@ export function PracticeLoop() {
     >
       <div className="practice-sticky wrap">
         <div className="practice-intro">
-          <p className="eyebrow light">04 / THE PRACTICE LOOP</p>
+          <p className="eyebrow light">01 / THE PRACTICE LOOP</p>
           <h2 id="practice-loop-heading">
             One link keeps
             <br />
@@ -106,7 +92,7 @@ export function PracticeLoop() {
             Share → Practise → Submit → Respond → Improve
           </p>
           <ol className="practice-steps" aria-label="Practice loop stages">
-            {steps.map((step, index) => (
+            {practiceSteps.map((step, index) => (
               <li
                 className={`practice-step practice-step-${index}`}
                 key={step.word}
@@ -134,8 +120,12 @@ export function PracticeLoop() {
                 <stop offset="1" stopColor="#F5CF59" />
               </linearGradient>
             </defs>
-            <path className="practice-route-base" d={route} />
-            <path ref={path} className="practice-route-active" d={route} />
+            <path className="practice-route-base" d={practiceRoute} />
+            <path
+              ref={path}
+              className="practice-route-active"
+              d={practiceRoute}
+            />
             <path
               className="practice-return"
               d="M 455 515 C 276 568 100 455 99 295 C 99 216 122 164 157 126"

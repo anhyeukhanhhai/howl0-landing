@@ -25,7 +25,7 @@ for (const [name, width, height] of [
     for (const [label, selector, mode, progress] of [
       ["problem end", ".problem-scroll", "pin", 0.8],
       ["practice submit", "#practice-loop", "pin", 0.5],
-      ["one-link transition", ".diff-scroll", "enter", 0.5],
+      ["one-link transition", ".diff-scroll", "pin", 0.5],
       ["belief transition", ".belief-scroll", "enter", 0.6],
     ]) {
       const geometry = await page.locator(selector).evaluate((el) => ({
@@ -46,4 +46,12 @@ for (const [name, width, height] of [
   }
   await context.close();
 }
+const reducedContext = await browser.newContext({
+  viewport: { width: 390, height: 844 },
+  reducedMotion: "reduce",
+});
+const reduced = await reducedContext.newPage();
+await reduced.goto("http://localhost:3000", { waitUntil: "networkidle" });
+await scan(reduced, "mobile reduced motion");
+await reducedContext.close();
 await browser.close();
