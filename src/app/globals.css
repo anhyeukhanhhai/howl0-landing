@@ -25,7 +25,7 @@ body {
 }
 body,
 html {
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 h1,
 h2,
@@ -229,7 +229,7 @@ img {
   pointer-events: none;
   background-image: url("/brand/howl0/05-noise-overlays/noise-fine-cocoa-transparent-768.webp");
   background-size: 900px;
-  opacity: 0.055;
+  opacity: 0.035;
 }
 .hero {
   padding-top: clamp(50px, 7vw, 105px);
@@ -515,7 +515,7 @@ img {
 }
 .dark-section.surface-noise:after {
   background-image: url("/brand/howl0/05-noise-overlays/noise-fine-raspberry-transparent-768.webp");
-  opacity: 0.05;
+  opacity: 0.04;
   mix-blend-mode: soft-light;
 }
 .problem {
@@ -583,42 +583,6 @@ img {
   bottom: 8%;
   right: 12%;
   transform: rotate(8deg);
-}
-.scatter-item {
-  transition:
-    transform 1s var(--ease),
-    opacity 1s var(--ease);
-}
-.scatter.is-joined .scatter-item {
-  opacity: 0.15;
-  transform: translate(0, 0) scale(0.7);
-}
-.scatter.is-joined .item-1 {
-  transform: translate(120px, 120px) scale(0.7);
-}
-.scatter.is-joined .item-2 {
-  transform: translate(-120px, 95px) scale(0.7);
-}
-.scatter.is-joined .item-3 {
-  transform: translate(145px, 0) scale(0.7);
-}
-.scatter.is-joined .item-4 {
-  transform: translate(-145px, 0) scale(0.7);
-}
-.scatter.is-joined .item-5 {
-  transform: translate(120px, -100px) scale(0.7);
-}
-.scatter.is-joined .item-6 {
-  transform: translate(-120px, -100px) scale(0.7);
-}
-.scatter-centre {
-  transition:
-    background 1s var(--ease),
-    transform 1s var(--ease);
-}
-.scatter.is-joined .scatter-centre {
-  background: rgba(169, 46, 93, 0.5);
-  transform: scale(1.08);
 }
 .scatter-centre {
   position: absolute;
@@ -903,7 +867,7 @@ img {
 }
 .belief.surface-noise:after {
   background-image: url("/brand/howl0/05-noise-overlays/noise-fine-raspberry-transparent-768.webp");
-  opacity: 0.05;
+  opacity: 0.04;
   mix-blend-mode: soft-light;
 }
 .belief-inner h2 {

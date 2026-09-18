@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./scroll.css";
 import "@fontsource/archivo/400.css";
 import "@fontsource/archivo/600.css";
 import "@fontsource/archivo/700.css";

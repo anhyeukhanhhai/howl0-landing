@@ -1,5 +1,3 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
 const fragments = [
   ["Homework instructions", "item-1"],
   ["Message thread", "item-2"],
@@ -9,25 +7,11 @@ const fragments = [
   ["Comments", "item-6"],
 ];
 export function ScatterSignal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [joined, setJoined] = useState(false);
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setJoined(true);
-      },
-      { threshold: 0.65 },
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
   return (
     <div
-      ref={ref}
-      className={`scatter ${joined ? "is-joined" : ""}`}
+      className="scatter"
       role="img"
-      aria-label="Scattered homework instructions, messages, recordings, sheet music and comments coming together as one practice signal"
+      aria-label="Homework instructions, messages, recordings, sheet music and comments converge into one connected howl0 practice link"
     >
       {fragments.map(([label, cls]) => (
         <span key={label} className={`scatter-item ${cls}`}>
@@ -35,15 +19,11 @@ export function ScatterSignal() {
         </span>
       ))}
       <div className="scatter-centre">
-        <span>
-          One connected
-          <br />
-          practice signal
-        </span>
         <img
           src="/brand/howl0/02-symbols/howl0-return-loop-master.svg"
           alt=""
         />
+        <span className="scatter-link">howl0.link/practice</span>
       </div>
     </div>
   );

@@ -61,6 +61,7 @@ export function AudienceTabs() {
         ))}
       </div>
       <div
+        key={active}
         id="audience-content"
         role="tabpanel"
         aria-labelledby={`tab-${active}`}

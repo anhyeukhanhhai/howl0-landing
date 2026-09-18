@@ -4,6 +4,8 @@ import { AudienceTabs } from "@/components/AudienceTabs";
 import { WaitlistForm } from "@/components/WaitlistForm";
 import { Faq } from "@/components/Faq";
 import { ScatterSignal } from "@/components/ScatterSignal";
+import { ScrollScene } from "@/components/ScrollScene";
+import { PracticeLoop } from "@/components/PracticeLoop";
 const stages = [
   ["01", "Share", "The teacher creates homework and shares a link."],
   [
@@ -26,7 +28,11 @@ export default function Home() {
       </a>
       <Navigation />
       <main id="main">
-        <section id="top" className="hero surface-noise">
+        <ScrollScene
+          id="top"
+          mode="pin"
+          className="hero hero-scroll surface-noise"
+        >
           <div className="wrap hero-grid">
             <div className="hero-copy">
               <p className="eyebrow status">
@@ -83,7 +89,7 @@ export default function Home() {
             <div className="baseline-line" />
             <span>STUDENT</span>
           </div>
-        </section>
+        </ScrollScene>
         <section
           className="motion-section wrap"
           aria-labelledby="motion-heading"
@@ -98,7 +104,11 @@ export default function Home() {
           </div>
           <HeroMotion />
         </section>
-        <section id="why-howl0" className="problem dark-section surface-noise">
+        <ScrollScene
+          id="why-howl0"
+          mode="pin"
+          className="problem problem-scroll dark-section surface-noise"
+        >
           <div className="wrap problem-grid">
             <div>
               <p className="eyebrow light">02 / THE SPACE BETWEEN</p>
@@ -119,7 +129,7 @@ export default function Home() {
               <path d="M0 55 C150 -15 270 125 440 54 S730 -10 895 55 S1170 125 1440 35" />
             </svg>
           </div>
-        </section>
+        </ScrollScene>
         <section id="how-it-works" className="workflow section-pad">
           <div className="wrap">
             <div className="section-intro">
@@ -149,9 +159,10 @@ export default function Home() {
             </ol>
           </div>
         </section>
-        <section className="differentiator section-pad">
+        <PracticeLoop />
+        <ScrollScene className="differentiator diff-scroll section-pad">
           <div className="wrap">
-            <p className="eyebrow">04 / THE ONE-LINK DIFFERENCE</p>
+            <p className="eyebrow">05 / THE ONE-LINK DIFFERENCE</p>
             <div className="diff-heading">
               <h2>
                 Students shouldn’t need to learn a platform before they can{" "}
@@ -192,11 +203,11 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
+        </ScrollScene>
         <section id="who-its-for" className="audiences section-pad">
           <div className="wrap">
             <div className="section-intro">
-              <p className="eyebrow">05 / ONE LOOP, THREE VIEWS</p>
+              <p className="eyebrow">06 / ONE LOOP, THREE VIEWS</p>
               <h2>
                 One practice loop, <em>understood from every side.</em>
               </h2>
@@ -204,9 +215,13 @@ export default function Home() {
             <AudienceTabs />
           </div>
         </section>
-        <section id="our-belief" className="belief surface-noise">
+        <ScrollScene
+          id="our-belief"
+          stages={4}
+          className="belief belief-scroll surface-noise"
+        >
           <div className="wrap belief-inner">
-            <p className="eyebrow light">06 / OUR BELIEF</p>
+            <p className="eyebrow light">07 / OUR BELIEF</p>
             <h2>
               Feedback is a <em>signal,</em>
               <br />
@@ -216,6 +231,10 @@ export default function Home() {
               A recording is not a final judgement of a student’s ability. It is
               one moment in an ongoing learning process.
             </p>
+            <div className="belief-binary" aria-hidden="true">
+              <span>RIGHT</span>
+              <span>WRONG</span>
+            </div>
             <div className="belief-wave" aria-hidden="true">
               <svg viewBox="0 0 1200 180" preserveAspectRatio="none">
                 <path d="M0 100 C120 20 170 180 300 100 S480 20 600 100 S780 180 900 100 S1080 20 1200 100" />
@@ -231,11 +250,11 @@ export default function Home() {
               The signal keeps moving <span aria-hidden="true">↗</span>
             </p>
           </div>
-        </section>
+        </ScrollScene>
         <section className="building section-pad">
           <div className="wrap building-grid">
             <div>
-              <p className="eyebrow">07 / BUILDING IN THE OPEN</p>
+              <p className="eyebrow">08 / BUILDING IN THE OPEN</p>
               <h2>We’re building howl0 with music educators and learners.</h2>
               <p>
                 howl0 is currently in development. We’re working with teachers,
@@ -257,10 +276,13 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section id="waitlist" className="waitlist dark-section surface-noise">
+        <ScrollScene
+          id="waitlist"
+          className="waitlist waitlist-scroll dark-section surface-noise"
+        >
           <div className="wrap waitlist-grid">
             <div>
-              <p className="eyebrow light">08 / STAY IN THE LOOP</p>
+              <p className="eyebrow light">09 / STAY IN THE LOOP</p>
               <h2>
                 Join the next <em>practice loop.</em>
               </h2>
@@ -272,11 +294,11 @@ export default function Home() {
             </div>
             <WaitlistForm />
           </div>
-        </section>
+        </ScrollScene>
         <section id="faq" className="faq section-pad">
           <div className="wrap faq-grid">
             <div>
-              <p className="eyebrow">09 / GOOD QUESTIONS</p>
+              <p className="eyebrow">10 / GOOD QUESTIONS</p>
               <h2>
                 A little more <em>clarity.</em>
               </h2>
