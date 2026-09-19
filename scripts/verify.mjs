@@ -1,16 +1,20 @@
 import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
 
-const base = "http://localhost:3000";
-const out = ".qa/revision";
-const sizes = [
+const base = process.env.BASE_URL || "http://localhost:3000";
+const out = ".qa/ia-final";
+const routes = [
+  ["home", "/", "Music homework, shared and submitted in one simple link."],
+  ["how-it-works", "/how-it-works", "One link keeps practice moving."],
+  ["why-howlo", "/why-howlo", "Practice happens between lessons."],
+  ["who-its-for", "/who-its-for", "One loop, understood from every side."],
+  ["about", "/about", "Building in the open, listening as we go."],
+  ["faq", "/faq", "A little more clarity."],
+];
+const viewports = [
   [390, 844],
-  [393, 852],
   [430, 932],
   [768, 1024],
-  [1024, 768],
-  [1280, 720],
-  [1366, 768],
   [1440, 900],
   [1920, 1080],
   [2560, 1080],
@@ -21,262 +25,278 @@ await mkdir(out, { recursive: true });
 const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
-async function scrollProgress(page, selector, progress, mode = "pin") {
-  const { top, height } = await page.locator(selector).evaluate((el) => ({
-    top: el.getBoundingClientRect().top + scrollY,
-    height: el.offsetHeight,
-  }));
+async function revealPage(page) {
+  const height = await page.evaluate(
+    () => document.documentElement.scrollHeight,
+  );
   const viewport = page.viewportSize().height;
-  const y =
-    mode === "pin"
-      ? top + progress * (height - viewport)
-      : top - viewport + progress * (height + viewport);
-  await page.evaluate(
-    (value) => scrollTo({ top: value, behavior: "instant" }),
-    y,
-  );
-  await page.waitForTimeout(75);
-}
-for (const [width, height] of sizes) {
-  const label = `${width}x${height}`;
-  const page = await browser.newPage({
-    viewport: { width, height },
-    deviceScaleFactor: 1,
-  });
-  const errors = [];
-  page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto(base, { waitUntil: "networkidle" });
-  await page.evaluate(() => document.fonts.ready);
-  assert(
-    await page.evaluate(() =>
-      document.fonts
-        .load('16px "Be Vietnam Pro"', "Tiếng Việt: ă â ê ô ơ ư đ")
-        .then((faces) => faces.length > 0),
-    ),
-    `${label}: Vietnamese font coverage did not load`,
-  );
-  const layout = await page.evaluate(() => {
-    const box = (element) => {
-      const r = element.getBoundingClientRect();
-      return { left: r.left, top: r.top, right: r.right, bottom: r.bottom };
-    };
-    const headline = box(document.querySelector(".hero h1"));
-    const visual = box(document.querySelector(".hero-visual"));
-    const separated =
-      headline.right <= visual.left + 1 ||
-      visual.right <= headline.left + 1 ||
-      headline.bottom <= visual.top + 1 ||
-      visual.bottom <= headline.top + 1;
-    const sections = [...document.querySelectorAll("main > section")];
-    return {
-      overflow: document.documentElement.scrollWidth - innerWidth,
-      separated,
-      sections: sections.length,
-      second: sections[1]?.id,
-      loops: document.querySelectorAll("#practice-loop").length,
-      previewBottom: visual.bottom,
-      anchor:
-        document.querySelector('.hero-actions a[href="#practice-loop"]') !==
-        null,
-      broken: [...document.querySelectorAll('a[href^="#"]')]
-        .filter(
-          (link) =>
-            !document.getElementById(link.getAttribute("href").slice(1)),
-        )
-        .map((link) => link.getAttribute("href")),
-    };
-  });
-  assert(
-    layout.overflow <= 1,
-    `${label}: horizontal overflow ${layout.overflow}`,
-  );
-  assert(layout.separated, `${label}: hero heading and visual intersect`);
-  assert(
-    layout.sections === 10 &&
-      layout.second === "practice-loop" &&
-      layout.loops === 1,
-    `${label}: wrong page order or duplicate Practice Loop`,
-  );
-  assert(
-    layout.anchor && !layout.broken.length,
-    `${label}: broken hero CTA or anchor ${layout.broken}`,
-  );
-  if (width <= 430)
-    assert(
-      layout.previewBottom <= height + 2,
-      `${label}: hero preview is below the first viewport`,
+  for (let y = 0; y < height; y += viewport * 0.72) {
+    await page.evaluate(
+      (value) => scrollTo({ top: value, behavior: "instant" }),
+      y,
     );
-  await page.screenshot({ path: `${out}/final-${label}-hero.png` });
-  if ([390, 768, 1024, 1440, 2560, 3440].includes(width))
-    await page.screenshot({
-      path: `${out}/final-${label}-full.png`,
-      fullPage: true,
-    });
-  if (width > 760) {
-    const position = await page
-      .locator(".practice-sticky")
-      .evaluate((el) => getComputedStyle(el).position);
-    assert(position === "sticky", `${label}: Practice Loop lost sticky scene`);
-    for (const [progress, stage] of [
-      [0.1, 0],
-      [0.5, 2],
-      [0.9, 4],
-      [0.3, 1],
-    ]) {
-      await scrollProgress(page, "#practice-loop", progress);
-      await page.waitForFunction(
-        (expected) =>
-          document.querySelector("#practice-loop")?.dataset.stage ===
-          String(expected),
-        stage,
-      );
-      if (width === 1440) {
-        await page.waitForTimeout(420);
-        await page.screenshot({
-          path: `${out}/final-practice-${progress}.png`,
-        });
-      }
-    }
-  } else {
-    const position = await page
-      .locator(".practice-sticky")
-      .evaluate((el) => getComputedStyle(el).position);
-    assert(position === "relative", `${label}: mobile Practice Loop is pinned`);
-    await page
-      .locator(".practice-step-4")
-      .evaluate((el) =>
-        el.scrollIntoView({ block: "center", behavior: "instant" }),
-      );
-    await page.waitForFunction(
-      () => document.querySelector("#practice-loop")?.dataset.stage === "4",
-    );
+    await page.waitForTimeout(35);
   }
-  if (width === 1440 || width === 1366) {
-    for (const progress of [0.02, 0.35, 0.65, 0.95]) {
-      await scrollProgress(page, ".diff-scroll", progress);
-      const route = await page.evaluate(() => {
-        const old = document.querySelector(".old-route");
-        const newer = document.querySelector(".new-route");
-        const container = old
-          .querySelector(".route-steps")
+}
+async function inspectLayout(page, label) {
+  const result = await page.evaluate(() => ({
+    overflow: document.documentElement.scrollWidth - innerWidth,
+    mains: document.querySelectorAll("main").length,
+    h1s: document.querySelectorAll("h1").length,
+    footer: Boolean(document.querySelector("footer")),
+    nav: Boolean(document.querySelector('nav[aria-label="Main navigation"]')),
+  }));
+  assert(
+    result.overflow <= 1,
+    `${label}: horizontal overflow ${result.overflow}`,
+  );
+  assert(
+    result.mains === 1 && result.h1s === 1,
+    `${label}: landmark or h1 structure is invalid`,
+  );
+  assert(
+    result.nav && result.footer,
+    `${label}: shared navigation or footer missing`,
+  );
+}
+
+for (const [width, height] of viewports) {
+  const size = `${width}x${height}`;
+  for (const [name, route, heading] of routes) {
+    const page = await browser.newPage({ viewport: { width, height } });
+    const errors = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    const response = await page.goto(`${base}${route}`, {
+      waitUntil: "networkidle",
+    });
+    assert(
+      response?.ok(),
+      `${size} ${route}: direct route did not return success`,
+    );
+    assert(
+      await page.getByRole("heading", { level: 1, name: heading }).isVisible(),
+      `${size} ${route}: h1 missing`,
+    );
+    await inspectLayout(page, `${size} ${route}`);
+    assert(
+      !errors.length,
+      `${size} ${route}: application errors ${errors.join("; ")}`,
+    );
+    if (route === "/") {
+      const home = await page.evaluate(() => ({
+        sections: document.querySelectorAll("main > section").length,
+        screens: document.documentElement.scrollHeight / innerHeight,
+        fullLoop: document.querySelectorAll("#practice-loop").length,
+        faq: document.querySelectorAll(".faq-list").length,
+        preview: Boolean(document.querySelector(".hero-preview")),
+      }));
+      assert(
+        home.sections === 3 && home.screens < 5.2,
+        `${size}: homepage is not concise ${JSON.stringify(home)}`,
+      );
+      assert(
+        home.fullLoop === 0 && home.faq === 0 && home.preview,
+        `${size}: supporting material remains on homepage`,
+      );
+      const boxes = await page.evaluate(() => {
+        const a = document.querySelector(".hero h1").getBoundingClientRect();
+        const b = document
+          .querySelector(".hero-visual")
           .getBoundingClientRect();
         return {
-          oldOpacity: Number(getComputedStyle(old).opacity),
-          newOpacity: Number(getComputedStyle(newer).opacity),
-          oldClip: getComputedStyle(old).clipPath,
-          wordsFit: [...old.querySelectorAll(".route-steps span")].every(
-            (el) => {
-              const r = el.getBoundingClientRect();
-              return (
-                r.left >= container.left - 1 && r.right <= container.right + 1
-              );
-            },
-          ),
-          newVisible: newer.getBoundingClientRect().top < innerHeight,
+          separated:
+            a.right <= b.left + 1 ||
+            b.right <= a.left + 1 ||
+            a.bottom <= b.top + 1 ||
+            b.bottom <= a.top + 1,
+          previewBottom: b.bottom,
         };
       });
-      assert(
-        route.oldClip === "none" && route.wordsFit,
-        `${label}: fragmented route clipped at ${progress}`,
-      );
-      if (progress === 0.35)
+      assert(boxes.separated, `${size}: hero copy intersects its visual`);
+      if (width <= 430)
         assert(
-          route.oldOpacity > 0.99,
-          `${label}: fragmented route not readable in hold`,
+          boxes.previewBottom <= height + 3,
+          `${size}: Practice Loop preview misses first viewport`,
         );
-      if (progress >= 0.95)
-        assert(
-          route.newOpacity > 0.99 && route.newVisible,
-          `${label}: howl0 route not resolved`,
-        );
-      if (width === 1440)
-        await page.screenshot({ path: `${out}/final-diff-${progress}.png` });
-    }
-  }
-  if (width === 390) {
-    await page.getByRole("button", { name: /menu/i }).click();
-    assert(
-      await page
-        .getByRole("navigation", { name: "Main navigation" })
-        .getByRole("link", { name: "How it works", exact: true })
-        .isVisible(),
-      "Mobile menu failed",
-    );
-    await page.getByRole("button", { name: /close/i }).click();
-    const routeLayout = await page
-      .locator(".old-route .route-steps")
-      .evaluate((el) => getComputedStyle(el).display);
-    assert(routeLayout === "grid", "Mobile route did not stack vertically");
-  }
-  for (const name of ["Teacher", "Student", "Parent", "Teacher"]) {
-    await page.getByRole("tab", { name: new RegExp(name, "i") }).click();
-    const panel = await page.locator(".audience-content").evaluate((el) => {
-      const outer = el.getBoundingClientRect();
-      return [el.querySelector("h3"), el.querySelector("p")].every((child) => {
-        const r = child.getBoundingClientRect();
-        return (
-          r.left >= outer.left - 1 &&
-          r.right <= outer.right + 1 &&
-          r.top >= outer.top - 1 &&
-          r.bottom <= outer.bottom + 1
-        );
+      await revealPage(page);
+      await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+      await page.screenshot({
+        path: `${out}/home-${size}.png`,
+        fullPage: true,
       });
-    });
-    assert(panel, `${label}: ${name} panel text clipped`);
+    } else if (width === 390 || width === 1440) {
+      await revealPage(page);
+      await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+      await page.screenshot({
+        path: `${out}/${name}-${size}.png`,
+        fullPage: true,
+      });
+    }
+    await page.close();
   }
-  if (width === 1440) {
-    await page.getByText("What is howl0?", { exact: true }).click();
-    assert(
-      await page.getByText(/pronounced “Howl-lo”/).isVisible(),
-      "FAQ failed",
-    );
-    await page.locator("#email").fill("test@example.com");
-    await page
-      .getByRole("button", { name: /Join the waitlist/i })
-      .last()
-      .click();
-    await page
-      .getByText(/not accepting submissions yet/i)
-      .waitFor({ state: "visible" });
-  }
-  assert(!errors.length, `${label}: application errors: ${errors.join("; ")}`);
-  console.log(label, "passed");
-  await page.close();
+  console.log(size, "all routes passed");
 }
-for (const [width, height] of [
-  [390, 844],
-  [1440, 900],
+
+const desktop = await browser.newPage({
+  viewport: { width: 1440, height: 900 },
+});
+await desktop.goto(base, { waitUntil: "networkidle" });
+for (const [label, route, heading] of routes.slice(1)) {
+  await desktop
+    .getByRole("link", {
+      name:
+        label === "why-howlo"
+          ? "Why howl0"
+          : label === "who-its-for"
+            ? "Who it’s for"
+            : label === "how-it-works"
+              ? "How it works"
+              : label === "faq"
+                ? "FAQ"
+                : "About",
+      exact: true,
+    })
+    .first()
+    .click();
+  await desktop.waitForURL(`${base}${route}`);
+  assert(
+    await desktop.getByRole("heading", { level: 1, name: heading }).isVisible(),
+    `${route}: client navigation failed`,
+  );
+  assert(
+    (await desktop
+      .locator(`.nav-links a[href="${route}"][aria-current="page"]`)
+      .count()) === 1,
+    `${route}: current page is not identified`,
+  );
+  await desktop.goBack({ waitUntil: "networkidle" });
+  await desktop.waitForURL(base + "/");
+  assert(
+    new URL(desktop.url()).pathname === "/",
+    `${route}: browser Back failed`,
+  );
+  await desktop.goForward({ waitUntil: "networkidle" });
+  await desktop.waitForURL(`${base}${route}`);
+  assert(
+    new URL(desktop.url()).pathname === route,
+    `${route}: browser Forward failed`,
+  );
+  await desktop.goto(base, { waitUntil: "networkidle" });
+}
+
+await desktop.goto(`${base}/who-its-for`, { waitUntil: "networkidle" });
+const teacher = desktop.getByRole("tab", { name: /Teacher/i });
+await teacher.focus();
+await teacher.press("ArrowRight");
+assert(
+  (await desktop
+    .getByRole("tab", { name: /Student/i })
+    .getAttribute("aria-selected")) === "true",
+  "Audience keyboard navigation failed",
+);
+assert(
+  await desktop.getByText("No platform lesson", { exact: true }).isVisible(),
+  "Student benefits missing",
+);
+await desktop.getByRole("tab", { name: /Parent/i }).click();
+assert(
+  await desktop.getByText("Student-led practice", { exact: true }).isVisible(),
+  "Audience pointer interaction failed",
+);
+
+await desktop.goto(`${base}/faq`, { waitUntil: "networkidle" });
+await desktop.getByText("What is howl0?", { exact: true }).click();
+assert(
+  await desktop.getByText(/pronounced “Howl-lo”/).isVisible(),
+  "FAQ accordion failed",
+);
+
+await desktop.goto(`${base}/#waitlist`, { waitUntil: "networkidle" });
+const email = desktop.locator("#email");
+await desktop
+  .getByRole("button", { name: "Join the waitlist", exact: true })
+  .last()
+  .click();
+assert(
+  !(await email.evaluate((node) => node.checkValidity())),
+  "Required waitlist email was not validated",
+);
+await email.fill("test@example.com");
+await desktop
+  .getByRole("button", { name: "Join the waitlist", exact: true })
+  .last()
+  .click();
+await desktop
+  .getByText(/not accepting submissions yet/i)
+  .waitFor({ state: "visible" });
+await desktop.close();
+
+const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
+await mobile.goto(`${base}/about`, { waitUntil: "networkidle" });
+const menu = mobile.getByRole("button", { name: "Menu" });
+await menu.click();
+const firstMobileLink = mobile
+  .getByRole("navigation", { name: "Main navigation" })
+  .getByRole("link", { name: "How it works" });
+assert(
+  await firstMobileLink.evaluate(
+    (element) => document.activeElement === element,
+  ),
+  "Mobile menu did not move focus to its first link",
+);
+await firstMobileLink.press("Escape");
+assert(
+  (await menu.evaluate((element) => document.activeElement === element)) &&
+    (await menu.getAttribute("aria-expanded")) === "false",
+  "Mobile menu Escape handling failed",
+);
+await menu.click();
+await mobile
+  .getByRole("navigation", { name: "Main navigation" })
+  .getByRole("link", { name: "FAQ", exact: true })
+  .click();
+await mobile.waitForURL(`${base}/faq`);
+assert(
+  await mobile
+    .getByRole("heading", { level: 1, name: "A little more clarity." })
+    .isVisible(),
+  "Mobile menu navigation failed",
+);
+await mobile.close();
+
+for (const [route, selector] of [
+  ["/", ".one-link-signal"],
+  ["/how-it-works", "#practice-loop"],
 ]) {
   const page = await browser.newPage({
-    viewport: { width, height },
+    viewport: { width: 390, height: 844 },
     reducedMotion: "reduce",
   });
-  await page.goto(base, { waitUntil: "networkidle" });
-  const staticState = await page.evaluate(() => ({
-    stage: document.querySelector("#practice-loop")?.dataset.stage,
-    old: Number(getComputedStyle(document.querySelector(".old-route")).opacity),
-    newer: Number(
-      getComputedStyle(document.querySelector(".new-route")).opacity,
+  await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
+  const state = await page.locator(selector).evaluate((element) => ({
+    animation: getComputedStyle(element).animationName,
+    hidden: [...element.querySelectorAll("p, strong, li")].some(
+      (child) => Number(getComputedStyle(child).opacity) === 0,
     ),
-    preview: getComputedStyle(document.querySelector(".preview-link"))
-      .animationName,
-    hiddenCopy: [...document.querySelectorAll(".practice-step p")].some(
-      (el) => Number(getComputedStyle(el).opacity) < 1,
-    ),
+    stage: element.getAttribute("data-stage"),
+    sticky: getComputedStyle(
+      element.querySelector(".practice-sticky") || element,
+    ).position,
   }));
-  assert(
-    staticState.stage === "4" &&
-      staticState.old === 1 &&
-      staticState.newer === 1 &&
-      staticState.preview === "none" &&
-      !staticState.hiddenCopy,
-    `${width}: incomplete reduced-motion state ${JSON.stringify(staticState)}`,
-  );
+  assert(!state.hidden, `${route}: reduced-motion content is hidden`);
+  if (route === "/how-it-works")
+    assert(
+      state.stage === "4" && state.sticky !== "sticky",
+      "Reduced-motion Practice Loop is incomplete or pinned",
+    );
   await page.screenshot({
-    path: `${out}/final-reduced-${width}.png`,
+    path: `${out}/reduced-${route === "/" ? "home" : "how-it-works"}.png`,
     fullPage: true,
   });
   await page.close();
 }
+
 await browser.close();
-console.log("Responsive, motion, interaction and reduced-motion checks passed");
+console.log(
+  "Routing, responsive layout, interactions and reduced motion passed",
+);

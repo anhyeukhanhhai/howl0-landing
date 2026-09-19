@@ -3,7 +3,11 @@ import { useCallback, useEffect, useRef } from "react";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { practiceRoute, practiceSteps } from "@/lib/practiceLoop";
 
-export function PracticeLoop() {
+export function PracticeLoop({
+  eyebrow = "THE PRACTICE LOOP",
+}: {
+  eyebrow?: string;
+}) {
   const root = useRef<HTMLElement>(null);
   const path = useRef<SVGPathElement>(null);
   const traveller = useRef<SVGGElement>(null);
@@ -82,7 +86,7 @@ export function PracticeLoop() {
     >
       <div className="practice-sticky wrap">
         <div className="practice-intro">
-          <p className="eyebrow light">01 / THE PRACTICE LOOP</p>
+          <p className="eyebrow light">{eyebrow}</p>
           <h2 id="practice-loop-heading">
             One link keeps
             <br />

@@ -9,23 +9,23 @@ const faqs = [
     "Music teachers, students and parents who want a clearer way to share practice and feedback.",
   ],
   [
-    "How will students receive homework?",
-    "A teacher will create a homework link and share it through an existing communication channel or a howl0 class.",
+    "How do students receive homework?",
+    "A teacher shares a homework link through an existing communication channel or a howl0 class.",
   ],
   [
     "What can students submit?",
     "The planned flow lets a student upload an existing audio or video recording.",
   ],
   [
-    "Will students need to download an app?",
-    "The intended one-link flow opens in a browser, without requiring an app download to submit a recording.",
+    "Do students need to download an app?",
+    "The intended submission flow opens in a browser and does not require an app download.",
   ],
   [
     "When will howl0 launch?",
     "There is no announced launch date. Development updates will be shared when available.",
   ],
   [
-    "Does joining the waitlist cost anything?",
+    "Is joining the waitlist free?",
     "No payment is requested to express interest. The waitlist form is being connected and is not collecting submissions yet.",
   ],
 ];

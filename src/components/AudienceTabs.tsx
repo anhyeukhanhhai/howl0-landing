@@ -4,20 +4,31 @@ const audience = [
   {
     name: "Teacher",
     title: "Keep homework and feedback connected.",
-    copy: "Share a practice task in one link, then keep submissions and your response in the same conversation.",
+    copy: "Share one practice link, then respond in the same learning thread.",
     signal: "01 / ASSIGN → RESPOND",
+    benefits: [
+      "One shareable task",
+      "Connected submissions",
+      "Organised feedback",
+    ],
   },
   {
     name: "Student",
     title: "Submit your practice without the platform headache.",
-    copy: "Open the link, choose an audio or video recording you already have, and send your work.",
+    copy: "Open the link, choose an existing recording and send your work.",
     signal: "02 / OPEN → SUBMIT",
+    benefits: ["No platform lesson", "Audio or video", "A clear next step"],
   },
   {
     name: "Parent",
     title: "Support progress without managing the entire process.",
-    copy: "Follow the next practice step with more clarity, while the student and teacher stay at the centre.",
+    copy: "See the next practice step while the student and teacher stay at the centre.",
     signal: "03 / UNDERSTAND → SUPPORT",
+    benefits: [
+      "Visible direction",
+      "Less process management",
+      "Student-led practice",
+    ],
   },
 ];
 export function AudienceTabs() {
@@ -71,6 +82,11 @@ export function AudienceTabs() {
           <span className="eyebrow">{audience[active].signal}</span>
           <h3>{audience[active].title}</h3>
           <p>{audience[active].copy}</p>
+          <ul className="audience-benefits">
+            {audience[active].benefits.map((benefit) => (
+              <li key={benefit}>{benefit}</li>
+            ))}
+          </ul>
         </div>
         <div className="audience-art" aria-hidden="true">
           <div className="art-orbit">
