@@ -11,7 +11,7 @@
 }
 @keyframes page-enter {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: translate3d(0, 14px, 0);
   }
   to {
@@ -43,7 +43,7 @@
 .submission-flow {
   position: relative;
   overflow: clip;
-  padding: clamp(92px, 10vw, 142px) 0;
+  padding: clamp(72px, 8vw, 110px) 0;
   background: var(--white);
 }
 .submission-flow::before {
@@ -71,11 +71,15 @@
 .submission-flow-copy h2 {
   max-width: 700px;
   margin: 18px 0 25px;
-  font-size: clamp(3rem, 5.1vw, 5.7rem);
+  font-size: clamp(2.9rem, 4.5vw, 4.8rem);
 }
 .submission-flow-copy > p:last-child {
   max-width: 520px;
   line-height: 1.72;
+}
+.submission-visual {
+  position: relative;
+  padding-bottom: 20px;
 }
 .submission-sequence {
   position: relative;
@@ -106,7 +110,7 @@
   position: absolute;
   left: 10%;
   right: 10%;
-  top: 42%;
+  top: 76px;
   height: 2px;
   background: linear-gradient(
     90deg,
@@ -115,7 +119,8 @@
     var(--butter)
   );
   transform-origin: left;
-  animation: submission-route 5.4s var(--ease) infinite;
+  animation: submission-route 4.8s var(--ease) both;
+  pointer-events: none;
 }
 .submission-sequence li {
   position: relative;
@@ -125,8 +130,8 @@
   justify-items: center;
   gap: 8px;
   text-align: center;
-  animation: submission-stage 5.4s var(--ease) infinite;
-  animation-delay: calc(var(--flow-index) * 1.35s);
+  animation: submission-stage 1.2s var(--ease) both;
+  animation-delay: calc(var(--flow-index) * 1.2s);
 }
 .submission-number {
   display: grid;
@@ -145,7 +150,7 @@
   color: var(--berry);
   font-size: 0.6rem;
   font-weight: 700;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 .submission-sequence strong {
@@ -196,7 +201,7 @@
 }
 
 .belief-compact {
-  padding-block: clamp(92px, 9vw, 142px) 78px;
+  padding-block: clamp(72px, 7vw, 110px) 62px;
 }
 .belief-compact .belief-inner h2 {
   max-width: 1020px;
@@ -214,7 +219,7 @@
 .platform-reveal {
   position: relative;
   overflow: clip;
-  padding: clamp(100px, 11vw, 158px) 0;
+  padding: clamp(78px, 8vw, 120px) 0;
   background: var(--paper);
 }
 .platform-reveal::before {
@@ -250,7 +255,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(30px, 5vw, 78px);
-  margin: clamp(65px, 8vw, 105px) 0 0;
+  margin: clamp(48px, 6vw, 80px) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -296,7 +301,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 50px;
-  margin-top: clamp(70px, 9vw, 120px);
+  margin-top: clamp(52px, 7vw, 90px);
 }
 .platform-close p {
   max-width: 660px;
@@ -523,10 +528,10 @@
 
 /* Shared subpage opening and closing moments. */
 .page-hero {
-  min-height: clamp(560px, 68svh, 780px);
+  min-height: clamp(440px, 56svh, 625px);
   display: grid;
   align-items: center;
-  padding: clamp(90px, 10vw, 145px) 0;
+  padding: clamp(72px, 8vw, 112px) 0;
   background:
     radial-gradient(
       circle at 82% 50%,
@@ -538,6 +543,15 @@
 .page-hero-dark {
   background: linear-gradient(120deg, var(--ink), var(--berry));
   color: var(--white);
+}
+.page-hero-dark em {
+  color: var(--butter);
+}
+.page-hero-grid:not(:has(.page-hero-art)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+.page-hero-grid:not(:has(.page-hero-art)) h1 {
+  max-width: 16em;
 }
 .page-hero-dark.surface-noise::after {
   background-image: url("/brand/howl0/05-noise-overlays/noise-fine-raspberry-transparent-768.webp");
@@ -556,7 +570,7 @@
 .page-hero-copy h1 {
   margin: 22px 0 28px;
   max-width: 10em;
-  font-size: clamp(3.8rem, 7vw, 7.8rem);
+  font-size: clamp(3.4rem, 5.8vw, 6.2rem);
   text-wrap: balance;
 }
 .page-hero-copy > p:last-child {
@@ -593,7 +607,7 @@
   font-weight: 700;
 }
 .page-cta {
-  padding: clamp(85px, 9vw, 135px) 0;
+  padding: clamp(68px, 7vw, 104px) 0;
   background: linear-gradient(120deg, var(--ink), var(--berry));
   color: var(--white);
 }
@@ -828,23 +842,23 @@
     padding: 88px 0 95px;
   }
   .submission-flow {
-    padding: 82px 0 92px;
+    padding: 66px 0 74px;
   }
   .submission-flow-copy h2 {
     font-size: clamp(2.8rem, 10.5vw, 4.3rem);
   }
   .submission-sequence {
     grid-template-columns: 1fr;
-    min-height: 425px;
-    gap: 18px;
-    padding: 22px 0 58px 15px;
+    min-height: 340px;
+    gap: 24px;
+    padding: 16px 0 54px 15px;
   }
   .submission-sequence::before {
     inset: 5% 0 6% 5%;
   }
   .submission-sequence::after {
-    top: 12%;
-    bottom: 20%;
+    top: 40px;
+    bottom: 76px;
     left: 39px;
     right: auto;
     width: 2px;
@@ -859,6 +873,9 @@
     align-items: center;
     column-gap: 16px;
     text-align: left;
+  }
+  .submission-number {
+    grid-row: 1 / 3;
   }
   .submission-role {
     grid-column: 2;
@@ -882,7 +899,7 @@
     }
   }
   .belief-compact {
-    padding-block: 82px 65px;
+    padding-block: 66px 52px;
   }
   .belief-compact .belief-inner h2 {
     font-size: clamp(3.1rem, 13vw, 4.8rem);
@@ -892,15 +909,15 @@
     margin-block: 36px 24px;
   }
   .platform-reveal {
-    padding: 88px 0 95px;
+    padding: 70px 0 76px;
   }
   .platform-intro h2 {
     font-size: clamp(3rem, 11vw, 4.6rem);
   }
   .platform-directions {
     grid-template-columns: 1fr;
-    gap: 40px;
-    margin-top: 62px;
+    gap: 30px;
+    margin-top: 48px;
   }
   .platform-directions::before {
     top: 0;
@@ -920,7 +937,7 @@
     align-items: flex-start;
     flex-direction: column;
     gap: 25px;
-    margin-top: 70px;
+    margin-top: 52px;
   }
   .platform-close p {
     font-size: clamp(1.55rem, 7vw, 2.2rem);
@@ -982,7 +999,7 @@
   }
   .page-hero {
     min-height: 0;
-    padding: 88px 0;
+    padding: 70px 0;
   }
   .page-hero-grid {
     gap: 35px;
@@ -1043,7 +1060,7 @@
     min-height: 380px;
   }
   .submission-sequence {
-    min-height: 412px;
+    min-height: 340px;
   }
   .audience-benefits {
     display: grid;
@@ -1053,7 +1070,38 @@
 @media (prefers-reduced-motion: reduce) {
   .page-enter,
   .one-link-signal ol::before,
-  .one-link-signal li {
+  .one-link-signal li,
+  .submission-sequence li,
+  .submission-sequence::after {
     animation: none !important;
   }
+}
+
+/* Short, finite introductions keep the reading surface calm. */
+.submission-visual[data-playing="false"] *,
+.submission-visual[data-playing="false"] *::after {
+  animation-play-state: paused !important;
+}
+.hero-preview * {
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+.preview-stages li {
+  animation-duration: 1s;
+}
+.waitlist {
+  padding-block: clamp(80px, 8.5vw, 130px);
+}
+.section-pad {
+  padding-block: clamp(76px, 9vw, 144px);
+}
+.practice-step,
+.practice-step p {
+  opacity: 1;
+}
+.practice-step p {
+  color: rgba(255, 255, 255, 0.85);
+}
+.belief-scroll .feedback-markers span {
+  opacity: 1;
 }

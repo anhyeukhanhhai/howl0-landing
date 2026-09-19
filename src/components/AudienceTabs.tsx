@@ -17,7 +17,7 @@ const audience = [
     title: "Share an attempt without a platform lesson.",
     copy: "Open the task, choose an existing recording and send it on.",
     signal: "02 / OPEN → SUBMIT",
-    benefits: ["No complex sign-in", "Audio or video", "A clear next step"],
+    benefits: ["An existing recording", "Audio or video", "A clear next step"],
   },
   {
     name: "Parent",

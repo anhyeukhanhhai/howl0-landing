@@ -719,7 +719,7 @@
 }
 @media (min-width: 761px) {
   .problem-scroll {
-    height: 165vh;
+    height: 132svh;
     padding: 0;
   }
   .problem-scroll .problem-grid {
@@ -737,7 +737,7 @@
 }
 @media (max-width: 1024px) and (min-width: 761px) {
   .problem-scroll {
-    height: 145vh;
+    height: 120svh;
   }
 }
 @media (max-width: 760px) {

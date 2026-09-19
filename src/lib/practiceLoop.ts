@@ -1,6 +1,9 @@
 export const practiceSteps = [
   { word: "Share", phrase: "The teacher shares a task with the student." },
-  { word: "Open", phrase: "The student opens the task without a complex LMS." },
+  {
+    word: "Open",
+    phrase: "The student opens the task directly in their browser.",
+  },
   {
     word: "Submit",
     phrase: "The student uploads an existing audio or video recording.",
@@ -11,7 +14,8 @@ export const practiceSteps = [
   },
   {
     word: "Continue",
-    phrase: "The student can keep learning in howl0 over time.",
+    phrase:
+      "The guidance informs the next attempt, with a wider learning environment to explore in future.",
   },
 ] as const;
 

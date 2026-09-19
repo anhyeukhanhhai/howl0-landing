@@ -1,14 +1,19 @@
-import type { CSSProperties } from "react";
+"use client";
+
+import { useRef, type CSSProperties } from "react";
 import { Reveal } from "@/components/Reveal";
+import { useVisibleAnimation } from "@/hooks/useVisibleAnimation";
 
 const steps = [
-  ["01", "Share link", "Teacher"],
-  ["02", "Upload recording", "Student"],
-  ["03", "Receive feedback", "Teacher"],
+  ["01", "Share link", "Teacher → Student"],
+  ["02", "Upload recording", "Student → Teacher"],
+  ["03", "Receive feedback", "Teacher → Student"],
   ["04", "Continue practising", "Student"],
 ] as const;
 
 export function SubmissionFlow() {
+  const visual = useRef<HTMLDivElement>(null);
+  useVisibleAnimation(visual);
   return (
     <section
       id="submission-flow"
@@ -26,18 +31,23 @@ export function SubmissionFlow() {
             recording. Feedback stays connected to what happens next.
           </p>
         </Reveal>
-        <ol className="submission-sequence">
-          {steps.map(([number, label, role], index) => (
-            <li key={label} style={{ "--flow-index": index } as CSSProperties}>
-              <span className="submission-number">{number}</span>
-              <span className="submission-role">{role}</span>
-              <strong>{label}</strong>
-            </li>
-          ))}
+        <div ref={visual} className="submission-visual" data-playing="false">
+          <ol className="submission-sequence">
+            {steps.map(([number, label, role], index) => (
+              <li
+                key={label}
+                style={{ "--flow-index": index } as CSSProperties}
+              >
+                <span className="submission-number">{number}</span>
+                <span className="submission-role">{role}</span>
+                <strong>{label}</strong>
+              </li>
+            ))}
+          </ol>
           <div className="submission-link" aria-hidden="true">
             howl0.link/task <span>↗</span>
           </div>
-        </ol>
+        </div>
       </div>
     </section>
   );

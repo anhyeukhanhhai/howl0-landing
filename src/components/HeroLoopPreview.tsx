@@ -1,32 +1,14 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useRef, type CSSProperties } from "react";
+import { useVisibleAnimation } from "@/hooks/useVisibleAnimation";
 import { practiceSteps } from "@/lib/practiceLoop";
 
 /** A five-second, CSS-driven view of the teacher-to-student submission journey. */
 export function HeroLoopPreview() {
   const root = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const element = root.current;
-    if (!element) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      element.dataset.playing = String(
-        entry.isIntersecting && !document.hidden,
-      );
-    });
-    const onVisibility = () => {
-      element.dataset.playing = String(
-        !document.hidden && element.getBoundingClientRect().bottom > 0,
-      );
-    };
-    observer.observe(element);
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => {
-      observer.disconnect();
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, []);
+  useVisibleAnimation(root);
 
   return (
     <div

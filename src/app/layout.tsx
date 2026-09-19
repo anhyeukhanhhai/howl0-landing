@@ -18,14 +18,14 @@ export const metadata: Metadata = {
     ? { metadataBase: new URL(siteUrl), alternates: { canonical: siteUrl } }
     : {}),
   title: {
-    default: "howl0 — Music homework, one simple link",
+    default: "howl0 — A learning platform built for music education",
     template: "%s — howl0",
   },
   description:
-    "howl0 is building a calmer way for music teachers to share practice, students to submit recordings, and families to stay connected to progress.",
+    "howl0 is building a learning platform for music education to keep homework, practice, feedback and progress connected between lessons.",
   openGraph: {
-    title: "howl0 — Music homework, one simple link",
-    description: "One link. A clearer practice loop.",
+    title: "howl0 — A learning platform built for music education",
+    description: "Music learning doesn’t stop when the lesson ends.",
     type: "website",
     ...(siteUrl
       ? { images: [`${siteUrl}/brand/howl0/02-symbols/howl0-app-icon-512.png`] }
@@ -33,8 +33,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "howl0 — Music homework, one simple link",
-    description: "One link. A clearer practice loop.",
+    title: "howl0 — A learning platform built for music education",
+    description: "Music learning doesn’t stop when the lesson ends.",
   },
   icons: {
     icon: "/brand/howl0/02-symbols/howl0-favicon-32.png",

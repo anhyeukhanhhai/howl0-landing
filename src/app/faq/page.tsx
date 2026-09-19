@@ -4,7 +4,7 @@ import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata(
   "FAQ",
-  "Direct answers about howl0, its one-link music homework flow and current development status.",
+  "Answers about howl0’s music education platform, submission journey and development status.",
   "/faq",
 );
 

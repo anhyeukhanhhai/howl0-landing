@@ -28,9 +28,12 @@ const routes = [
   ["faq", "/faq", "A little more clarity."],
 ];
 const viewports = [
+  [375, 812],
   [390, 844],
   [430, 932],
   [768, 1024],
+  [1024, 768],
+  [1280, 800],
   [1440, 900],
   [1920, 1080],
   [2560, 1080],
@@ -61,6 +64,16 @@ async function inspectLayout(page, label) {
     h1s: document.querySelectorAll("h1").length,
     footer: Boolean(document.querySelector("footer")),
     nav: Boolean(document.querySelector('nav[aria-label="Main navigation"]')),
+    hiddenHeadings: [...document.querySelectorAll("h1, h2")].filter(
+      (heading) => {
+        let element = heading;
+        while (element) {
+          if (Number(getComputedStyle(element).opacity) < 0.95) return true;
+          element = element.parentElement;
+        }
+        return false;
+      },
+    ).length,
   }));
   assert(
     result.overflow <= 1,
@@ -73,6 +86,10 @@ async function inspectLayout(page, label) {
   assert(
     result.nav && result.footer,
     `${label}: shared navigation or footer missing`,
+  );
+  assert(
+    result.hiddenHeadings === 0,
+    `${label}: essential headings start hidden`,
   );
 }
 
@@ -169,6 +186,36 @@ const desktop = await browser.newPage({
   viewport: { width: 1440, height: 900 },
 });
 await desktop.goto(base, { waitUntil: "networkidle" });
+await desktop.getByRole("link", { name: "See the submission flow" }).click();
+await desktop.waitForFunction(() => {
+  const top = document
+    .querySelector("#submission-flow")
+    .getBoundingClientRect().top;
+  return top >= 0 && top < 150;
+});
+await desktop.locator('.submission-visual[data-playing="true"]').waitFor();
+assert(
+  (await desktop.locator(".submission-sequence > :not(li)").count()) === 0,
+  "Submission journey contains invalid list children",
+);
+await desktop.screenshot({ path: `${out}/submission-entry.png` });
+await desktop.waitForTimeout(5000);
+assert(
+  await desktop
+    .locator(".submission-visual")
+    .evaluate((element) =>
+      element
+        .getAnimations({ subtree: true })
+        .every((animation) => animation.playState === "finished"),
+    ),
+  "Submission animation did not settle within five seconds",
+);
+await desktop.screenshot({ path: `${out}/submission-settled.png` });
+await desktop.evaluate(() =>
+  scrollTo({ top: document.body.scrollHeight, behavior: "instant" }),
+);
+await desktop.locator('.submission-visual[data-playing="false"]').waitFor();
+await desktop.goto(base, { waitUntil: "networkidle" });
 for (const [label, route, heading] of routes.slice(1)) {
   await desktop
     .getByRole("link", {
@@ -235,7 +282,7 @@ assert(
   "Audience keyboard navigation failed",
 );
 assert(
-  await desktop.getByText("No complex sign-in", { exact: true }).isVisible(),
+  await desktop.getByText("An existing recording", { exact: true }).isVisible(),
   "Student benefits missing",
 );
 await desktop.getByRole("tab", { name: /Parent/i }).click();

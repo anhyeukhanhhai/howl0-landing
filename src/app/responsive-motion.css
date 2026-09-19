@@ -339,7 +339,7 @@
     clip-path 0.42s var(--ease);
 }
 .reveal[data-reveal-ready="true"]:not([data-visible]) {
-  opacity: 0;
+  opacity: 1;
 }
 .reveal-fadeUp[data-reveal-ready="true"]:not([data-visible]) {
   transform: translate3d(0, 20px, 0);
@@ -348,7 +348,7 @@
   transform: scale(0.98);
 }
 .reveal-maskReveal[data-reveal-ready="true"]:not([data-visible]) {
-  clip-path: inset(0 0 12% 0);
+  transform: translate3d(0, 12px, 0);
 }
 .reveal-staggerChildren > * {
   transition:
@@ -356,7 +356,7 @@
     transform 0.38s var(--ease);
 }
 .reveal-staggerChildren[data-reveal-ready="true"]:not([data-visible]) > * {
-  opacity: 0;
+  opacity: 1;
   transform: translate3d(0, 16px, 0);
 }
 .reveal-staggerChildren > :nth-child(2) {
