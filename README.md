@@ -13,22 +13,24 @@ Open http://localhost:3000. Quality checks: `npm run format:check`, `npm run lin
 
 ## Information architecture
 
-- `/` — concise promise, animated Practice Loop preview, one-link summary and waitlist
-- `/how-it-works` — the full Share → Practise → Submit → Respond → Improve sequence
-- `/why-howlo` — the scattered-homework problem and brand belief
-- `/who-its-for` — compact Teacher, Student and Parent perspectives
-- `/about` — what howl0 is building, why, and its initial focus
+- `/` — platform promise, submission flow, brand belief, product direction and waitlist
+- `/product` — the music-specific learning-platform vision
+- `/how-it-works` — teacher task, student recording, teacher response and the next attempt
+- `/why-howl0` — the fragmented-between-lessons problem and brand belief
+- `/for-educators` — teacher-led value, with student and parent perspectives
 - `/faq` — detailed questions in an accessible accordion
+
+Legacy `/about`, `/who-its-for` and `/why-howlo` URLs permanently redirect to the corresponding current routes.
 
 Navigation and the footer are shared across every route. Active navigation uses `aria-current`, the mobile menu manages focus and Escape, and every page has route-specific metadata.
 
 ## Motion and responsive behaviour
 
-The home hero shows a five-second CSS Practice Loop preview. It pauses when out of view or when the browser tab is hidden. The full `/how-it-works` sequence draws an open SVG route and moves its link marker from scroll progress in either direction.
+The home hero shows a five-second CSS submission-flow preview. It pauses when out of view or when the browser tab is hidden. The home flow visual follows a teacher task to a student recording, response and next attempt. The full `/how-it-works` sequence draws an open SVG route and moves its task marker from scroll progress in either direction.
 
-The page uses passive `scroll` listeners and one animation-frame update per visible scene. `src/hooks/useScrollProgress.ts` writes a CSS progress property without re-rendering React per frame; it remeasures after resize, orientation changes, font loading, and page restoration. `ScrollScene` shares this behaviour. `Reveal` gives selected short groups a one-time entrance; text stays visible afterward. The compact One-Link sequence uses transform and colour animation, and audience text remains in normal flow during tab changes.
+The page uses passive `scroll` listeners and one animation-frame update per visible scene. `src/hooks/useScrollProgress.ts` writes a CSS progress property without re-rendering React per frame; it remeasures after resize, orientation changes, font loading, and page restoration. `ScrollScene` shares this behaviour. `Reveal` gives selected short groups a one-time entrance; text stays visible afterward. The submission sequence uses transform and colour animation, and audience text remains in normal flow during tab changes.
 
-At widths above 1100px, hero layouts use a bounded two-column grid. Narrower tablets stack the composition. The full Practice Loop pins for about 330vh on desktop and 285vh on tablet, with its art and row sizes capped by viewport height. Below 761px it becomes a shorter sequential layout. Text stays within the centred 1320px content area on ultrawide displays. Reduced motion shows the completed preview and a static five-stage Practice Loop without parallax or pinning.
+At widths above 1100px, hero layouts use a bounded two-column grid. Tablets use the accessible menu at 900px and below; page compositions stack below that width. The full submission journey pins for about 270vh on desktop and 235vh on tablet, with its art and row sizes capped by viewport height. Below 761px it becomes a shorter sequential layout. Text stays within the centred 1320px content area on ultrawide displays. Reduced motion shows the completed preview and a static five-stage journey without parallax or pinning.
 
 The Playwright visual suite checks every route at 390×844, 430×932, 768×1024, 1440×900, 1920×1080, 2560×1080 and 3440×1440. It covers direct routing, browser history, responsive overflow, mobile navigation, the audience tabs, FAQ, waitlist states and reduced motion. Screenshots are written to the ignored `.qa/ia-final/` directory.
 

@@ -1,17 +1,18 @@
 export const practiceSteps = [
-  { word: "Share", phrase: "The teacher creates homework and shares a link." },
-  { word: "Practise", phrase: "A practice moment becomes a submission." },
+  { word: "Share", phrase: "The teacher shares a task with the student." },
+  { word: "Open", phrase: "The student opens the task without a complex LMS." },
   {
     word: "Submit",
-    phrase:
-      "The student opens the link and uploads an existing audio or video recording.",
+    phrase: "The student uploads an existing audio or video recording.",
   },
   {
     word: "Respond",
-    phrase:
-      "The teacher reviews the submission and provides organised feedback.",
+    phrase: "The teacher responds with guidance for the next attempt.",
   },
-  { word: "Improve", phrase: "The student understands what to practise next." },
+  {
+    word: "Continue",
+    phrase: "The student can keep learning in howl0 over time.",
+  },
 ] as const;
 
 export const practiceRoute =

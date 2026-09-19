@@ -88,12 +88,12 @@ export function PracticeLoop({
         <div className="practice-intro">
           <p className="eyebrow light">{eyebrow}</p>
           <h2 id="practice-loop-heading">
-            One link keeps
+            A task becomes
             <br />
-            <em>learning in motion.</em>
+            <em>the next attempt.</em>
           </h2>
           <p className="practice-summary">
-            Share → Practise → Submit → Respond → Improve
+            Share → Open → Submit → Respond → Continue
           </p>
           <ol className="practice-steps" aria-label="Practice loop stages">
             {practiceSteps.map((step, index) => (
@@ -109,7 +109,9 @@ export function PracticeLoop({
               </li>
             ))}
           </ol>
-          <p className="practice-end">One link. A clearer practice loop.</p>
+          <p className="practice-end">
+            A clearer path between one attempt and the next.
+          </p>
         </div>
         <div className="practice-art" aria-hidden="true">
           <div className="practice-art-field" />

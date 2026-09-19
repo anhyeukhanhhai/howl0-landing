@@ -4,11 +4,27 @@ import { mkdir } from "node:fs/promises";
 const base = process.env.BASE_URL || "http://localhost:3000";
 const out = ".qa/ia-final";
 const routes = [
-  ["home", "/", "Music homework, shared and submitted in one simple link."],
-  ["how-it-works", "/how-it-works", "One link keeps practice moving."],
-  ["why-howlo", "/why-howlo", "Practice happens between lessons."],
-  ["who-its-for", "/who-its-for", "One loop, understood from every side."],
-  ["about", "/about", "Building in the open, listening as we go."],
+  ["home", "/", "Music learning doesn’t stop when the lesson ends."],
+  [
+    "product",
+    "/product",
+    "A learning platform designed around how music actually happens.",
+  ],
+  [
+    "how-it-works",
+    "/how-it-works",
+    "A simple start for the learning between lessons.",
+  ],
+  [
+    "why-howl0",
+    "/why-howl0",
+    "Music learning gets fragmented between lessons.",
+  ],
+  [
+    "for-educators",
+    "/for-educators",
+    "Spend less time finding homework and more time guiding improvement.",
+  ],
   ["faq", "/faq", "A little more clarity."],
 ];
 const viewports = [
@@ -86,17 +102,29 @@ for (const [width, height] of viewports) {
       const home = await page.evaluate(() => ({
         sections: document.querySelectorAll("main > section").length,
         screens: document.documentElement.scrollHeight / innerHeight,
-        fullLoop: document.querySelectorAll("#practice-loop").length,
+        flow: document.querySelectorAll("#submission-flow").length,
+        belief: document.querySelectorAll("#belief").length,
+        product: document.querySelectorAll(".platform-reveal").length,
         faq: document.querySelectorAll(".faq-list").length,
         preview: Boolean(document.querySelector(".hero-preview")),
       }));
       assert(
-        home.sections === 3 && home.screens < 5.2,
+        home.sections === 5 && home.screens < 8.5,
         `${size}: homepage is not concise ${JSON.stringify(home)}`,
       );
       assert(
-        home.fullLoop === 0 && home.faq === 0 && home.preview,
-        `${size}: supporting material remains on homepage`,
+        home.flow === 1 &&
+          home.belief === 1 &&
+          home.product === 1 &&
+          home.faq === 0 &&
+          home.preview,
+        `${size}: homepage narrative is incomplete`,
+      );
+      assert(
+        (await page
+          .getByRole("link", { name: "See the submission flow" })
+          .getAttribute("href")) === "#submission-flow",
+        `${size}: hero flow CTA is not an in-page destination`,
       );
       const boxes = await page.evaluate(() => {
         const a = document.querySelector(".hero h1").getBoundingClientRect();
@@ -145,15 +173,15 @@ for (const [label, route, heading] of routes.slice(1)) {
   await desktop
     .getByRole("link", {
       name:
-        label === "why-howlo"
+        label === "why-howl0"
           ? "Why howl0"
-          : label === "who-its-for"
-            ? "Who it’s for"
+          : label === "for-educators"
+            ? "For educators"
             : label === "how-it-works"
               ? "How it works"
               : label === "faq"
                 ? "FAQ"
-                : "About",
+                : "Product",
       exact: true,
     })
     .first()
@@ -184,7 +212,19 @@ for (const [label, route, heading] of routes.slice(1)) {
   await desktop.goto(base, { waitUntil: "networkidle" });
 }
 
-await desktop.goto(`${base}/who-its-for`, { waitUntil: "networkidle" });
+for (const [legacyRoute, target] of [
+  ["/about", "/product"],
+  ["/who-its-for", "/for-educators"],
+  ["/why-howlo", "/why-howl0"],
+]) {
+  await desktop.goto(`${base}${legacyRoute}`, { waitUntil: "networkidle" });
+  assert(
+    new URL(desktop.url()).pathname === target,
+    `${legacyRoute}: legacy route did not redirect to ${target}`,
+  );
+}
+
+await desktop.goto(`${base}/for-educators`, { waitUntil: "networkidle" });
 const teacher = desktop.getByRole("tab", { name: /Teacher/i });
 await teacher.focus();
 await teacher.press("ArrowRight");
@@ -195,7 +235,7 @@ assert(
   "Audience keyboard navigation failed",
 );
 assert(
-  await desktop.getByText("No platform lesson", { exact: true }).isVisible(),
+  await desktop.getByText("No complex sign-in", { exact: true }).isVisible(),
   "Student benefits missing",
 );
 await desktop.getByRole("tab", { name: /Parent/i }).click();
@@ -232,12 +272,12 @@ await desktop
 await desktop.close();
 
 const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
-await mobile.goto(`${base}/about`, { waitUntil: "networkidle" });
+await mobile.goto(`${base}/product`, { waitUntil: "networkidle" });
 const menu = mobile.getByRole("button", { name: "Menu" });
 await menu.click();
 const firstMobileLink = mobile
   .getByRole("navigation", { name: "Main navigation" })
-  .getByRole("link", { name: "How it works" });
+  .getByRole("link", { name: "Product" });
 assert(
   await firstMobileLink.evaluate(
     (element) => document.activeElement === element,
@@ -265,7 +305,7 @@ assert(
 await mobile.close();
 
 for (const [route, selector] of [
-  ["/", ".one-link-signal"],
+  ["/", ".submission-sequence"],
   ["/how-it-works", "#practice-loop"],
 ]) {
   const page = await browser.newPage({

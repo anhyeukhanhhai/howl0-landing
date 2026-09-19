@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export function PageCta({
-  eyebrow = "CURRENTLY IN DEVELOPMENT",
-  title = "Help shape a clearer practice loop.",
+  eyebrow = "JOIN THE WAITLIST",
+  title = "Help shape a clearer music-learning experience.",
 }: {
   eyebrow?: string;
   title?: string;

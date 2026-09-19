@@ -3,26 +3,26 @@ import { useRef, useState } from "react";
 const audience = [
   {
     name: "Teacher",
-    title: "Keep homework and feedback connected.",
-    copy: "Share one practice link, then respond in the same learning thread.",
+    title: "Keep assignments and guidance in one place.",
+    copy: "Start with a simple submission flow and keep the next step clear.",
     signal: "01 / ASSIGN → RESPOND",
     benefits: [
-      "One shareable task",
-      "Connected submissions",
-      "Organised feedback",
+      "One clear task",
+      "Recordings in context",
+      "Guidance that carries forward",
     ],
   },
   {
     name: "Student",
-    title: "Submit your practice without the platform headache.",
-    copy: "Open the link, choose an existing recording and send your work.",
+    title: "Share an attempt without a platform lesson.",
+    copy: "Open the task, choose an existing recording and send it on.",
     signal: "02 / OPEN → SUBMIT",
-    benefits: ["No platform lesson", "Audio or video", "A clear next step"],
+    benefits: ["No complex sign-in", "Audio or video", "A clear next step"],
   },
   {
     name: "Parent",
-    title: "Support progress without managing the entire process.",
-    copy: "See the next practice step while the student and teacher stay at the centre.",
+    title: "See the direction without managing the process.",
+    copy: "The student and teacher stay at the centre of the learning journey.",
     signal: "03 / UNDERSTAND → SUPPORT",
     benefits: [
       "Visible direction",

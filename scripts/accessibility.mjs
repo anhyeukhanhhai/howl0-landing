@@ -4,10 +4,10 @@ import AxeBuilder from "@axe-core/playwright";
 const base = process.env.BASE_URL || "http://localhost:3000";
 const routes = [
   "/",
+  "/product",
   "/how-it-works",
-  "/why-howlo",
-  "/who-its-for",
-  "/about",
+  "/why-howl0",
+  "/for-educators",
   "/faq",
 ];
 const browser = await chromium.launch({ headless: true });

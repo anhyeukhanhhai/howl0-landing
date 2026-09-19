@@ -9,13 +9,13 @@ export function WaitlistSection() {
     >
       <div className="wrap waitlist-grid">
         <div>
-          <p className="eyebrow light">STAY IN THE LOOP</p>
+          <p className="eyebrow light">STAY CLOSE</p>
           <h2>
-            Join the next <em>practice loop.</em>
+            Join the next <em>chapter.</em>
           </h2>
           <p>
-            Receive development updates and opportunities to participate in
-            early testing.
+            Receive development updates and opportunities to take part in early
+            testing.
           </p>
           <div className="waitlist-line" aria-hidden="true" />
         </div>

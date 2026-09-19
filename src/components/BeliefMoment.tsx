@@ -1,11 +1,11 @@
 import { ScrollScene } from "@/components/ScrollScene";
 
-export function BeliefMoment() {
+export function BeliefMoment({ compact = false }: { compact?: boolean }) {
   return (
     <ScrollScene
       id="belief"
       stages={4}
-      className="belief belief-scroll surface-noise"
+      className={`belief belief-scroll surface-noise ${compact ? "belief-compact" : ""}`}
     >
       <div className="wrap belief-inner">
         <p className="eyebrow light">OUR BELIEF</p>
@@ -14,7 +14,10 @@ export function BeliefMoment() {
           <br />
           not a verdict.
         </h2>
-        <p>A recording is one moment in an ongoing learning process.</p>
+        <p>
+          Every submission is one moment in a longer learning journey. howl0
+          keeps feedback connected to what the student should practise next.
+        </p>
         <div className="belief-binary" aria-hidden="true">
           <span>RIGHT</span>
           <span>WRONG</span>

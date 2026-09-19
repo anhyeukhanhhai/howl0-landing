@@ -3,7 +3,7 @@
 import { useEffect, useRef, type CSSProperties } from "react";
 import { practiceSteps } from "@/lib/practiceLoop";
 
-/** A five-second, CSS-driven introduction to the same stages used by the scroll scene. */
+/** A five-second, CSS-driven view of the teacher-to-student submission journey. */
 export function HeroLoopPreview() {
   const root = useRef<HTMLDivElement>(null);
 
@@ -33,14 +33,14 @@ export function HeroLoopPreview() {
       ref={root}
       className="hero-preview"
       data-playing="false"
-      aria-label="Practice loop: Share, Practise, Submit, Respond, Improve. One link. A clearer practice loop."
+      aria-label="Submission flow: a teacher shares a task, a student opens and submits a recording, then guidance points to the next attempt."
       role="img"
     >
       <span className="preview-task" aria-hidden="true">
         TEACHER TASK <b>↗</b>
       </span>
       <span className="preview-link" aria-hidden="true">
-        <small>HOMEWORK LINK</small>
+        <small>SUBMISSION START</small>
         <strong>howl0.link/practice</strong>
       </span>
       <span className="preview-practice" aria-hidden="true">

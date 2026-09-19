@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 const links = [
+  ["Product", "/product"],
   ["How it works", "/how-it-works"],
-  ["Why howl0", "/why-howlo"],
-  ["Who it’s for", "/who-its-for"],
-  ["About", "/about"],
+  ["Why howl0", "/why-howl0"],
+  ["For educators", "/for-educators"],
   ["FAQ", "/faq"],
 ] as const;
 

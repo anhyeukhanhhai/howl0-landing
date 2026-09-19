@@ -104,7 +104,7 @@
 
 .practice-loop {
   --scene-progress: 0;
-  height: 330vh;
+  height: 270vh;
   background: #35242d;
   color: var(--white);
   position: relative;
@@ -438,7 +438,7 @@
 
 @media (max-width: 1024px) and (min-width: 761px) {
   .practice-loop {
-    height: 285vh;
+    height: 235vh;
   }
   .practice-sticky {
     gap: 1%;

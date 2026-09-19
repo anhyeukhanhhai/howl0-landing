@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { HeroLoopPreview } from "@/components/HeroLoopPreview";
-import { OneLinkSummary } from "@/components/OneLinkSummary";
+import { BeliefMoment } from "@/components/BeliefMoment";
+import { PlatformReveal } from "@/components/PlatformReveal";
+import { SubmissionFlow } from "@/components/SubmissionFlow";
 import { WaitlistSection } from "@/components/WaitlistSection";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata(
-  "Music homework, one simple link",
-  "A calmer way for music teachers to share practice and students to submit recordings through one simple link.",
+  "Music learning beyond the lesson",
+  "howl0 is a learning platform in development for music education, starting with a simple submission link.",
   "/",
   true,
 );
@@ -18,25 +20,22 @@ export default function Home() {
         <div className="wrap hero-grid">
           <div className="hero-copy">
             <p className="eyebrow status">
-              <span className="status-dot" /> Currently in development · Join
-              our early community
+              THE LEARNING PLATFORM BUILT FOR MUSIC EDUCATION
             </p>
             <h1>
-              Music homework,
-              <br /> <em>shared and submitted</em>
-              <br /> in one simple link<span className="period">.</span>
+              Music learning doesn’t stop when the <em>lesson ends.</em>
             </h1>
             <p className="hero-lead">
-              A calmer way to assign practice, submit recordings and keep
-              feedback connected. One link keeps everyone in the loop.
+              howl0 helps teachers and students keep practice, homework and
+              feedback connected—starting with one simple submission link.
             </p>
             <div className="hero-actions">
               <Link className="button button-primary" href="/#waitlist">
                 Join the waitlist <span aria-hidden="true">↗</span>
               </Link>
-              <Link className="text-link" href="/how-it-works">
-                See how it works <span aria-hidden="true">↗</span>
-              </Link>
+              <a className="text-link" href="#submission-flow">
+                See the submission flow <span aria-hidden="true">↘</span>
+              </a>
             </div>
           </div>
           <div className="hero-visual">
@@ -57,7 +56,9 @@ export default function Home() {
           <span>IMPROVE</span>
         </div>
       </section>
-      <OneLinkSummary />
+      <SubmissionFlow />
+      <BeliefMoment compact />
+      <PlatformReveal />
       <WaitlistSection />
     </main>
   );
