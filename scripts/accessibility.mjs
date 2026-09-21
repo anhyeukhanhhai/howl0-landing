@@ -7,8 +7,14 @@ const routes = [
   "/product",
   "/how-it-works",
   "/why-howl0",
-  "/for-educators",
+  "/for-you",
   "/faq",
+  "/vi",
+  "/vi/product",
+  "/vi/how-it-works",
+  "/vi/why-howl0",
+  "/vi/for-you",
+  "/vi/faq",
 ];
 const browser = await chromium.launch({ headless: true });
 const tags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];

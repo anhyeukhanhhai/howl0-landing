@@ -1,12 +1,25 @@
 "use client";
 import { useCallback, useEffect, useRef } from "react";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
-import { practiceRoute, practiceSteps } from "@/lib/practiceLoop";
+import { practiceRoute } from "@/lib/practiceLoop";
 
 export function PracticeLoop({
-  eyebrow = "THE PRACTICE LOOP",
+  content,
 }: {
-  eyebrow?: string;
+  content: {
+    journeyEyebrow: string;
+    journeyTitle: string;
+    journeySummary: string;
+    journeyAria: string;
+    steps: readonly (readonly [string, string])[];
+    teacherTask: string;
+    audio: string;
+    video: string;
+    submitted: string;
+    feedback: string;
+    teacherShare: string;
+    studentPractice: string;
+  };
 }) {
   const root = useRef<HTMLElement>(null);
   const path = useRef<SVGPathElement>(null);
@@ -86,32 +99,20 @@ export function PracticeLoop({
     >
       <div className="practice-sticky wrap">
         <div className="practice-intro">
-          <p className="eyebrow light">{eyebrow}</p>
-          <h2 id="practice-loop-heading">
-            A task becomes
-            <br />
-            <em>the next attempt.</em>
-          </h2>
-          <p className="practice-summary">
-            Share → Open → Submit → Respond → Continue
-          </p>
-          <ol className="practice-steps" aria-label="Practice loop stages">
-            {practiceSteps.map((step, index) => (
-              <li
-                className={`practice-step practice-step-${index}`}
-                key={step.word}
-              >
+          <p className="eyebrow light">{content.journeyEyebrow}</p>
+          <h2 id="practice-loop-heading">{content.journeyTitle}</h2>
+          <p className="practice-summary">{content.journeySummary}</p>
+          <ol className="practice-steps" aria-label={content.journeyAria}>
+            {content.steps.map(([word, phrase], index) => (
+              <li className={`practice-step practice-step-${index}`} key={word}>
                 <span className="practice-step-number">0{index + 1}</span>
                 <div>
-                  <strong>{step.word}</strong>
-                  <p>{step.phrase}</p>
+                  <strong>{word}</strong>
+                  <p>{phrase}</p>
                 </div>
               </li>
             ))}
           </ol>
-          <p className="practice-end">
-            A clearer path between one attempt and the next.
-          </p>
         </div>
         <div className="practice-art" aria-hidden="true">
           <div className="practice-art-field" />
@@ -146,7 +147,7 @@ export function PracticeLoop({
               <circle r="28" />
               <path d="M-9 0h18M0-9v18" />
               <text x="40" y="5">
-                TEACHER TASK
+                {content.teacherTask}
               </text>
             </g>
             <g
@@ -155,7 +156,7 @@ export function PracticeLoop({
             >
               <rect x="-37" y="-21" width="74" height="42" rx="8" />
               <text x="0" y="5">
-                AUDIO
+                {content.audio}
               </text>
             </g>
             <g
@@ -164,19 +165,19 @@ export function PracticeLoop({
             >
               <rect x="-37" y="-21" width="74" height="42" rx="8" />
               <text x="0" y="5">
-                VIDEO
+                {content.video}
               </text>
             </g>
             <g className="practice-packet" transform="translate(555 373)">
               <rect x="-54" y="-24" width="108" height="48" rx="22" />
               <text x="0" y="5">
-                SUBMITTED ✓
+                {content.submitted}
               </text>
             </g>
             <g className="practice-feedback" transform="translate(260 492)">
               <rect x="-55" y="-22" width="110" height="44" rx="22" />
               <text x="0" y="5">
-                FEEDBACK ↗
+                {content.feedback}
               </text>
             </g>
             <path
@@ -196,10 +197,10 @@ export function PracticeLoop({
             />
           </svg>
           <span className="practice-edge-label practice-edge-teacher">
-            TEACHER / SHARE
+            {content.teacherShare}
           </span>
           <span className="practice-edge-label practice-edge-student">
-            STUDENT / PRACTISE
+            {content.studentPractice}
           </span>
           <div className="practice-link">
             howl0.link/practice <span>↗</span>

@@ -23,6 +23,7 @@
 /* The concise homepage uses the five-second preview without a long pinned scene. */
 .home-hero {
   padding-top: clamp(28px, 4vw, 64px);
+  padding-bottom: clamp(52px, 5vw, 70px);
 }
 .home-hero .hero-grid {
   min-height: min(720px, calc(100svh - 175px));
@@ -31,6 +32,9 @@
 }
 .home-hero .hero-copy {
   padding-bottom: 0;
+}
+.home-hero .hero-loop {
+  display: block;
 }
 .home-hero .hero-actions {
   margin-bottom: 20px;
@@ -84,13 +88,156 @@
 .submission-sequence {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 12px;
   min-height: 310px;
   margin: 0;
   padding: 52px 10px 58px;
   list-style: none;
   isolation: isolate;
+}
+
+.development-label {
+  max-width: 620px;
+  margin: 8px 0 0;
+  color: color-mix(in srgb, var(--ink) 64%, transparent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--berry);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.language-switch strong {
+  display: none;
+}
+
+.home-perspectives {
+  overflow: clip;
+  background: var(--paper);
+}
+.perspectives-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(56px, 9vw, 135px);
+  align-items: center;
+}
+.perspectives-grid h2 {
+  max-width: 760px;
+  margin: 20px 0 30px;
+  font-size: clamp(3rem, 5.2vw, 5.8rem);
+}
+.perspective-switcher {
+  position: relative;
+}
+.perspective-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-bottom: 1px solid rgba(42, 27, 34, 0.18);
+}
+.perspective-tabs button {
+  min-height: 70px;
+  padding: 13px 8px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--ink);
+  font: 600 clamp(0.8rem, 1.1vw, 1rem)/1.2 "Be Vietnam Pro";
+  cursor: pointer;
+}
+.perspective-tabs button span {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--berry);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+}
+.perspective-tabs button[aria-selected="true"] {
+  border-color: var(--berry);
+  color: var(--berry);
+}
+.perspective-panel {
+  position: relative;
+  min-height: 330px;
+  padding: clamp(32px, 5vw, 60px);
+  overflow: hidden;
+  border-radius: 26px;
+  background: linear-gradient(135deg, var(--berry), var(--ink));
+  color: var(--white);
+}
+.perspective-panel > strong {
+  position: relative;
+  z-index: 2;
+  color: var(--butter);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.perspective-panel > p {
+  position: relative;
+  z-index: 2;
+  max-width: 500px;
+  margin-top: 22px;
+  font: 600 clamp(1.6rem, 2.8vw, 2.8rem)/1.12 Archivo;
+  letter-spacing: -0.04em;
+}
+.perspective-orbit {
+  position: absolute;
+  right: -10%;
+  bottom: -42%;
+  width: min(72%, 390px);
+  opacity: 0.25;
+}
+.perspective-orbit img {
+  width: 100%;
+}
+
+.principle-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.55fr);
+  gap: clamp(50px, 9vw, 130px);
+  align-items: end;
+}
+.teacher-principle .principle-grid > p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.75;
+}
+.simple-flow {
+  color: var(--berry);
+  font-weight: 700;
+}
+.consent-note {
+  margin: 15px 0 0;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.68rem;
+  line-height: 1.55;
+}
+.faq-page-grid:has(> .faq-list) {
+  display: block;
+  max-width: 980px;
+}
+html[lang="vi"] .submission-sequence strong {
+  font-size: clamp(0.9rem, 1.15vw, 1.08rem);
+  line-height: 1.18;
+  letter-spacing: -0.035em;
+}
+
+html[lang="vi"] h1,
+html[lang="vi"] h2,
+html[lang="vi"] h3 {
+  line-height: 1.08;
+}
+html[lang="vi"] .page-hero-copy h1 {
+  font-size: clamp(3rem, 5vw, 5.5rem);
 }
 .submission-sequence::before {
   content: "";
@@ -792,7 +939,9 @@
   .page-hero-grid,
   .one-link-grid,
   .submission-flow-grid,
-  .product-story-grid {
+  .product-story-grid,
+  .perspectives-grid,
+  .principle-grid {
     grid-template-columns: 1fr;
   }
   .home-hero .hero-grid {
@@ -831,6 +980,11 @@
   }
   .home-hero {
     padding-top: 18px;
+    padding-bottom: 54px;
+  }
+  .home-hero .hero-visual {
+    height: 320px;
+    min-height: 320px;
   }
   .home-hero .hero-actions {
     margin: 15px 0 8px;
@@ -852,6 +1006,20 @@
     min-height: 340px;
     gap: 24px;
     padding: 16px 0 54px 15px;
+  }
+  .perspective-tabs button {
+    min-height: 64px;
+    font-size: 0.72rem;
+  }
+  .perspective-panel {
+    min-height: 300px;
+    padding: 30px;
+  }
+  .perspective-panel > p {
+    font-size: clamp(1.65rem, 7.6vw, 2.4rem);
+  }
+  html[lang="vi"] .page-hero-copy h1 {
+    font-size: clamp(2.65rem, 11vw, 4.5rem);
   }
   .submission-sequence::before {
     inset: 5% 0 6% 5%;

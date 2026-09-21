@@ -1,5 +1,4 @@
 import { permanentRedirect } from "next/navigation";
-
-export default function AboutPage() {
+export default function Page() {
   permanentRedirect("/product");
 }

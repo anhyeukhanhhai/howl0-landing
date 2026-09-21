@@ -159,6 +159,32 @@
   animation: preview-stage 5s linear infinite;
   animation-delay: calc(var(--step-index) * 1s);
 }
+.preview-parent,
+.preview-message {
+  position: absolute;
+  z-index: 3;
+}
+.preview-parent {
+  top: 20%;
+  right: 0;
+  padding: 8px 11px;
+  border: 1px solid rgba(169, 46, 93, 0.2);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--berry);
+  font-size: clamp(0.5rem, 0.7vw, 0.63rem);
+  font-weight: 700;
+}
+.preview-message {
+  right: 0;
+  bottom: -11%;
+  max-width: 100%;
+  color: var(--ink);
+  font-size: clamp(0.66rem, 0.82vw, 0.75rem);
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: right;
+}
 .hero-preview[data-playing="false"] *,
 .hero-preview[data-playing="false"] {
   animation-play-state: paused !important;

@@ -4,14 +4,16 @@ import { useRef, type CSSProperties } from "react";
 import { Reveal } from "@/components/Reveal";
 import { useVisibleAnimation } from "@/hooks/useVisibleAnimation";
 
-const steps = [
-  ["01", "Share link", "Teacher → Student"],
-  ["02", "Upload recording", "Student → Teacher"],
-  ["03", "Receive feedback", "Teacher → Student"],
-  ["04", "Continue practising", "Student"],
-] as const;
-
-export function SubmissionFlow() {
+export function SubmissionFlow({
+  content,
+}: {
+  content: {
+    eyebrow: string;
+    title: string;
+    copy: string;
+    steps: readonly (readonly [string, string, string])[];
+  };
+}) {
   const visual = useRef<HTMLDivElement>(null);
   useVisibleAnimation(visual);
   return (
@@ -22,18 +24,13 @@ export function SubmissionFlow() {
     >
       <div className="wrap submission-flow-grid">
         <Reveal className="submission-flow-copy">
-          <p className="eyebrow">THE SUBMISSION FLOW</p>
-          <h2 id="submission-flow-heading">
-            Share the task. Submit the practice. <em>Continue the learning.</em>
-          </h2>
-          <p>
-            A teacher shares one link. The student uploads an audio or video
-            recording. Feedback stays connected to what happens next.
-          </p>
+          <p className="eyebrow">{content.eyebrow}</p>
+          <h2 id="submission-flow-heading">{content.title}</h2>
+          <p>{content.copy}</p>
         </Reveal>
         <div ref={visual} className="submission-visual" data-playing="false">
           <ol className="submission-sequence">
-            {steps.map(([number, label, role], index) => (
+            {content.steps.map(([number, label, role], index) => (
               <li
                 key={label}
                 style={{ "--flow-index": index } as CSSProperties}

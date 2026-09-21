@@ -1,37 +1,20 @@
 "use client";
 import { useRef, useState } from "react";
-const audience = [
-  {
-    name: "Teacher",
-    title: "Keep assignments and guidance in one place.",
-    copy: "Start with a simple submission flow and keep the next step clear.",
-    signal: "01 / ASSIGN → RESPOND",
-    benefits: [
-      "One clear task",
-      "Recordings in context",
-      "Guidance that carries forward",
-    ],
-  },
-  {
-    name: "Student",
-    title: "Share an attempt without a platform lesson.",
-    copy: "Open the task, choose an existing recording and send it on.",
-    signal: "02 / OPEN → SUBMIT",
-    benefits: ["An existing recording", "Audio or video", "A clear next step"],
-  },
-  {
-    name: "Parent",
-    title: "See the direction without managing the process.",
-    copy: "The student and teacher stay at the centre of the learning journey.",
-    signal: "03 / UNDERSTAND → SUPPORT",
-    benefits: [
-      "Visible direction",
-      "Less process management",
-      "Student-led practice",
-    ],
-  },
-];
-export function AudienceTabs() {
+
+type Audience = {
+  readonly name: string;
+  readonly title: string;
+  readonly copy: string;
+  readonly benefits: readonly string[];
+};
+
+export function AudienceTabs({
+  audience,
+  label,
+}: {
+  audience: readonly Audience[];
+  label: string;
+}) {
   const [active, setActive] = useState(0);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
   function keyDown(e: React.KeyboardEvent<HTMLButtonElement>, i: number) {
@@ -47,11 +30,7 @@ export function AudienceTabs() {
   }
   return (
     <div className={`audience-panel audience-${active}`}>
-      <div
-        className="tablist"
-        role="tablist"
-        aria-label="Audience perspectives"
-      >
+      <div className="tablist" role="tablist" aria-label={label}>
         {audience.map((a, i) => (
           <button
             key={a.name}
@@ -79,7 +58,6 @@ export function AudienceTabs() {
         className="audience-content"
       >
         <div>
-          <span className="eyebrow">{audience[active].signal}</span>
           <h3>{audience[active].title}</h3>
           <p>{audience[active].copy}</p>
           <ul className="audience-benefits">

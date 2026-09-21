@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
 import { submitWaitlist } from "@/lib/waitlist";
-export function WaitlistForm() {
+import { content, type Locale } from "@/lib/i18n";
+
+export function WaitlistForm({ locale }: { locale: Locale }) {
+  const dictionary = content[locale].waitlist;
   const [state, setState] = useState<"idle" | "loading" | "success" | "error">(
     "idle",
   );
@@ -15,78 +18,45 @@ export function WaitlistForm() {
     setError("");
     try {
       await submitWaitlist({
+        name: String(data.get("name") || ""),
         email: String(data.get("email") || ""),
-        role: String(data.get("role") || ""),
-        area: String(data.get("area") || ""),
-        country: String(data.get("country") || ""),
-        difficulty: String(data.get("difficulty") || ""),
       });
       setState("success");
       form.reset();
     } catch (err) {
       setState("error");
       setError(
-        err instanceof Error
-          ? err.message
-          : "Something went wrong. Please try again.",
+        err instanceof Error ? dictionary.error : dictionary.genericError,
       );
     }
   }
   return (
     <form className="waitlist-form" onSubmit={submit} noValidate={false}>
-      <p className="form-note">
-        The waitlist is being connected. Submissions are not saved yet.
-      </p>
+      <p className="form-note">{dictionary.unavailable}</p>
+      <div className="field">
+        <label htmlFor="waitlist-name">
+          {dictionary.nameLabel} <span aria-hidden="true">*</span>
+        </label>
+        <input
+          id="waitlist-name"
+          name="name"
+          type="text"
+          autoComplete="name"
+          placeholder={dictionary.namePlaceholder}
+          required
+        />
+      </div>
       <div className="field">
         <label htmlFor="email">
-          Email address <span aria-hidden="true">*</span>
+          {dictionary.emailLabel} <span aria-hidden="true">*</span>
         </label>
         <input
           id="email"
           name="email"
           type="email"
           autoComplete="email"
-          placeholder="you@example.com"
+          placeholder={dictionary.emailPlaceholder}
           required
-        />
-      </div>
-      <div className="field">
-        <label htmlFor="role">Your role</label>
-        <select id="role" name="role" defaultValue="">
-          <option value="">Select a role</option>
-          <option>Teacher</option>
-          <option>Student</option>
-          <option>Parent</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div className="field">
-        <label htmlFor="area">
-          Instrument or teaching area <span className="optional">optional</span>
-        </label>
-        <input id="area" name="area" placeholder="e.g. piano, voice, strings" />
-      </div>
-      <div className="field">
-        <label htmlFor="country">
-          Country <span className="optional">optional</span>
-        </label>
-        <input
-          id="country"
-          name="country"
-          autoComplete="country-name"
-          placeholder="Where are you based?"
-        />
-      </div>
-      <div className="field">
-        <label htmlFor="difficulty">
-          Biggest homework or feedback difficulty{" "}
-          <span className="optional">optional</span>
-        </label>
-        <textarea
-          id="difficulty"
-          name="difficulty"
-          rows={3}
-          placeholder="Tell us what gets in the way"
         />
       </div>
       <button
@@ -94,14 +64,15 @@ export function WaitlistForm() {
         disabled={state === "loading"}
         type="submit"
       >
-        {state === "loading" ? "Checking availability…" : "Join the waitlist"}{" "}
+        {state === "loading" ? dictionary.loading : dictionary.button}{" "}
         <span aria-hidden="true">↗</span>
       </button>
+      <p className="consent-note">{dictionary.consent}</p>
       <p className="form-status" role="status" aria-live="polite">
         {state === "error"
           ? error
           : state === "success"
-            ? "You’re in the loop."
+            ? dictionary.success
             : ""}
       </p>
     </form>

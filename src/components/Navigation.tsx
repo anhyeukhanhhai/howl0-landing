@@ -2,20 +2,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
+import { content, localePath, type Locale } from "@/lib/i18n";
 
-const items = [
-  ["Product", "/product"],
-  ["How it works", "/how-it-works"],
-  ["Why howl0", "/why-howl0"],
-  ["For educators", "/for-educators"],
-  ["FAQ", "/faq"],
-] as const;
-
-export function Navigation() {
+export function Navigation({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const dictionary = content[locale].navigation;
   const toggle = useRef<HTMLButtonElement>(null);
   const firstLink = useRef<HTMLAnchorElement>(null);
+
+  const plainPath = pathname.replace(/^\/vi(?=\/|$)/, "") || "/";
+  const languageHref =
+    locale === "en" ? localePath("vi", plainPath) : plainPath;
 
   function toggleMenu() {
     setOpen((current) => {
@@ -38,8 +36,12 @@ export function Navigation() {
 
   return (
     <header className="site-header">
-      <nav className="nav wrap" aria-label="Main navigation">
-        <Link className="brand" href="/" aria-label="howl0, home">
+      <nav className="nav wrap" aria-label={dictionary.label}>
+        <Link
+          className="brand"
+          href={localePath(locale, "/")}
+          aria-label={dictionary.homeLabel}
+        >
           <img
             src="/brand/howl0/01-logo/howl0-logo-master.svg"
             alt="howl0"
@@ -54,7 +56,7 @@ export function Navigation() {
           aria-controls="nav-links"
           onClick={toggleMenu}
         >
-          {open ? "Close" : "Menu"}
+          {open ? dictionary.close : dictionary.menu}
           <span aria-hidden="true">{open ? "×" : "☰"}</span>
         </button>
         <div
@@ -62,19 +64,37 @@ export function Navigation() {
           className={`nav-links ${open ? "open" : ""}`}
           onKeyDown={handleMenuKeyDown}
         >
-          {items.map(([label, url], index) => (
-            <Link
-              key={url}
-              ref={index === 0 ? firstLink : undefined}
-              href={url}
-              aria-current={pathname === url ? "page" : undefined}
-              onClick={closeMenu}
-            >
-              {label}
-            </Link>
-          ))}
-          <Link className="nav-cta" href="/#waitlist" onClick={closeMenu}>
-            Join the waitlist <span aria-hidden="true">↗</span>
+          {dictionary.items.map(([label, url], index) => {
+            const href = localePath(locale, url);
+            return (
+              <Link
+                key={url}
+                ref={index === 0 ? firstLink : undefined}
+                href={href}
+                aria-current={pathname === href ? "page" : undefined}
+                onClick={closeMenu}
+              >
+                {label}
+              </Link>
+            );
+          })}
+          <Link
+            className="language-switch"
+            href={languageHref}
+            hrefLang={locale === "en" ? "vi" : "en"}
+            lang={locale === "en" ? "vi" : "en"}
+            aria-label={dictionary.languageLabel}
+            onClick={closeMenu}
+          >
+            <span aria-hidden="true">EN / VI</span>
+            <strong>{dictionary.languageShort}</strong>
+          </Link>
+          <Link
+            className="nav-cta"
+            href={`${localePath(locale, "/")}#waitlist`}
+            onClick={closeMenu}
+          >
+            {dictionary.waitlist} <span aria-hidden="true">↗</span>
           </Link>
         </div>
       </nav>

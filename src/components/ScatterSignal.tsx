@@ -1,20 +1,15 @@
-const fragments = [
-  ["Homework instructions", "item-1"],
-  ["Message thread", "item-2"],
-  ["Audio file", "item-3"],
-  ["Video recording", "item-4"],
-  ["Sheet music", "item-5"],
-  ["Comments", "item-6"],
-];
-export function ScatterSignal() {
+import { content, type Locale } from "@/lib/i18n";
+
+export function ScatterSignal({ locale }: { locale: Locale }) {
+  const fragments = content[locale].why.fragments;
   return (
     <div
       className="scatter"
       role="img"
-      aria-label="Homework instructions, messages, recordings, sheet music and comments converge into one connected howl0 practice link"
+      aria-label={content[locale].why.scatterAria}
     >
-      {fragments.map(([label, cls]) => (
-        <span key={label} className={`scatter-item ${cls}`}>
+      {fragments.map((label, index) => (
+        <span key={label} className={`scatter-item item-${index + 1}`}>
           {label}
         </span>
       ))}
