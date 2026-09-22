@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { content, localePath, type Locale } from "@/lib/i18n";
+import { content, homeHref, localePath, type Locale } from "@/lib/i18n";
 
 export function SiteFooter({ locale }: { locale: Locale }) {
   const dictionary = content[locale];
@@ -8,8 +8,8 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       <div className="wrap">
         <div className="footer-main">
           <div>
-            <Link
-              href={localePath(locale, "/")}
+            <a
+              href={homeHref(locale)}
               aria-label={dictionary.navigation.homeLabel}
             >
               <img
@@ -18,7 +18,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
                 width="150"
                 height="62"
               />
-            </Link>
+            </a>
             <p>{dictionary.footer.belief}</p>
           </div>
           <nav
@@ -30,9 +30,9 @@ export function SiteFooter({ locale }: { locale: Locale }) {
                 {label}
               </Link>
             ))}
-            <Link href={`${localePath(locale, "/")}#waitlist`}>
+            <a href={homeHref(locale, "#waitlist")}>
               {dictionary.navigation.waitlist}
-            </Link>
+            </a>
           </nav>
         </div>
         <div className="footer-bottom">

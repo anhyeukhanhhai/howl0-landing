@@ -3,17 +3,20 @@ import AxeBuilder from "@axe-core/playwright";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
 const routes = [
+  "/welcome",
   "/",
   "/product",
   "/how-it-works",
   "/why-howl0",
   "/for-you",
+  "/people",
   "/faq",
   "/vi",
   "/vi/product",
   "/vi/how-it-works",
   "/vi/why-howl0",
   "/vi/for-you",
+  "/vi/people",
   "/vi/faq",
 ];
 const browser = await chromium.launch({ headless: true });
@@ -35,6 +38,9 @@ for (const [width, height, device] of [
   [390, 844, "mobile"],
 ]) {
   const context = await browser.newContext({ viewport: { width, height } });
+  await context.addCookies([
+    { name: "howl0-language-choice", value: "en", url: base },
+  ]);
   const page = await context.newPage();
   for (const route of routes) {
     await page.goto(`${base}${route}`, { waitUntil: "networkidle" });

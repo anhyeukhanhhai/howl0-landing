@@ -2,7 +2,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
-import { content, localePath, type Locale } from "@/lib/i18n";
+import {
+  content,
+  homeHref,
+  languageChoiceHref,
+  localePath,
+  type Locale,
+} from "@/lib/i18n";
 
 export function Navigation({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState(false);
@@ -12,8 +18,10 @@ export function Navigation({ locale }: { locale: Locale }) {
   const firstLink = useRef<HTMLAnchorElement>(null);
 
   const plainPath = pathname.replace(/^\/vi(?=\/|$)/, "") || "/";
-  const languageHref =
-    locale === "en" ? localePath("vi", plainPath) : plainPath;
+  const languageHref = languageChoiceHref(
+    locale === "en" ? "vi" : "en",
+    plainPath,
+  );
 
   function toggleMenu() {
     setOpen((current) => {
@@ -37,9 +45,9 @@ export function Navigation({ locale }: { locale: Locale }) {
   return (
     <header className="site-header">
       <nav className="nav wrap" aria-label={dictionary.label}>
-        <Link
+        <a
           className="brand"
-          href={localePath(locale, "/")}
+          href={homeHref(locale)}
           aria-label={dictionary.homeLabel}
         >
           <img
@@ -48,7 +56,7 @@ export function Navigation({ locale }: { locale: Locale }) {
             width="116"
             height="48"
           />
-        </Link>
+        </a>
         <button
           ref={toggle}
           className="menu-toggle"
@@ -78,7 +86,7 @@ export function Navigation({ locale }: { locale: Locale }) {
               </Link>
             );
           })}
-          <Link
+          <a
             className="language-switch"
             href={languageHref}
             hrefLang={locale === "en" ? "vi" : "en"}
@@ -88,14 +96,14 @@ export function Navigation({ locale }: { locale: Locale }) {
           >
             <span aria-hidden="true">EN / VI</span>
             <strong>{dictionary.languageShort}</strong>
-          </Link>
-          <Link
+          </a>
+          <a
             className="nav-cta"
-            href={`${localePath(locale, "/")}#waitlist`}
+            href={homeHref(locale, "#waitlist")}
             onClick={closeMenu}
           >
             {dictionary.waitlist} <span aria-hidden="true">↗</span>
-          </Link>
+          </a>
         </div>
       </nav>
     </header>

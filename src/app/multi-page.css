@@ -780,6 +780,57 @@ html[lang="vi"] .page-hero-copy h1 {
   border-color: var(--butter);
 }
 
+/* A restrained editorial introduction to the people making howl0. */
+.people-profiles {
+  background: var(--white);
+}
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(38px, 8vw, 125px);
+}
+.people-profile {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 40px);
+  padding-top: 28px;
+  border-top: 1px solid rgba(169, 46, 93, 0.35);
+}
+.people-index {
+  color: var(--berry);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.people-profile h2 {
+  margin: 18px 0 24px;
+  font-size: clamp(2.8rem, 4.4vw, 5rem);
+  text-wrap: balance;
+}
+.people-profile p:last-child {
+  max-width: 490px;
+  margin-bottom: 0;
+  line-height: 1.7;
+  color: rgba(42, 27, 34, 0.74);
+}
+.people-why {
+  background: linear-gradient(120deg, var(--ink), var(--berry));
+  color: var(--white);
+}
+.people-why-inner {
+  max-width: 1020px;
+}
+.people-why h2 {
+  margin: 22px 0 27px;
+  font-size: clamp(3.2rem, 6.8vw, 7.5rem);
+  text-wrap: balance;
+}
+.people-why-inner > p:last-child {
+  max-width: 670px;
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.72;
+}
+
 /* Focused supporting pages. */
 .audience-page {
   background: var(--paper);
@@ -975,6 +1026,10 @@ html[lang="vi"] .page-hero-copy h1 {
 }
 
 @media (max-width: 760px) {
+  .people-grid {
+    grid-template-columns: 1fr;
+    gap: 64px;
+  }
   .nav-links a[aria-current="page"] {
     text-underline-offset: 4px;
   }
