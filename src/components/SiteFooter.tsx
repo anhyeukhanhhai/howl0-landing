@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandLogo } from "@/components/BrandLogo";
 import { content, homeHref, localePath, type Locale } from "@/lib/i18n";
 
 export function SiteFooter({ locale }: { locale: Locale }) {
@@ -12,12 +13,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               href={homeHref(locale)}
               aria-label={dictionary.navigation.homeLabel}
             >
-              <img
-                src="/brand/howl0/01-logo/howl0-logo-master.svg"
-                alt="howl0"
-                width="150"
-                height="62"
-              />
+              <BrandLogo width={150} height={62} />
             </a>
             <p>{dictionary.footer.belief}</p>
           </div>

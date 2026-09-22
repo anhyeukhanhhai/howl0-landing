@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { BrandLogo } from "@/components/BrandLogo";
 import {
   content,
   homeHref,
@@ -17,6 +18,10 @@ export function Navigation({ locale }: { locale: Locale }) {
   const toggle = useRef<HTMLButtonElement>(null);
   const firstLink = useRef<HTMLAnchorElement>(null);
 
+  useLayoutEffect(() => {
+    if (open) firstLink.current?.focus();
+  }, [open]);
+
   const plainPath = pathname.replace(/^\/vi(?=\/|$)/, "") || "/";
   const languageHref = languageChoiceHref(
     locale === "en" ? "vi" : "en",
@@ -24,11 +29,7 @@ export function Navigation({ locale }: { locale: Locale }) {
   );
 
   function toggleMenu() {
-    setOpen((current) => {
-      const next = !current;
-      if (next) requestAnimationFrame(() => firstLink.current?.focus());
-      return next;
-    });
+    setOpen((current) => !current);
   }
 
   function closeMenu() {
@@ -50,12 +51,7 @@ export function Navigation({ locale }: { locale: Locale }) {
           href={homeHref(locale)}
           aria-label={dictionary.homeLabel}
         >
-          <img
-            src="/brand/howl0/01-logo/howl0-logo-master.svg"
-            alt="howl0"
-            width="116"
-            height="48"
-          />
+          <BrandLogo width={116} height={48} />
         </a>
         <button
           ref={toggle}

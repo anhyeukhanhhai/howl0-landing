@@ -259,13 +259,13 @@ export const content = {
           name: "Henry Nguyen",
           role: "Commercial Co-Founder",
           description:
-            "Henry is working with Aaron to make the steps between lessons easier to see and act on.",
+            "The bassist and business mind behind howl0. Henry brings a musician's perspective to shaping how howl0 connects with teachers, students and families.",
         },
         {
           name: "Aaron Ta",
           role: "Founder",
           description:
-            "Aaron is working with Henry to keep student practice and teacher feedback connected.",
+            "The guitarist and tech mind behind howl0. Aaron brings a musician's perspective to building the technology that connects practice, feedback and the next step.",
         },
       ],
       whyEyebrow: "WHY WE'RE BUILDING HOWL0",
@@ -573,13 +573,13 @@ export const content = {
           name: "Henry Nguyen",
           role: "Đồng sáng lập phụ trách thương mại",
           description:
-            "Henry cùng Aaron tìm cách giúp những bước tiến giữa các buổi học dễ nhìn thấy và dễ tiếp nối hơn.",
+            "Henry chơi bass và phụ trách hướng kinh doanh của howl0. Từ góc nhìn của người chơi nhạc, Henry cùng xây dựng cách howl0 kết nối với giáo viên, học sinh và gia đình.",
         },
         {
           name: "Aaron Ta",
           role: "Người sáng lập",
           description:
-            "Aaron cùng Henry tìm cách kết nối phần luyện tập của học sinh với góp ý từ giáo viên.",
+            "Aaron chơi guitar và phụ trách hướng công nghệ của howl0. Từ góc nhìn của người chơi nhạc, Aaron xây dựng công nghệ để kết nối luyện tập, góp ý và bước tiếp theo.",
         },
       ],
       whyEyebrow: "VÌ SAO CHÚNG TÔI XÂY DỰNG HOWL0",

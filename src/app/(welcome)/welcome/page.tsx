@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { BrandLogo } from "@/components/BrandLogo";
 import { WelcomeAnchorBridge } from "@/components/WelcomeAnchorBridge";
 
 export const metadata: Metadata = {
@@ -13,13 +14,7 @@ export default function WelcomePage() {
     <main id="main" className="welcome surface-noise">
       <WelcomeAnchorBridge />
       <div className="welcome-inner wrap">
-        <img
-          className="welcome-logo"
-          src="/brand/howl0/01-logo/howl0-logo-master.svg"
-          alt="howl0"
-          width="148"
-          height="62"
-        />
+        <BrandLogo className="welcome-logo" width={148} height={62} />
         <div className="welcome-content">
           <p className="eyebrow">MUSIC LEARNING, MADE VISIBLE</p>
           <h1>Welcome to howl0.</h1>
