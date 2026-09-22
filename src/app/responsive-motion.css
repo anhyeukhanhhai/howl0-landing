@@ -1,0 +1,583 @@
+/* Layout boundaries and restrained entrance motion for the revised narrative. */
+.hero-scroll {
+  padding-top: clamp(28px, 4vw, 68px);
+}
+.hero-scroll .hero-grid {
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+  gap: clamp(28px, 4vw, 64px);
+  max-width: 1320px;
+}
+.hero-copy {
+  min-width: 0;
+  isolation: isolate;
+}
+.hero h1 {
+  max-width: 11.4em;
+  font-size: clamp(3.1rem, 4.35vw, 4.8rem);
+  line-height: 1.02;
+  white-space: normal;
+  text-wrap: balance;
+}
+.hero h1 em {
+  white-space: normal;
+}
+.hero-visual {
+  width: min(100%, 540px);
+  min-height: 0;
+  aspect-ratio: 1;
+  justify-self: end;
+  isolation: isolate;
+  z-index: 1;
+}
+.hero-loop {
+  width: min(86%, 480px);
+  aspect-ratio: 1;
+}
+.hero-preview {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  font-family: "Be Vietnam Pro", Arial, sans-serif;
+}
+.preview-task,
+.preview-link,
+.preview-files,
+.preview-feedback {
+  position: absolute;
+  z-index: 2;
+  box-shadow: 0 12px 32px rgba(42, 27, 34, 0.1);
+}
+.preview-task {
+  top: 7%;
+  left: 2%;
+  padding: 10px 13px;
+  border-radius: 100px;
+  background: var(--ink);
+  color: var(--white);
+  font-size: clamp(0.52rem, 0.7vw, 0.65rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.preview-task b {
+  color: var(--butter);
+  margin-left: 8px;
+}
+.preview-link {
+  left: 10%;
+  top: 37%;
+  width: min(74%, 360px);
+  padding: clamp(12px, 1.6vw, 19px);
+  border: 1px solid rgba(169, 46, 93, 0.18);
+  border-radius: 17px;
+  background: var(--white);
+  transform: rotate(-3deg);
+  animation: preview-link-travel 5s var(--ease) infinite;
+}
+.preview-link small {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--berry);
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.preview-link strong {
+  display: block;
+  color: var(--ink);
+  font-size: clamp(0.83rem, 1.1vw, 1.05rem);
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.preview-practice {
+  position: absolute;
+  top: 60%;
+  right: 10%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 26px;
+}
+.preview-practice i {
+  width: 3px;
+  height: 8px;
+  border-radius: 3px;
+  background: var(--apricot);
+  transform-origin: center;
+  animation: preview-wave 5s ease-in-out infinite;
+}
+.preview-practice i:nth-child(2),
+.preview-practice i:nth-child(4) {
+  height: 19px;
+}
+.preview-practice i:nth-child(3) {
+  height: 26px;
+}
+.preview-files {
+  right: 1%;
+  top: 69%;
+  display: flex;
+  gap: 4px;
+  box-shadow: none;
+  animation: preview-submit 5s var(--ease) infinite;
+}
+.preview-files b {
+  padding: 8px 10px;
+  border-radius: 7px;
+  background: var(--paper);
+  border: 1px solid rgba(169, 46, 93, 0.28);
+  color: var(--berry);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+}
+.preview-feedback {
+  left: 3%;
+  top: 73%;
+  padding: 9px 12px;
+  border-radius: 100px;
+  background: var(--butter);
+  color: var(--ink);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  animation: preview-response 5s var(--ease) infinite;
+}
+.preview-stages {
+  position: absolute;
+  inset: auto 0 -1% 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 3px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.preview-stages li {
+  font-size: clamp(0.55rem, 0.75vw, 0.67rem);
+  font-weight: 700;
+  color: var(--ink);
+  opacity: 0.55;
+  animation: preview-stage 5s linear infinite;
+  animation-delay: calc(var(--step-index) * 1s);
+}
+.preview-parent,
+.preview-message {
+  position: absolute;
+  z-index: 3;
+}
+.preview-parent {
+  top: 20%;
+  right: 0;
+  padding: 8px 11px;
+  border: 1px solid rgba(169, 46, 93, 0.2);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--berry);
+  font-size: clamp(0.5rem, 0.7vw, 0.63rem);
+  font-weight: 700;
+}
+.preview-message {
+  right: 0;
+  bottom: -11%;
+  max-width: 100%;
+  color: var(--ink);
+  font-size: clamp(0.66rem, 0.82vw, 0.75rem);
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: right;
+}
+.hero-preview[data-playing="false"] *,
+.hero-preview[data-playing="false"] {
+  animation-play-state: paused !important;
+}
+@keyframes preview-link-travel {
+  0% {
+    opacity: 0.7;
+    transform: translate3d(-9px, -7px, 0) rotate(-3deg);
+  }
+  20%,
+  85% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(-3deg);
+  }
+  100% {
+    opacity: 0.7;
+    transform: translate3d(6px, 5px, 0) rotate(-3deg);
+  }
+}
+@keyframes preview-wave {
+  0%,
+  18%,
+  76%,
+  100% {
+    transform: scaleY(0.55);
+  }
+  28%,
+  40% {
+    transform: scaleY(1);
+  }
+  84%,
+  95% {
+    transform: scaleY(0.72);
+  }
+}
+@keyframes preview-submit {
+  0%,
+  35% {
+    opacity: 0.45;
+    transform: translate3d(13px, 0, 0);
+  }
+  45%,
+  66% {
+    opacity: 1;
+    transform: translate3d(0, -6px, 0);
+  }
+  100% {
+    opacity: 0.45;
+    transform: translate3d(13px, 0, 0);
+  }
+}
+@keyframes preview-response {
+  0%,
+  55% {
+    opacity: 0.4;
+    transform: translate3d(13px, -6px, 0);
+  }
+  68%,
+  93% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: 0.4;
+    transform: translate3d(13px, -6px, 0);
+  }
+}
+@keyframes preview-stage {
+  0%,
+  18% {
+    opacity: 1;
+    color: var(--berry);
+  }
+  20%,
+  100% {
+    opacity: 0.55;
+    color: var(--ink);
+  }
+}
+
+/* The fragmented route enters, holds, resolves as a whole, then yields. */
+.diff-scroll .old-route {
+  clip-path: none;
+  opacity: min(
+    1,
+    calc(var(--scene-progress) * 8.333),
+    calc((1 - var(--scene-progress)) * 5)
+  );
+  transform: translate3d(
+      0,
+      calc(
+        (1 - min(1, var(--scene-progress) * 8.333)) * 18px -
+          max(0px, (var(--scene-progress) - 0.55) * 48px)
+      ),
+      0
+    )
+    scale(calc(1 - max(0, var(--scene-progress) - 0.55) * 0.08));
+}
+.diff-scroll .old-route .route-steps span {
+  transform: none !important;
+}
+.diff-scroll .new-route {
+  opacity: 1;
+  transform: translate3d(0, calc((1 - var(--scene-progress)) * 12px), 0)
+    scale(calc(0.98 + var(--scene-progress) * 0.02));
+}
+.diff-scroll .collapse-arrow {
+  opacity: 1;
+  transform: none;
+}
+@media (min-width: 1101px) and (min-height: 741px) {
+  .diff-scroll {
+    height: 185svh;
+    padding: 0;
+  }
+  .diff-scroll > .wrap {
+    position: sticky;
+    top: 81px;
+    height: calc(100svh - 81px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .diff-scroll .diff-heading h2 {
+    font-size: clamp(2.9rem, 4.3vw, 4.6rem);
+    margin: 10px 0 25px;
+  }
+  .diff-scroll .diff-heading p {
+    margin-bottom: 28px;
+  }
+  .diff-scroll .route {
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+  .diff-scroll .route-label {
+    margin-bottom: 15px;
+  }
+  .diff-scroll .route-link {
+    margin-top: 18px;
+  }
+}
+@media (max-width: 1100px), (max-height: 740px) {
+  .diff-scroll .old-route,
+  .diff-scroll .new-route {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Audience text remains in normal flow and fully legible while art changes. */
+.audience-panel {
+  overflow: visible;
+}
+.audience-content {
+  height: auto;
+  min-height: 0;
+  animation: none;
+}
+.audience-art {
+  animation: role-art-arrive 0.35s var(--ease) both;
+}
+@keyframes role-art-arrive {
+  from {
+    opacity: 0.72;
+    transform: translate3d(12px, 0, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Reveals apply to selected short groups only, then remain visible. */
+.reveal {
+  transition:
+    opacity 0.42s var(--ease),
+    transform 0.42s var(--ease),
+    clip-path 0.42s var(--ease);
+}
+.reveal[data-reveal-ready="true"]:not([data-visible]) {
+  opacity: 1;
+}
+.reveal-fadeUp[data-reveal-ready="true"]:not([data-visible]) {
+  transform: translate3d(0, 20px, 0);
+}
+.reveal-fadeScale[data-reveal-ready="true"]:not([data-visible]) {
+  transform: scale(0.98);
+}
+.reveal-maskReveal[data-reveal-ready="true"]:not([data-visible]) {
+  transform: translate3d(0, 12px, 0);
+}
+.reveal-staggerChildren > * {
+  transition:
+    opacity 0.38s var(--ease),
+    transform 0.38s var(--ease);
+}
+.reveal-staggerChildren[data-reveal-ready="true"]:not([data-visible]) > * {
+  opacity: 1;
+  transform: translate3d(0, 16px, 0);
+}
+.reveal-staggerChildren > :nth-child(2) {
+  transition-delay: 60ms;
+}
+.reveal-staggerChildren > :nth-child(3) {
+  transition-delay: 120ms;
+}
+
+@media (min-width: 1101px) {
+  .hero-scroll .hero-grid {
+    min-height: calc(100svh - 81px);
+  }
+}
+@media (min-width: 1101px) and (min-height: 801px) {
+  .hero-scroll .hero-copy,
+  .hero-scroll .hero-visual {
+    opacity: min(1, calc((1 - var(--scene-progress)) * 3.3));
+  }
+}
+@media (max-width: 1100px), (max-height: 800px) {
+  .hero-scroll {
+    min-height: 0;
+  }
+  .hero-scroll .hero-grid {
+    position: relative;
+    top: auto;
+    min-height: 0;
+    padding-bottom: 45px;
+  }
+  .hero-scroll .hero-copy h1,
+  .hero-scroll .hero-lead,
+  .hero-scroll .hero-actions,
+  .hero-scroll .hero-visual {
+    transform: none;
+  }
+  .hero-scroll .hero-baseline {
+    position: relative;
+    bottom: auto;
+  }
+}
+@media (max-width: 1100px) and (min-width: 761px) {
+  .hero-scroll .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hero-copy {
+    max-width: 760px;
+  }
+  .hero-visual {
+    justify-self: center;
+    width: min(56vw, 370px);
+  }
+}
+@media (min-width: 901px) and (max-width: 1100px) {
+  .hero-scroll .hero-grid {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: 24px;
+  }
+  .hero-copy {
+    max-width: none;
+  }
+  .hero-visual {
+    width: min(100%, 350px);
+    justify-self: end;
+  }
+  .hero h1 {
+    font-size: clamp(3rem, 4.8vw, 3.6rem);
+  }
+}
+@media (min-width: 761px) {
+  .practice-sticky {
+    height: calc(100svh - 81px);
+    min-height: 0;
+    gap: clamp(18px, 3vw, 50px);
+  }
+  .practice-art {
+    max-height: min(650px, calc(100svh - 118px));
+  }
+  .practice-step {
+    height: auto;
+    min-height: clamp(59px, 8.3svh, 88px);
+  }
+}
+@media (max-width: 760px) {
+  .hero-scroll {
+    padding-top: 18px;
+  }
+  .hero-scroll .hero-grid {
+    display: block;
+  }
+  .hero h1 {
+    font-size: clamp(2.8rem, 11vw, 5.4rem);
+    max-width: 100%;
+    margin-bottom: 18px;
+  }
+  .hero .status {
+    margin-bottom: 19px;
+  }
+  .hero .hero-lead {
+    line-height: 1.5;
+  }
+  .hero .hero-actions {
+    margin: 15px 0 8px;
+  }
+  .hero-visual {
+    width: min(100%, 420px);
+    height: 210px;
+    aspect-ratio: auto;
+    margin: 8px auto 0;
+  }
+  .hero-loop {
+    width: min(60%, 220px);
+    height: 100%;
+  }
+  .hero-preview {
+    inset: 0;
+  }
+  .preview-task {
+    font-size: 0.55rem;
+  }
+  .preview-link {
+    left: 9%;
+    top: 31%;
+    width: 77%;
+    padding: 10px 12px;
+  }
+  .preview-practice {
+    right: 13%;
+    top: 56%;
+  }
+  .preview-files {
+    right: 0;
+    top: 67%;
+  }
+  .preview-feedback {
+    left: 0;
+    top: 68%;
+  }
+  .preview-link strong {
+    font-size: clamp(0.78rem, 3.5vw, 1rem);
+  }
+  .preview-stages li {
+    font-size: clamp(0.62rem, 2.6vw, 0.7rem);
+  }
+  .old-route .route-steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .old-route .route-steps b {
+    transform: rotate(90deg);
+    width: fit-content;
+    margin-left: 4px;
+  }
+  .diff-scroll .old-route,
+  .diff-scroll .new-route {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 420px) {
+  .hero h1 {
+    font-size: clamp(2.8rem, 11vw, 3.5rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll .hero-copy,
+  .hero-scroll .hero-visual {
+    opacity: 1;
+  }
+  .hero-preview *,
+  .audience-art,
+  .reveal {
+    animation: none !important;
+    transition: none !important;
+  }
+  .preview-link,
+  .preview-files,
+  .preview-feedback {
+    opacity: 1;
+    transform: none;
+  }
+  .preview-stages li {
+    opacity: 1;
+    color: var(--ink);
+  }
+  .diff-scroll .old-route,
+  .diff-scroll .new-route {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal[data-reveal-ready="true"]:not([data-visible]),
+  .reveal-staggerChildren[data-reveal-ready="true"]:not([data-visible]) > * {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+}

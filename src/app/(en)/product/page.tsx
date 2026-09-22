@@ -1,0 +1,13 @@
+import { ProductPage } from "@/components/pages/ProductPage";
+import { content } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/metadata";
+
+export const metadata = pageMetadata(
+  content.en.product.metadataTitle,
+  content.en.product.intro,
+  "/product",
+  "en",
+);
+export default function Page() {
+  return <ProductPage locale="en" />;
+}
