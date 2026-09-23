@@ -780,6 +780,57 @@ html[lang="vi"] .page-hero-copy h1 {
   border-color: var(--butter);
 }
 
+/* A restrained editorial introduction to the people making howl0. */
+.people-profiles {
+  background: var(--white);
+}
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(38px, 8vw, 125px);
+}
+.people-profile {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: clamp(18px, 3vw, 40px);
+  padding-top: 28px;
+  border-top: 1px solid rgba(169, 46, 93, 0.35);
+}
+.people-index {
+  color: var(--berry);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.people-profile h2 {
+  margin: 18px 0 24px;
+  font-size: clamp(2.8rem, 4.4vw, 5rem);
+  text-wrap: balance;
+}
+.people-profile p:last-child {
+  max-width: 490px;
+  margin-bottom: 0;
+  line-height: 1.7;
+  color: rgba(42, 27, 34, 0.74);
+}
+.people-why {
+  background: linear-gradient(120deg, var(--ink), var(--berry));
+  color: var(--white);
+}
+.people-why-inner {
+  max-width: 1020px;
+}
+.people-why h2 {
+  margin: 22px 0 27px;
+  font-size: clamp(3.2rem, 6.8vw, 7.5rem);
+  text-wrap: balance;
+}
+.people-why-inner > p:last-child {
+  max-width: 670px;
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.72;
+}
+
 /* Focused supporting pages. */
 .audience-page {
   background: var(--paper);
@@ -894,7 +945,7 @@ html[lang="vi"] .page-hero-copy h1 {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .site-header .nav {
     min-height: 68px;
   }
@@ -922,6 +973,11 @@ html[lang="vi"] .page-hero-copy h1 {
     background: var(--paper);
     box-shadow: 0 20px 30px rgba(42, 27, 34, 0.09);
     font-size: 0.95rem;
+    max-height: calc(100vh - 68px);
+    max-height: calc(100dvh - 68px);
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    padding-bottom: max(25px, env(safe-area-inset-bottom));
   }
   .nav-links.open {
     display: grid;
@@ -935,6 +991,9 @@ html[lang="vi"] .page-hero-copy h1 {
     margin-top: 10px;
     text-align: center;
   }
+}
+
+@media (max-width: 900px) {
   .home-hero .hero-grid,
   .page-hero-grid,
   .one-link-grid,
@@ -975,6 +1034,10 @@ html[lang="vi"] .page-hero-copy h1 {
 }
 
 @media (max-width: 760px) {
+  .people-grid {
+    grid-template-columns: 1fr;
+    gap: 64px;
+  }
   .nav-links a[aria-current="page"] {
     text-underline-offset: 4px;
   }
@@ -1269,6 +1332,46 @@ html[lang="vi"] .page-hero-copy h1 {
 }
 .practice-step p {
   color: rgba(255, 255, 255, 0.85);
+}
+
+/* Let the learning loop remain readable on short laptops and rotated phones. */
+@media (max-width: 1100px), (max-height: 800px) {
+  .practice-loop {
+    height: auto;
+    padding-block: clamp(64px, 8vw, 100px);
+  }
+  .practice-sticky {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 0;
+  }
+  .practice-art {
+    max-height: none;
+    transform: none;
+  }
+  .practice-file,
+  .practice-packet,
+  .practice-feedback,
+  .wave-clear {
+    opacity: 1;
+  }
+  .practice-route-active {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  .practice-traveller {
+    display: none;
+  }
+}
+@media (max-width: 900px) {
+  .practice-sticky {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .practice-art {
+    width: min(100%, 600px);
+    justify-self: center;
+  }
 }
 .belief-scroll .feedback-markers span {
   opacity: 1;

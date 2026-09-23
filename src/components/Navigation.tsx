@@ -1,8 +1,15 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef, useState } from "react";
-import { content, localePath, type Locale } from "@/lib/i18n";
+import { useLayoutEffect, useRef, useState } from "react";
+import { BrandLogo } from "@/components/BrandLogo";
+import {
+  content,
+  homeHref,
+  languageChoiceHref,
+  localePath,
+  type Locale,
+} from "@/lib/i18n";
 
 export function Navigation({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState(false);
@@ -11,16 +18,18 @@ export function Navigation({ locale }: { locale: Locale }) {
   const toggle = useRef<HTMLButtonElement>(null);
   const firstLink = useRef<HTMLAnchorElement>(null);
 
+  useLayoutEffect(() => {
+    if (open) firstLink.current?.focus();
+  }, [open]);
+
   const plainPath = pathname.replace(/^\/vi(?=\/|$)/, "") || "/";
-  const languageHref =
-    locale === "en" ? localePath("vi", plainPath) : plainPath;
+  const languageHref = languageChoiceHref(
+    locale === "en" ? "vi" : "en",
+    plainPath,
+  );
 
   function toggleMenu() {
-    setOpen((current) => {
-      const next = !current;
-      if (next) requestAnimationFrame(() => firstLink.current?.focus());
-      return next;
-    });
+    setOpen((current) => !current);
   }
 
   function closeMenu() {
@@ -37,18 +46,13 @@ export function Navigation({ locale }: { locale: Locale }) {
   return (
     <header className="site-header">
       <nav className="nav wrap" aria-label={dictionary.label}>
-        <Link
+        <a
           className="brand"
-          href={localePath(locale, "/")}
+          href={homeHref(locale)}
           aria-label={dictionary.homeLabel}
         >
-          <img
-            src="/brand/howl0/01-logo/howl0-logo-master.svg"
-            alt="howl0"
-            width="116"
-            height="48"
-          />
-        </Link>
+          <BrandLogo width={116} height={48} />
+        </a>
         <button
           ref={toggle}
           className="menu-toggle"
@@ -78,7 +82,7 @@ export function Navigation({ locale }: { locale: Locale }) {
               </Link>
             );
           })}
-          <Link
+          <a
             className="language-switch"
             href={languageHref}
             hrefLang={locale === "en" ? "vi" : "en"}
@@ -88,14 +92,14 @@ export function Navigation({ locale }: { locale: Locale }) {
           >
             <span aria-hidden="true">EN / VI</span>
             <strong>{dictionary.languageShort}</strong>
-          </Link>
-          <Link
+          </a>
+          <a
             className="nav-cta"
-            href={`${localePath(locale, "/")}#waitlist`}
+            href={homeHref(locale, "#waitlist")}
             onClick={closeMenu}
           >
             {dictionary.waitlist} <span aria-hidden="true">↗</span>
-          </Link>
+          </a>
         </div>
       </nav>
     </header>

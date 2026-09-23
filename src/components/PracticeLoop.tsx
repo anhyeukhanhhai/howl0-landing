@@ -3,6 +3,8 @@ import { useCallback, useEffect, useRef } from "react";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { practiceRoute } from "@/lib/practiceLoop";
 
+const flowingLayout = "(max-width: 1100px), (max-height: 800px)";
+
 export function PracticeLoop({
   content,
 }: {
@@ -30,7 +32,7 @@ export function PracticeLoop({
     if (!node) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       root.current!.dataset.stage = "4";
-    } else if (window.innerWidth > 760) {
+    } else if (!window.matchMedia(flowingLayout).matches) {
       root.current!.dataset.stage = String(
         Math.min(4, Math.floor(progress * 5)),
       );
@@ -51,13 +53,13 @@ export function PracticeLoop({
   useEffect(() => {
     const element = root.current;
     if (!element) return;
-    const mobile = window.matchMedia("(max-width: 760px)");
+    const flowing = window.matchMedia(flowingLayout);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const items = Array.from(element.querySelectorAll(".practice-step"));
     let observer: IntersectionObserver | undefined;
     const setup = () => {
       observer?.disconnect();
-      if (!mobile.matches || reduced.matches) return;
+      if (!flowing.matches || reduced.matches) return;
       observer = new IntersectionObserver(
         () => {
           const target = window.innerHeight * 0.55;
@@ -80,12 +82,12 @@ export function PracticeLoop({
       );
       items.forEach((item) => observer?.observe(item));
     };
-    mobile.addEventListener("change", setup);
+    flowing.addEventListener("change", setup);
     reduced.addEventListener("change", setup);
     setup();
     return () => {
       observer?.disconnect();
-      mobile.removeEventListener("change", setup);
+      flowing.removeEventListener("change", setup);
       reduced.removeEventListener("change", setup);
     };
   }, []);

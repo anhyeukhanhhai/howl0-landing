@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 658 210" role="img" aria-labelledby="title desc">
+  <title id="title">howl0</title>
+  <desc id="desc">The howl0 wordmark in Paper with an Apricot zero, using the original paths and return slot for dark surfaces.</desc>
+  <defs>
+    <mask id="howl0-slot" maskUnits="userSpaceOnUse" x="514" y="-4" width="160" height="218">
+      <rect x="514" y="-4" width="160" height="218" fill="#fff"/>
+      <path d="M594 105L801.3-34.8 733.8-102.3Z" fill="#000"/>
+    </mask>
+  </defs>
+  <g fill="#FFF7F2">
+    <path d="M0 10H40V150C40 86 57 68 85 68S130 86 130 150V200H90V147C90 118 78 105 63 105S40 118 40 147V200H0Z"/>
+    <path fill-rule="evenodd" d="M142 134C142 81.2 154.4 68 204 68S266 81.2 266 134 253.6 200 204 200 142 186.8 142 134ZM178 131C178 103.8 184.8 97 202 97S226 103.8 226 131 219.2 165 202 165 178 158.2 178 131Z"/>
+    <path d="M276 68H312L335.7 142 356 88H392L410.3 142 436 68H472L428 200H392L372 141 356 200H320Z"/>
+    <path d="M476 10H516V200H476Z"/>
+  </g>
+  <path mask="url(#howl0-slot)" fill="#F0A06B" fill-rule="evenodd" d="M530 105C530 29 542.8 10 594 10S658 29 658 105 645.2 200 594 200 530 181 530 105ZM566 102C566 53.2 571.2 41 592 41S618 53.2 618 102 612.8 163 592 163 566 150.8 566 102Z"/>
+</svg>

@@ -1,0 +1,227 @@
+/* Device preference is the single source of truth, including before hydration.
+   Keep the brand swatches fixed so the signal graphics and gradients retain
+   their colours; adapt reading surfaces and foregrounds separately. */
+:root {
+  color-scheme: light;
+}
+.brand-logo {
+  display: inline-flex;
+  flex: none;
+  align-self: flex-start;
+}
+.brand-logo img {
+  display: block;
+}
+:focus-visible {
+  outline-color: var(--berry);
+}
+.dark-section :focus-visible,
+.page-cta :focus-visible,
+.belief :focus-visible {
+  outline-color: var(--butter);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --surface-dark: var(--ink);
+    --surface-raised-dark: color-mix(in srgb, var(--ink) 88%, var(--berry));
+    --text-dark: var(--paper);
+    --muted-dark: color-mix(in srgb, var(--paper) 76%, var(--ink));
+    --line-dark: color-mix(in srgb, var(--paper) 24%, var(--ink));
+    --control-line-dark: color-mix(in srgb, var(--paper) 45%, var(--ink));
+  }
+  body {
+    background: var(--surface-dark);
+    color: var(--text-dark);
+  }
+  .hero,
+  .page-hero-light,
+  .platform-reveal,
+  .welcome {
+    background-color: var(--surface-dark);
+  }
+  .home-perspectives,
+  .audiences,
+  .footer {
+    background: var(--surface-dark);
+  }
+  .submission-flow,
+  .flow-next,
+  .people-profiles,
+  .product-story,
+  .faq,
+  .audience-panel {
+    background: var(--surface-raised-dark);
+  }
+  .site-header {
+    background: color-mix(in srgb, var(--ink) 95%, transparent);
+    border-color: var(--line-dark);
+  }
+  .surface-noise::after {
+    background-image: url("/brand/howl0/05-noise-overlays/noise-fine-raspberry-transparent-768.webp");
+    opacity: 0.055;
+  }
+  .eyebrow,
+  .text-link,
+  .language-switch,
+  .menu-toggle,
+  .nav-cta,
+  .nav-links a[aria-current="page"],
+  .nav-links > a:not(.nav-cta):hover,
+  .footer-links a:hover,
+  .simple-flow,
+  .people-index,
+  .faq-number,
+  .faq-plus,
+  .submission-role,
+  .perspective-tabs button span,
+  .perspective-tabs button[aria-selected="true"],
+  .welcome-prompt span {
+    color: var(--apricot);
+  }
+  .development-label,
+  .people-profile p:last-child,
+  .faq-list details p,
+  .faq-aside,
+  .footer-bottom,
+  .welcome-foot {
+    color: var(--muted-dark);
+  }
+  .people-profile,
+  .footer,
+  .footer-bottom,
+  .faq-list,
+  .faq-list details,
+  .perspective-tabs,
+  .audience-panel,
+  .tablist,
+  .tablist button,
+  .audience-benefits li {
+    border-color: var(--line-dark);
+  }
+  .nav-cta,
+  .perspective-tabs button[aria-selected="true"] {
+    border-color: var(--apricot);
+  }
+  .button-primary,
+  .nav-cta:hover {
+    background: var(--apricot);
+    border-color: var(--apricot);
+    color: var(--ink);
+  }
+  .button-primary:hover {
+    background: var(--butter);
+    border-color: var(--butter);
+    color: var(--ink);
+  }
+  .perspective-tabs button,
+  .tablist button,
+  .preview-link strong,
+  .preview-message {
+    color: var(--text-dark);
+  }
+  .preview-link,
+  .preview-parent,
+  .preview-files b,
+  .page-signal-mark span,
+  .submission-number,
+  .audience-art > span,
+  .welcome-choices a {
+    background: var(--surface-raised-dark);
+    border-color: var(--line-dark);
+    color: var(--apricot);
+  }
+  .submission-number {
+    border-color: var(--apricot);
+  }
+  .preview-stages li {
+    color: var(--paper);
+    opacity: 0.85;
+  }
+  /* Original keyframes use light-surface ink; use the dark foreground at rest. */
+  @keyframes preview-stage {
+    0%,
+    18% {
+      opacity: 1;
+      color: var(--apricot);
+    }
+    20%,
+    100% {
+      opacity: 0.85;
+      color: var(--paper);
+    }
+  }
+  @keyframes submission-stage {
+    0%,
+    23% {
+      color: var(--apricot);
+      transform: translate3d(0, -5px, 0);
+    }
+    27%,
+    100% {
+      color: var(--paper);
+      transform: none;
+    }
+  }
+  @keyframes preview-submit {
+    0%,
+    35%,
+    100% {
+      opacity: 0.85;
+      transform: translate3d(13px, 0, 0);
+    }
+    45%,
+    66% {
+      opacity: 1;
+      transform: translate3d(0, -6px, 0);
+    }
+  }
+  @keyframes preview-response {
+    0%,
+    55%,
+    100% {
+      opacity: 0.85;
+      transform: translate3d(13px, -6px, 0);
+    }
+    68%,
+    93% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  .art-orbit {
+    background: var(--surface-dark);
+  }
+  .audience-benefits li {
+    color: var(--apricot);
+  }
+  .welcome-choices a:hover {
+    background: color-mix(in srgb, var(--ink) 74%, var(--berry));
+  }
+  .welcome-choices a {
+    border-color: var(--control-line-dark);
+  }
+  .welcome-signal {
+    border-color: color-mix(in srgb, var(--apricot) 25%, transparent);
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--control-line-dark);
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: var(--muted-dark);
+  }
+  :focus-visible {
+    outline-color: var(--butter);
+  }
+  @media (max-width: 1100px) {
+    .nav-links {
+      background: var(--surface-dark);
+    }
+  }
+}

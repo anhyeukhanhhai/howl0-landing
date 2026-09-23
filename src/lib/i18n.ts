@@ -8,6 +8,15 @@ export function localePath(locale: Locale, path: string) {
   return `/vi${path}`;
 }
 
+export function homeHref(locale: Locale, hash = "") {
+  const destination = `${localePath(locale, "/")}${hash}`;
+  return `/choose-language/${locale}?next=${encodeURIComponent(destination)}`;
+}
+
+export function languageChoiceHref(locale: Locale, path: string) {
+  return `/choose-language/${locale}?next=${encodeURIComponent(localePath(locale, path))}`;
+}
+
 export const content = {
   en: {
     lang: "en",
@@ -23,6 +32,7 @@ export const content = {
         ["How it works", "/how-it-works"],
         ["Why howl0", "/why-howl0"],
         ["For you", "/for-you"],
+        ["People", "/people"],
         ["FAQ", "/faq"],
       ],
       waitlist: "Join the waitlist",
@@ -238,6 +248,32 @@ export const content = {
       ],
       ctaTitle: "Help us understand what matters to you",
     },
+    people: {
+      metadataTitle: "People",
+      eyebrow: "THE PEOPLE BEHIND HOWL0",
+      title: "Meet Henry and Aaron.",
+      intro:
+        "Henry Nguyen and Aaron Ta are creating howl0 together, with a shared focus on the learning that happens between music lessons.",
+      profiles: [
+        {
+          name: "Henry Nguyen",
+          role: "Commercial Co-Founder",
+          description:
+            "The bassist and business mind behind howl0. Henry brings a musician's perspective to shaping how howl0 connects with teachers, students and families.",
+        },
+        {
+          name: "Aaron Ta",
+          role: "Founder",
+          description:
+            "The guitarist and tech mind behind howl0. Aaron brings a musician's perspective to building the technology that connects practice, feedback and the next step.",
+        },
+      ],
+      whyEyebrow: "WHY WE'RE BUILDING HOWL0",
+      whyTitle: "Learning does not stop when a lesson ends.",
+      whyCopy:
+        "We are building howl0 to help teachers, students and families understand the work between lessons—starting with one simple way to submit practice, and keeping the next step in view.",
+      ctaTitle: "Follow the journey",
+    },
     faq: {
       metadataTitle: "FAQ",
       eyebrow: "GOOD QUESTIONS",
@@ -305,6 +341,7 @@ export const content = {
         ["Cách hoạt động", "/how-it-works"],
         ["Vì sao howl0", "/why-howl0"],
         ["Dành cho bạn", "/for-you"],
+        ["Con người", "/people"],
         ["Câu hỏi thường gặp", "/faq"],
       ],
       waitlist: "Đăng ký nhận tin",
@@ -524,6 +561,32 @@ export const content = {
         },
       ],
       ctaTitle: "Giúp chúng tôi hiểu điều gì quan trọng với bạn",
+    },
+    people: {
+      metadataTitle: "Con người",
+      eyebrow: "NHỮNG NGƯỜI ĐỨNG SAU HOWL0",
+      title: "Gặp gỡ Henry và Aaron.",
+      intro:
+        "Henry Nguyen và Aaron Ta đang cùng xây dựng howl0, với mong muốn kết nối rõ hơn việc học nhạc giữa các buổi học.",
+      profiles: [
+        {
+          name: "Henry Nguyen",
+          role: "Đồng sáng lập phụ trách thương mại",
+          description:
+            "Henry chơi bass và phụ trách hướng kinh doanh của howl0. Từ góc nhìn của người chơi nhạc, Henry cùng xây dựng cách howl0 kết nối với giáo viên, học sinh và gia đình.",
+        },
+        {
+          name: "Aaron Ta",
+          role: "Người sáng lập",
+          description:
+            "Aaron chơi guitar và phụ trách hướng công nghệ của howl0. Từ góc nhìn của người chơi nhạc, Aaron xây dựng công nghệ để kết nối luyện tập, góp ý và bước tiếp theo.",
+        },
+      ],
+      whyEyebrow: "VÌ SAO CHÚNG TÔI XÂY DỰNG HOWL0",
+      whyTitle: "Việc học không dừng lại khi buổi học kết thúc.",
+      whyCopy:
+        "Chúng tôi xây dựng howl0 để giáo viên, học sinh và gia đình hiểu rõ hơn việc học giữa các buổi học—bắt đầu từ một cách gửi bài đơn giản và giữ cho bước tiếp theo luôn rõ ràng.",
+      ctaTitle: "Theo dõi hành trình của howl0",
     },
     faq: {
       metadataTitle: "Câu hỏi thường gặp",

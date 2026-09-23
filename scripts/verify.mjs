@@ -29,6 +29,7 @@ const pages = [
     "One journey, with a clearer role for everyone.",
     "Một hành trình, với vai trò rõ ràng hơn cho mỗi người.",
   ],
+  ["people", "Meet Henry and Aaron.", "Gặp gỡ Henry và Aaron."],
   [
     "faq",
     "What we know while howl0 takes shape.",
@@ -49,6 +50,94 @@ await mkdir(out, { recursive: true });
 const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
+
+for (const [width, height] of viewports) {
+  const page = await browser.newPage({ viewport: { width, height } });
+  await page.goto(base, { waitUntil: "networkidle" });
+  assert(
+    new URL(page.url()).pathname === "/welcome",
+    `${width}: first visit did not show welcome`,
+  );
+  assert(
+    await page.getByRole("heading", { name: "Welcome to howl0." }).isVisible(),
+    `${width}: welcome heading missing`,
+  );
+  assert(
+    (await page.locator("html").getAttribute("lang")) === "en",
+    `${width}: welcome language missing`,
+  );
+  assert(
+    (await page.evaluate(
+      () => document.documentElement.scrollWidth - innerWidth,
+    )) <= 1,
+    `${width}: welcome horizontal overflow`,
+  );
+  await page.screenshot({
+    path: `${out}/welcome-${width}x${height}.png`,
+    fullPage: true,
+  });
+  await page.close();
+}
+
+for (const [choice, target, lang] of [
+  ["English", "/", "en"],
+  ["Tiếng Việt", "/vi", "vi"],
+]) {
+  const page = await browser.newPage();
+  await page.goto(`${base}/welcome`, { waitUntil: "networkidle" });
+  if (lang === "en") {
+    await page.keyboard.press("Tab");
+    assert(
+      await page
+        .getByRole("link", { name: choice })
+        .evaluate((node) => document.activeElement === node),
+      "welcome choice is not keyboard reachable",
+    );
+    await page.keyboard.press("Enter");
+  } else {
+    await page.getByRole("link", { name: choice }).click();
+  }
+  await page.waitForURL(`${base}${target}`);
+  assert(
+    (await page.locator("html").getAttribute("lang")) === lang,
+    `${choice}: language choice did not open localized site`,
+  );
+  assert(
+    (await page.context().cookies()).some(
+      (cookie) =>
+        cookie.name === "howl0-language-choice" && cookie.value === lang,
+    ),
+    `${choice}: language choice not persisted`,
+  );
+  await page.goto(base, { waitUntil: "networkidle" });
+  assert(
+    new URL(page.url()).pathname === target,
+    `${choice}: repeat visit unexpectedly gated`,
+  );
+  await page.close();
+}
+
+const anchored = await browser.newPage();
+await anchored.goto(`${base}/#waitlist`, { waitUntil: "networkidle" });
+await anchored.waitForURL(`${base}/#waitlist`);
+assert(
+  await anchored.locator("#waitlist").isVisible(),
+  "legacy waitlist anchor did not reach the form",
+);
+await anchored.close();
+
+const directSubpage = await browser.newPage();
+await directSubpage.goto(`${base}/people`, { waitUntil: "networkidle" });
+await directSubpage
+  .getByRole("link", { name: "Join the waitlist" })
+  .first()
+  .click();
+await directSubpage.waitForURL(`${base}/#waitlist`);
+assert(
+  await directSubpage.locator("#waitlist").isVisible(),
+  "first-time visitor from People did not reach waitlist",
+);
+await directSubpage.close();
 
 async function revealPage(page) {
   const height = await page.evaluate(
@@ -71,6 +160,11 @@ for (const [width, height] of viewports) {
       const path =
         `${locale === "vi" ? "/vi" : ""}${slug ? `/${slug}` : ""}` || "/";
       const page = await browser.newPage({ viewport: { width, height } });
+      await page
+        .context()
+        .addCookies([
+          { name: "howl0-language-choice", value: locale, url: base },
+        ]);
       const errors = [];
       page.on("pageerror", (error) => errors.push(error.message));
       const response = await page.goto(`${base}${path}`, {
@@ -157,10 +251,16 @@ for (const [width, height] of viewports) {
       assert(!errors.length, `${path}: page errors ${errors.join("; ")}`);
       if (
         !slug ||
+        (slug === "people" && width === 3440) ||
         ((width === 390 || width === 1440) &&
-          ["product", "how-it-works", "why-howl0", "for-you", "faq"].includes(
-            slug,
-          ))
+          [
+            "product",
+            "how-it-works",
+            "why-howl0",
+            "for-you",
+            "people",
+            "faq",
+          ].includes(slug))
       ) {
         await revealPage(page);
         await page.screenshot({
@@ -171,10 +271,13 @@ for (const [width, height] of viewports) {
       await page.close();
     }
   }
-  console.log(`${width}x${height}: both languages, six routes passed`);
+  console.log(`${width}x${height}: both languages, seven routes passed`);
 }
 
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page
+  .context()
+  .addCookies([{ name: "howl0-language-choice", value: "en", url: base }]);
 for (const [source, target] of [
   ["/for-educators", "/for-you"],
   ["/vi/for-educators", "/vi/for-you"],
@@ -197,10 +300,24 @@ assert(
   (await page.locator("html").getAttribute("lang")) === "vi",
   "language switch did not update document language",
 );
+assert(
+  (await page.context().cookies()).some(
+    (cookie) =>
+      cookie.name === "howl0-language-choice" && cookie.value === "vi",
+  ),
+  "language switch did not remember Vietnamese",
+);
 await page.getByRole("link", { name: "Sản phẩm", exact: true }).first().click();
 await page.waitForURL(`${base}/vi/product`);
 await page.getByRole("link", { name: "Chuyển sang tiếng Anh" }).click();
 await page.waitForURL(`${base}/product`);
+assert(
+  (await page.context().cookies()).some(
+    (cookie) =>
+      cookie.name === "howl0-language-choice" && cookie.value === "en",
+  ),
+  "language switch did not remember English",
+);
 await page.goBack({ waitUntil: "networkidle" });
 assert(
   new URL(page.url()).pathname === "/vi/product",
@@ -229,8 +346,20 @@ assert(
     .isVisible(),
   "FAQ accordion failed",
 );
+await page.goto(`${base}/people`, { waitUntil: "networkidle" });
+await page.getByRole("link", { name: "Switch to Vietnamese" }).click();
+await page.waitForURL(`${base}/vi/people`);
+assert(
+  await page
+    .getByRole("heading", { name: "Gặp gỡ Henry và Aaron." })
+    .isVisible(),
+  "People language switch failed",
+);
 
 for (const locale of ["en", "vi"]) {
+  await page
+    .context()
+    .addCookies([{ name: "howl0-language-choice", value: locale, url: base }]);
   await page.goto(`${base}${locale === "en" ? "/" : "/vi"}#waitlist`, {
     waitUntil: "networkidle",
   });
@@ -309,6 +438,9 @@ for (const [path, selector] of [
     viewport: { width: 390, height: 844 },
     reducedMotion: "reduce",
   });
+  await reduced
+    .context()
+    .addCookies([{ name: "howl0-language-choice", value: "en", url: base }]);
   await reduced.goto(`${base}${path}`, { waitUntil: "networkidle" });
   assert(
     await reduced.locator(selector).isVisible(),
