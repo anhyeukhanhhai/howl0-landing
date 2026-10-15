@@ -1,6 +1,7 @@
 import { PageCta } from "@/components/PageCta";
 import { PageHero } from "@/components/PageHero";
 import { PracticeLoop } from "@/components/PracticeLoop";
+import { ParaFigure } from "@/components/ParaFigure";
 import { content, type Locale } from "@/lib/i18n";
 
 export function HowItWorksPage({ locale }: { locale: Locale }) {
@@ -8,15 +9,13 @@ export function HowItWorksPage({ locale }: { locale: Locale }) {
   return (
     <main id="main" className="page-enter">
       <PageHero eyebrow={page.eyebrow} title={page.title} intro={page.intro}>
-        <div className="page-signal-mark" aria-hidden="true">
-          <img
-            src="/brand/howl0/02-symbols/howl0-return-loop-master.svg"
-            alt=""
-          />
-          <span>howl0.link/practice ↗</span>
-        </div>
+        <ParaFigure
+          asset="illustrations/para-scene-03-student-submits.svg"
+          locale={locale}
+          eager
+        />
       </PageHero>
-      <PracticeLoop content={page} />
+      <PracticeLoop content={page} locale={locale} />
       <section className="flow-next section-pad">
         <div className="wrap flow-next-inner">
           <h2>{page.differentiator}</h2>

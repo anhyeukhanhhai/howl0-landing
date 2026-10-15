@@ -13,8 +13,8 @@ export function homeHref(locale: Locale, hash = "") {
   return `/choose-language/${locale}?next=${encodeURIComponent(destination)}`;
 }
 
-export function languageChoiceHref(locale: Locale, path: string) {
-  return `/choose-language/${locale}?next=${encodeURIComponent(localePath(locale, path))}`;
+export function languageChoiceHref(locale: Locale, path: string, hash = "") {
+  return `/choose-language/${locale}?next=${encodeURIComponent(`${localePath(locale, path)}${hash}`)}`;
 }
 
 export const content = {
@@ -22,7 +22,7 @@ export const content = {
     lang: "en",
     navigation: {
       label: "Main navigation",
-      homeLabel: "howl0, home",
+      homeLabel: "PARA Music — home",
       menu: "Menu",
       close: "Close",
       languageLabel: "Switch to Vietnamese",
@@ -30,7 +30,7 @@ export const content = {
       items: [
         ["Product", "/product"],
         ["How it works", "/how-it-works"],
-        ["Why howl0", "/why-howl0"],
+        ["Why PARA", "/why-howl0"],
         ["For you", "/for-you"],
         ["People", "/people"],
         ["FAQ", "/faq"],
@@ -38,9 +38,9 @@ export const content = {
       waitlist: "Join the waitlist",
     },
     metadata: {
-      title: "howl0 — See progress between music lessons",
+      title: "PARA — See progress between music lessons",
       description:
-        "howl0 is building a clearer way to connect music practice, teacher feedback and progress between lessons for students, teachers and families.",
+        "PARA is building a clearer way to connect music practice, teacher feedback and progress between lessons for students, teachers and families.",
     },
     home: {
       metadataTitle: "See progress between music lessons",
@@ -48,7 +48,7 @@ export const content = {
         eyebrow: "MUSIC LEARNING, MADE VISIBLE",
         title: "See the progress between lessons.",
         intro:
-          "howl0 is being built to connect practice, teacher feedback and the next step—so students, teachers and parents can understand how learning moves forward.",
+          "PARA is being built to connect practice, teacher feedback and the next step—so students, teachers and parents can understand how learning moves forward.",
         primary: "Join the waitlist",
         secondary: "See how it works",
         status:
@@ -87,7 +87,7 @@ export const content = {
             copy: "See the learning behind the result, with context from the teacher.",
           },
         ],
-        link: "See what howl0 means for you",
+        link: "See what PARA means for you",
       },
     },
     belief: {
@@ -103,7 +103,7 @@ export const content = {
     },
     waitlist: {
       eyebrow: "STAY IN THE LOOP",
-      title: "Follow howl0 as it takes shape.",
+      title: "Follow PARA as it takes shape.",
       copy: "Receive occasional development updates and invitations to future research or early testing.",
       nameLabel: "Name",
       namePlaceholder: "Your name",
@@ -113,7 +113,7 @@ export const content = {
       loading: "Checking availability…",
       success: "You're in the loop. We'll keep you posted.",
       consent:
-        "By joining, you agree to receive howl0 development updates. You can unsubscribe at any time.",
+        "By joining, you agree to receive PARA development updates. You can unsubscribe at any time.",
       unavailable:
         "The waitlist is being connected. Submissions are not saved yet.",
       error:
@@ -125,7 +125,7 @@ export const content = {
       eyebrow: "PRODUCT DIRECTION",
       title: "Turn practice into visible progress.",
       intro:
-        "howl0 is being designed to connect the work students do between lessons with teacher guidance and a clearer progress story for families.",
+        "PARA is being designed to connect the work students do between lessons with teacher guidance and a clearer progress story for families.",
       visual: "Practice → Feedback → Next step → Progress over time",
       pillars: [
         [
@@ -147,8 +147,8 @@ export const content = {
       principle:
         "Technology should carry a teacher's guidance forward, not replace it.",
       principleCopy:
-        "howl0 organises the learning loop. The teacher remains responsible for direction, feedback and judgement.",
-      ctaTitle: "Help shape howl0",
+        "PARA organises the learning loop. The teacher remains responsible for direction, feedback and judgement.",
+      ctaTitle: "Help shape PARA",
     },
     howItWorks: {
       metadataTitle: "How it works",
@@ -187,14 +187,14 @@ export const content = {
       ctaTitle: "Follow the build",
     },
     why: {
-      metadataTitle: "Why howl0",
-      eyebrow: "WHY HOWL0",
+      metadataTitle: "Why PARA",
+      eyebrow: "WHY PARA",
       title: "The most important learning is often the hardest to see.",
       intro:
         "Lessons show a moment. Results show an outcome. The practice, feedback and small improvements between them often remain scattered or invisible.",
       missingTitle: "Parents often see the performance, not the process.",
       missingCopy:
-        "howl0 is exploring a clearer, teacher-led way for families to understand effort, feedback and development without turning learning into surveillance.",
+        "PARA is exploring a clearer, teacher-led way for families to understand effort, feedback and development without turning learning into surveillance.",
       fragments: [
         "Practice task",
         "Student recording",
@@ -212,7 +212,7 @@ export const content = {
       eyebrow: "BUILT AROUND THE LEARNING RELATIONSHIP",
       title: "One journey, with a clearer role for everyone.",
       intro:
-        "Students, teachers and parents do not need the same experience. howl0 is being shaped around what each person needs from the learning loop.",
+        "Students, teachers and parents do not need the same experience. PARA is being shaped around what each person needs from the learning loop.",
       tabsLabel: "Audience perspectives",
       views: [
         {
@@ -250,46 +250,46 @@ export const content = {
     },
     people: {
       metadataTitle: "People",
-      eyebrow: "THE PEOPLE BEHIND HOWL0",
+      eyebrow: "THE PEOPLE BEHIND PARA",
       title: "Meet Henry and Aaron.",
       intro:
-        "Henry Nguyen and Aaron Ta are creating howl0 together, with a shared focus on the learning that happens between music lessons.",
+        "Henry Nguyen and Aaron Ta are creating PARA together, with a shared focus on the learning that happens between music lessons.",
       profiles: [
         {
           name: "Henry Nguyen",
           role: "Commercial Co-Founder",
           description:
-            "The bassist and business mind behind howl0. Henry brings a musician's perspective to shaping how howl0 connects with teachers, students and families.",
+            "The bassist and business mind behind PARA. Henry brings a musician's perspective to shaping how PARA connects with teachers, students and families.",
         },
         {
           name: "Aaron Ta",
           role: "Founder",
           description:
-            "The guitarist and tech mind behind howl0. Aaron brings a musician's perspective to building the technology that connects practice, feedback and the next step.",
+            "The guitarist and tech mind behind PARA. Aaron brings a musician's perspective to building the technology that connects practice, feedback and the next step.",
         },
       ],
-      whyEyebrow: "WHY WE'RE BUILDING HOWL0",
+      whyEyebrow: "WHY WE'RE BUILDING PARA",
       whyTitle: "Learning does not stop when a lesson ends.",
       whyCopy:
-        "We are building howl0 to help teachers, students and families understand the work between lessons—starting with one simple way to submit practice, and keeping the next step in view.",
+        "We are building PARA to help teachers, students and families understand the work between lessons—starting with one simple way to submit practice, and keeping the next step in view.",
       ctaTitle: "Follow the journey",
     },
     faq: {
       metadataTitle: "FAQ",
       eyebrow: "GOOD QUESTIONS",
-      title: "What we know while howl0 takes shape.",
-      note: "howl0 is currently in development. These answers describe the intended direction, not a finished service.",
+      title: "What we know while PARA takes shape.",
+      note: "PARA is currently in development. These answers describe the intended direction, not a finished service.",
       items: [
         [
-          "What is howl0?",
-          "howl0 is a music learning progress platform in development. It aims to connect practice tasks, student recordings, teacher feedback and next steps between lessons.",
+          "What is PARA?",
+          "PARA is a music learning progress platform in development. It aims to connect practice tasks, student recordings, teacher feedback and next steps between lessons.",
         ],
         [
-          "Who is howl0 for?",
-          "howl0 is being designed for independent music teachers, their students and authorised parents or guardians.",
+          "Who is PARA for?",
+          "PARA is being designed for independent music teachers, their students and authorised parents or guardians.",
         ],
         [
-          "Is howl0 available now?",
+          "Is PARA available now?",
           "Not yet. The product is currently in development. Join the waitlist to receive updates and possible invitations to future research or testing.",
         ],
         [
@@ -301,7 +301,7 @@ export const content = {
           "We are exploring an authorised, age-appropriate view of practice activity, teacher feedback and progress over time. The exact information and controls still require research with families, students and teachers.",
         ],
         [
-          "Does howl0 replace the teacher?",
+          "Does PARA replace the teacher?",
           "No. The teacher remains responsible for learning direction, feedback and professional judgement. Technology should help that guidance continue between lessons.",
         ],
         [
@@ -309,19 +309,19 @@ export const content = {
           "The planned submission experience is browser-based, so students should be able to begin from a link. Final platform and device requirements remain subject to development and testing.",
         ],
         [
-          "How much will howl0 cost?",
+          "How much will PARA cost?",
           "Pricing has not been decided. We are still validating who receives the strongest recurring value and who is most willing to pay.",
         ],
         [
           "Is joining the waitlist free?",
-          "Yes. Joining only means receiving occasional howl0 updates and possible invitations to research or early testing. You can unsubscribe at any time.",
+          "Yes. Joining only means receiving occasional PARA updates and possible invitations to research or early testing. You can unsubscribe at any time.",
         ],
       ],
     },
     footer: {
       belief: "Feedback is a signal, not a verdict.",
       status: "Currently in development",
-      pronunciation: "Pronounced Howl-lo",
+      pronunciation: "Music learning, made visible",
       contact: "Contact details coming soon",
       navigationLabel: "Footer navigation",
     },
@@ -331,7 +331,7 @@ export const content = {
     lang: "vi",
     navigation: {
       label: "Điều hướng chính",
-      homeLabel: "howl0, trang chủ",
+      homeLabel: "PARA Music — trang chủ",
       menu: "Trình đơn",
       close: "Đóng",
       languageLabel: "Chuyển sang tiếng Anh",
@@ -339,7 +339,7 @@ export const content = {
       items: [
         ["Sản phẩm", "/product"],
         ["Cách hoạt động", "/how-it-works"],
-        ["Vì sao howl0", "/why-howl0"],
+        ["Vì sao PARA", "/why-howl0"],
         ["Dành cho bạn", "/for-you"],
         ["Con người", "/people"],
         ["Câu hỏi thường gặp", "/faq"],
@@ -347,9 +347,9 @@ export const content = {
       waitlist: "Đăng ký nhận tin",
     },
     metadata: {
-      title: "howl0 — Nhìn thấy tiến bộ giữa những buổi học nhạc",
+      title: "PARA — Nhìn thấy tiến bộ giữa những buổi học nhạc",
       description:
-        "howl0 đang xây dựng một cách rõ ràng hơn để kết nối việc luyện tập, góp ý của giáo viên và hành trình tiến bộ giữa các buổi học cho học sinh, giáo viên và gia đình.",
+        "PARA đang xây dựng một cách rõ ràng hơn để kết nối việc luyện tập, góp ý của giáo viên và hành trình tiến bộ giữa các buổi học cho học sinh, giáo viên và gia đình.",
     },
     home: {
       metadataTitle: "Nhìn thấy tiến bộ giữa những buổi học nhạc",
@@ -357,7 +357,7 @@ export const content = {
         eyebrow: "ĐỂ TIẾN BỘ ĐƯỢC NHÌN THẤY",
         title: "Thấy được từng bước tiến bộ giữa những buổi học.",
         intro:
-          "howl0 đang được xây dựng để kết nối phần luyện tập, góp ý của giáo viên và bước tiếp theo—giúp học sinh, giáo viên và phụ huynh cùng hiểu hành trình học đang tiến triển ra sao.",
+          "PARA đang được xây dựng để kết nối phần luyện tập, góp ý của giáo viên và bước tiếp theo—giúp học sinh, giáo viên và phụ huynh cùng hiểu hành trình học đang tiến triển ra sao.",
         primary: "Đăng ký nhận tin",
         secondary: "Xem cách hoạt động",
         status:
@@ -397,11 +397,11 @@ export const content = {
             copy: "Hiểu quá trình phía sau kết quả, qua những cập nhật có định hướng từ giáo viên.",
           },
         ],
-        link: "Xem howl0 dành cho bạn",
+        link: "Xem PARA dành cho bạn",
       },
     },
     belief: {
-      eyebrow: "ĐIỀU HOWL0 TIN TƯỞNG",
+      eyebrow: "ĐIỀU PARA TIN TƯỞNG",
       title: "Góp ý là tín hiệu để tiến bộ, không phải lời phán xét.",
       copy: "Một bản thu không thể định nghĩa năng lực của học sinh. Nó chỉ cho thấy hành trình đang ở đâu—và bước tiếp theo có thể là gì.",
       labels: [
@@ -413,17 +413,17 @@ export const content = {
     },
     waitlist: {
       eyebrow: "CÙNG THEO DÕI HÀNH TRÌNH",
-      title: "Cùng chờ xem howl0 sẽ thành hình như thế nào.",
-      copy: "Nhận cập nhật khi howl0 có bước tiến mới và lời mời tham gia nghiên cứu hoặc thử nghiệm sớm trong tương lai.",
+      title: "Cùng chờ xem PARA sẽ thành hình như thế nào.",
+      copy: "Nhận cập nhật khi PARA có bước tiến mới và lời mời tham gia nghiên cứu hoặc thử nghiệm sớm trong tương lai.",
       nameLabel: "Tên của bạn",
       namePlaceholder: "Nhập tên của bạn",
       emailLabel: "Email",
       emailPlaceholder: "ban@example.com",
       button: "Đăng ký nhận tin",
       loading: "Đang kiểm tra…",
-      success: "Bạn đã vào nhịp cùng howl0. Chúng tôi sẽ sớm cập nhật.",
+      success: "Bạn đã vào nhịp cùng PARA. Chúng tôi sẽ sớm cập nhật.",
       consent:
-        "Khi đăng ký, bạn đồng ý nhận email cập nhật từ howl0 và có thể hủy đăng ký bất cứ lúc nào.",
+        "Khi đăng ký, bạn đồng ý nhận email cập nhật từ PARA và có thể hủy đăng ký bất cứ lúc nào.",
       unavailable:
         "Hệ thống đăng ký đang được kết nối. Thông tin hiện chưa được lưu.",
       error: "Hệ thống đăng ký chưa nhận thông tin. Vui lòng quay lại sau.",
@@ -434,7 +434,7 @@ export const content = {
       eyebrow: "ĐỊNH HƯỚNG SẢN PHẨM",
       title: "Để mỗi lần luyện tập trở thành một bước tiến có thể nhìn thấy.",
       intro:
-        "howl0 đang được thiết kế để kết nối phần luyện tập giữa các buổi học với định hướng của giáo viên và giúp gia đình hiểu rõ hơn hành trình tiến bộ.",
+        "PARA đang được thiết kế để kết nối phần luyện tập giữa các buổi học với định hướng của giáo viên và giúp gia đình hiểu rõ hơn hành trình tiến bộ.",
       visual: "Luyện tập → Góp ý → Bước tiếp theo → Tiến bộ theo thời gian",
       pillars: [
         [
@@ -456,8 +456,8 @@ export const content = {
       principle:
         "Công nghệ nên giúp định hướng của giáo viên đi xa hơn, không thay thế giáo viên.",
       principleCopy:
-        "howl0 giúp vòng học trở nên liền mạch. Giáo viên vẫn là người định hướng, góp ý và đưa ra đánh giá chuyên môn.",
-      ctaTitle: "Cùng góp phần hoàn thiện howl0",
+        "PARA giúp vòng học trở nên liền mạch. Giáo viên vẫn là người định hướng, góp ý và đưa ra đánh giá chuyên môn.",
+      ctaTitle: "Cùng góp phần hoàn thiện PARA",
     },
     howItWorks: {
       metadataTitle: "Cách hoạt động",
@@ -499,8 +499,8 @@ export const content = {
       ctaTitle: "Theo dõi quá trình phát triển",
     },
     why: {
-      metadataTitle: "Vì sao howl0",
-      eyebrow: "VÌ SAO CÓ HOWL0",
+      metadataTitle: "Vì sao PARA",
+      eyebrow: "VÌ SAO CÓ PARA",
       title:
         "Phần quan trọng nhất của việc học đôi khi lại khó nhìn thấy nhất.",
       intro:
@@ -508,7 +508,7 @@ export const content = {
       missingTitle:
         "Phụ huynh thường thấy phần trình diễn, nhưng chưa chắc thấy được cả quá trình.",
       missingCopy:
-        "howl0 đang tìm cách giúp gia đình hiểu rõ hơn về nỗ lực, góp ý và sự tiến bộ—dưới sự định hướng của giáo viên, chứ không biến việc học thành sự giám sát.",
+        "PARA đang tìm cách giúp gia đình hiểu rõ hơn về nỗ lực, góp ý và sự tiến bộ—dưới sự định hướng của giáo viên, chứ không biến việc học thành sự giám sát.",
       fragments: [
         "Bài tập",
         "Bản thu của học sinh",
@@ -526,7 +526,7 @@ export const content = {
       eyebrow: "ĐƯỢC XÂY DỰNG QUANH MỐI QUAN HỆ HỌC TẬP",
       title: "Một hành trình, với vai trò rõ ràng hơn cho mỗi người.",
       intro:
-        "Học sinh, giáo viên và phụ huynh không cần cùng một trải nghiệm. howl0 đang được xây dựng dựa trên điều mỗi người thực sự cần trong vòng học.",
+        "Học sinh, giáo viên và phụ huynh không cần cùng một trải nghiệm. PARA đang được xây dựng dựa trên điều mỗi người thực sự cần trong vòng học.",
       tabsLabel: "Góc nhìn của từng người",
       views: [
         {
@@ -564,46 +564,46 @@ export const content = {
     },
     people: {
       metadataTitle: "Con người",
-      eyebrow: "NHỮNG NGƯỜI ĐỨNG SAU HOWL0",
+      eyebrow: "NHỮNG NGƯỜI ĐỨNG SAU PARA",
       title: "Gặp gỡ Henry và Aaron.",
       intro:
-        "Henry Nguyen và Aaron Ta đang cùng xây dựng howl0, với mong muốn kết nối rõ hơn việc học nhạc giữa các buổi học.",
+        "Henry Nguyen và Aaron Ta đang cùng xây dựng PARA, với mong muốn kết nối rõ hơn việc học nhạc giữa các buổi học.",
       profiles: [
         {
           name: "Henry Nguyen",
           role: "Đồng sáng lập phụ trách thương mại",
           description:
-            "Henry chơi bass và phụ trách hướng kinh doanh của howl0. Từ góc nhìn của người chơi nhạc, Henry cùng xây dựng cách howl0 kết nối với giáo viên, học sinh và gia đình.",
+            "Henry chơi bass và phụ trách hướng kinh doanh của PARA. Từ góc nhìn của người chơi nhạc, Henry cùng xây dựng cách PARA kết nối với giáo viên, học sinh và gia đình.",
         },
         {
           name: "Aaron Ta",
           role: "Người sáng lập",
           description:
-            "Aaron chơi guitar và phụ trách hướng công nghệ của howl0. Từ góc nhìn của người chơi nhạc, Aaron xây dựng công nghệ để kết nối luyện tập, góp ý và bước tiếp theo.",
+            "Aaron chơi guitar và phụ trách hướng công nghệ của PARA. Từ góc nhìn của người chơi nhạc, Aaron xây dựng công nghệ để kết nối luyện tập, góp ý và bước tiếp theo.",
         },
       ],
-      whyEyebrow: "VÌ SAO CHÚNG TÔI XÂY DỰNG HOWL0",
+      whyEyebrow: "VÌ SAO CHÚNG TÔI XÂY DỰNG PARA",
       whyTitle: "Việc học không dừng lại khi buổi học kết thúc.",
       whyCopy:
-        "Chúng tôi xây dựng howl0 để giáo viên, học sinh và gia đình hiểu rõ hơn việc học giữa các buổi học—bắt đầu từ một cách gửi bài đơn giản và giữ cho bước tiếp theo luôn rõ ràng.",
-      ctaTitle: "Theo dõi hành trình của howl0",
+        "Chúng tôi xây dựng PARA để giáo viên, học sinh và gia đình hiểu rõ hơn việc học giữa các buổi học—bắt đầu từ một cách gửi bài đơn giản và giữ cho bước tiếp theo luôn rõ ràng.",
+      ctaTitle: "Theo dõi hành trình của PARA",
     },
     faq: {
       metadataTitle: "Câu hỏi thường gặp",
       eyebrow: "NHỮNG CÂU HỎI ĐÁNG ĐƯỢC TRẢ LỜI",
-      title: "Những điều chúng tôi có thể chia sẻ khi howl0 đang thành hình.",
-      note: "howl0 hiện vẫn đang được phát triển. Các câu trả lời dưới đây mô tả định hướng dự kiến, không phải một dịch vụ đã hoàn thiện.",
+      title: "Những điều chúng tôi có thể chia sẻ khi PARA đang thành hình.",
+      note: "PARA hiện vẫn đang được phát triển. Các câu trả lời dưới đây mô tả định hướng dự kiến, không phải một dịch vụ đã hoàn thiện.",
       items: [
         [
-          "howl0 là gì?",
-          "howl0 là nền tảng theo dõi hành trình tiến bộ trong học nhạc, hiện đang được phát triển. Sản phẩm hướng đến việc kết nối bài tập, bản thu của học sinh, góp ý từ giáo viên và bước luyện tập tiếp theo giữa các buổi học.",
+          "PARA là gì?",
+          "PARA là nền tảng theo dõi hành trình tiến bộ trong học nhạc, hiện đang được phát triển. Sản phẩm hướng đến việc kết nối bài tập, bản thu của học sinh, góp ý từ giáo viên và bước luyện tập tiếp theo giữa các buổi học.",
         ],
         [
-          "howl0 dành cho ai?",
-          "howl0 đang được thiết kế cho giáo viên âm nhạc độc lập, học sinh và phụ huynh hoặc người giám hộ được cấp quyền.",
+          "PARA dành cho ai?",
+          "PARA đang được thiết kế cho giáo viên âm nhạc độc lập, học sinh và phụ huynh hoặc người giám hộ được cấp quyền.",
         ],
         [
-          "howl0 đã có thể sử dụng chưa?",
+          "PARA đã có thể sử dụng chưa?",
           "Chưa. Sản phẩm hiện vẫn đang được phát triển. Bạn có thể đăng ký nhận tin để theo dõi cập nhật và có cơ hội tham gia nghiên cứu hoặc thử nghiệm trong tương lai.",
         ],
         [
@@ -615,7 +615,7 @@ export const content = {
           "Chúng tôi đang nghiên cứu một góc nhìn phù hợp với độ tuổi và chỉ dành cho người được cấp quyền, bao gồm hoạt động luyện tập, góp ý của giáo viên và tiến bộ theo thời gian. Nội dung và quyền kiểm soát cụ thể vẫn cần được kiểm chứng cùng gia đình, học sinh và giáo viên.",
         ],
         [
-          "howl0 có thay thế giáo viên không?",
+          "PARA có thay thế giáo viên không?",
           "Không. Giáo viên vẫn là người chịu trách nhiệm định hướng, góp ý và đưa ra đánh giá chuyên môn. Công nghệ chỉ giúp sự hướng dẫn ấy được tiếp nối giữa các buổi học.",
         ],
         [
@@ -623,19 +623,19 @@ export const content = {
           "Trải nghiệm gửi bài dự kiến hoạt động trên trình duyệt, để học sinh có thể bắt đầu ngay từ một đường link. Yêu cầu chính thức về nền tảng và thiết bị sẽ được xác định sau quá trình phát triển và thử nghiệm.",
         ],
         [
-          "howl0 sẽ có mức giá bao nhiêu?",
+          "PARA sẽ có mức giá bao nhiêu?",
           "Mức giá chưa được quyết định. Chúng tôi vẫn đang kiểm chứng ai nhận được giá trị thường xuyên rõ ràng nhất và ai sẵn sàng chi trả.",
         ],
         [
           "Đăng ký nhận tin có miễn phí không?",
-          "Có. Việc đăng ký chỉ giúp bạn nhận một số cập nhật từ howl0 và lời mời tham gia nghiên cứu hoặc thử nghiệm sớm nếu phù hợp. Bạn có thể hủy đăng ký bất cứ lúc nào.",
+          "Có. Việc đăng ký chỉ giúp bạn nhận một số cập nhật từ PARA và lời mời tham gia nghiên cứu hoặc thử nghiệm sớm nếu phù hợp. Bạn có thể hủy đăng ký bất cứ lúc nào.",
         ],
       ],
     },
     footer: {
       belief: "Góp ý là tín hiệu để tiến bộ, không phải lời phán xét.",
       status: "Hiện đang được phát triển",
-      pronunciation: "Đọc là “Howl-lo”",
+      pronunciation: "Để tiến bộ được nhìn thấy",
       contact: "Thông tin liên hệ sẽ sớm được cập nhật",
       navigationLabel: "Điều hướng cuối trang",
     },

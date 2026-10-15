@@ -2,7 +2,7 @@ import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/reposition";
+const out = ".qa/para";
 const pages = [
   [
     "",
@@ -32,8 +32,8 @@ const pages = [
   ["people", "Meet Henry and Aaron.", "Gặp gỡ Henry và Aaron."],
   [
     "faq",
-    "What we know while howl0 takes shape.",
-    "Những điều chúng tôi có thể chia sẻ khi howl0 đang thành hình.",
+    "What we know while PARA takes shape.",
+    "Những điều chúng tôi có thể chia sẻ khi PARA đang thành hình.",
   ],
 ];
 const viewports = [
@@ -59,7 +59,7 @@ for (const [width, height] of viewports) {
     `${width}: first visit did not show welcome`,
   );
   assert(
-    await page.getByRole("heading", { name: "Welcome to howl0." }).isVisible(),
+    await page.getByRole("heading", { name: "Welcome to PARA." }).isVisible(),
     `${width}: welcome heading missing`,
   );
   assert(
@@ -152,6 +152,11 @@ async function revealPage(page) {
     await page.waitForTimeout(25);
   }
   await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+  await page.evaluate(() =>
+    Promise.all(
+      [...document.images].map((img) => img.decode().catch(() => {})),
+    ),
+  );
 }
 
 for (const [width, height] of viewports) {
@@ -194,6 +199,11 @@ for (const [width, height] of viewports) {
           overflow: document.documentElement.scrollWidth - innerWidth,
           mains: document.querySelectorAll("main").length,
           h1s: document.querySelectorAll("h1").length,
+          staleBrand:
+            /howl0/i.test(document.body.innerText) ||
+            [...document.images].some((img) =>
+              img.src.includes("/brand/howl0/"),
+            ),
           clipped,
           heroSeparated: (() => {
             const copy = document.querySelector(".home-hero .hero-copy");
@@ -210,22 +220,20 @@ for (const [width, height] of viewports) {
           })(),
           heroContained: (() => {
             const hero = document.querySelector(".home-hero");
-            const logo = document.querySelector(".home-hero .hero-loop");
-            const message = document.querySelector(
-              ".home-hero .preview-message",
-            );
-            if (!hero || !logo || !message) return true;
-            const bottom = hero.getBoundingClientRect().bottom;
+            const visual = document.querySelector(".home-hero .hero-visual");
             return (
-              logo.getBoundingClientRect().bottom <= bottom + 1 &&
-              message.getBoundingClientRect().bottom <= bottom + 1
+              !hero ||
+              !visual ||
+              visual.getBoundingClientRect().bottom <=
+                hero.getBoundingClientRect().bottom + 1
             );
           })(),
         };
       });
       assert(layout.lang === locale, `${path}: html lang ${layout.lang}`);
+      assert(!layout.staleBrand, `${path}: old brand remains visible`);
       assert(
-        layout.title.includes("howl0") && layout.description,
+        layout.title.includes("PARA") && layout.description,
         `${path}: localized metadata missing`,
       );
       assert(
@@ -266,6 +274,7 @@ for (const [width, height] of viewports) {
         await page.screenshot({
           path: `${out}/${locale}-${slug || "home"}-${width}x${height}.png`,
           fullPage: true,
+          animations: "disabled",
         });
       }
       await page.close();
@@ -339,7 +348,7 @@ assert(
   "audience tabs keyboard failed",
 );
 await page.goto(`${base}/faq`, { waitUntil: "networkidle" });
-await page.getByText("What is howl0?", { exact: true }).click();
+await page.getByText("What is PARA?", { exact: true }).click();
 assert(
   await page
     .getByText(/music learning progress platform in development/)
@@ -372,41 +381,74 @@ for (const locale of ["en", "vi"]) {
     (await form.locator("select,textarea").count()) === 0,
     `${locale}: removed fields remain`,
   );
-  await form
-    .getByRole("button", {
-      name: locale === "en" ? "Join the waitlist" : "Đăng ký nhận tin",
-    })
-    .click();
   assert(
-    !(await form
-      .locator('[name="name"]')
-      .evaluate((node) => node.checkValidity())),
-    `${locale}: name not required`,
+    await form.getByRole("button").isDisabled(),
+    `${locale}: pending backend must disable submission`,
   );
-  await form.locator('[name="name"]').fill("Test Name");
-  await form.locator('[name="email"]').fill("test@example.com");
-  await form
-    .getByRole("button", {
-      name: locale === "en" ? "Join the waitlist" : "Đăng ký nhận tin",
-    })
-    .click();
-  await form
-    .getByRole("status")
-    .getByText(
-      locale === "en" ? /not accepting submissions yet/ : /chưa nhận thông tin/,
-    )
-    .waitFor();
   assert(
-    !(await form
+    (await form.locator("input:disabled").count()) === 2,
+    `${locale}: unavailable fields must be disabled`,
+  );
+  assert(
+    await form
+      .getByText(
+        locale === "en"
+          ? /Submissions are not saved yet/
+          : /Thông tin hiện chưa được lưu/,
+      )
+      .isVisible(),
+    `${locale}: honest development notice missing`,
+  );
+  assert(
+    (await form
       .getByText(
         locale === "en"
           ? "You're in the loop. We'll keep you posted."
-          : "Bạn đã vào nhịp cùng howl0. Chúng tôi sẽ sớm cập nhật.",
+          : "Bạn đã vào nhịp cùng PARA. Chúng tôi sẽ sớm cập nhật.",
       )
-      .count()),
+      .count()) === 0,
     `${locale}: false success`,
   );
 }
+await page
+  .context()
+  .addCookies([{ name: "howl0-language-choice", value: "en", url: base }]);
+await page.goto(`${base}/#waitlist`, { waitUntil: "networkidle" });
+await page.getByRole("link", { name: "Switch to Vietnamese" }).click();
+await page.waitForURL(`${base}/vi#waitlist`);
+assert(
+  await page.locator("#waitlist").isVisible(),
+  "language switch lost waitlist anchor",
+);
+await page
+  .context()
+  .addCookies([{ name: "howl0-language-choice", value: "en", url: base }]);
+await page.goto(base, { waitUntil: "networkidle" });
+const label = page.locator(".flow-label");
+assert(
+  (await label.textContent()) === "Teacher assigns",
+  "story initial state failed",
+);
+await page.waitForTimeout(1900);
+assert(
+  (await label.textContent()) === "Teacher assigns",
+  "story must not autoplay",
+);
+await page.getByRole("button", { name: "Play story" }).click();
+await page.waitForTimeout(1900);
+assert(
+  (await label.textContent()) === "Student practises",
+  "story did not advance",
+);
+await page.getByRole("button", { name: "Pause story" }).click();
+const paused = await label.textContent();
+await page.waitForTimeout(1900);
+assert((await label.textContent()) === paused, "paused story continued");
+await page.getByRole("button", { name: "Next step", exact: true }).click();
+assert(
+  (await label.textContent()) === "Student submits",
+  "manual story next failed",
+);
 await page.close();
 
 const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -425,6 +467,15 @@ assert(
   (await menu.getAttribute("aria-expanded")) === "false",
   "mobile Escape failed",
 );
+await menu.click();
+await mobile.setViewportSize({ width: 1440, height: 900 });
+await mobile.waitForFunction(() => !document.querySelector("main").inert);
+assert(
+  (await mobile.locator(".menu-toggle").getAttribute("aria-expanded")) ===
+    "false",
+  "desktop resize did not close menu",
+);
+await mobile.setViewportSize({ width: 390, height: 844 });
 await menu.click();
 await mobile.getByRole("link", { name: "Chuyển sang tiếng Anh" }).click();
 await mobile.waitForURL(`${base}/product`);
@@ -448,7 +499,7 @@ for (const [path, selector] of [
   );
   if (path.includes("how-it-works")) {
     assert(
-      (await reduced.locator(selector).getAttribute("data-stage")) === "4",
+      (await reduced.locator(".practice-step").count()) === 5,
       "reduced-motion loop is incomplete",
     );
   }

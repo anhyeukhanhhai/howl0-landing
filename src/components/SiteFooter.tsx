@@ -13,7 +13,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               href={homeHref(locale)}
               aria-label={dictionary.navigation.homeLabel}
             >
-              <BrandLogo width={150} height={62} />
+              <BrandLogo width={168} height={83} footer />
             </a>
             <p>{dictionary.footer.belief}</p>
           </div>
@@ -22,7 +22,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
             aria-label={dictionary.footer.navigationLabel}
           >
             {dictionary.navigation.items.map(([label, href]) => (
-              <Link href={localePath(locale, href)} key={href}>
+              <Link href={localePath(locale, href)} key={href} prefetch={false}>
                 {label}
               </Link>
             ))}
@@ -33,7 +33,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         </div>
         <div className="footer-bottom">
           <span>
-            © {new Date().getFullYear()} howl0 ·{" "}
+            © {new Date().getFullYear()} PARA ·{" "}
             {dictionary.footer.pronunciation}
           </span>
           <span>

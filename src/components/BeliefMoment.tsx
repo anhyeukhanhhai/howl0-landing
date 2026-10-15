@@ -1,8 +1,9 @@
-import { ScrollScene } from "@/components/ScrollScene";
-
+import { ParaFigure } from "@/components/ParaFigure";
+import { paraContent } from "@/lib/para";
+import type { Locale } from "@/lib/i18n";
 export function BeliefMoment({
   content,
-  compact = false,
+  locale,
 }: {
   content: {
     eyebrow: string;
@@ -10,29 +11,30 @@ export function BeliefMoment({
     copy: string;
     labels: readonly string[];
   };
-  compact?: boolean;
+  locale: Locale;
 }) {
   return (
-    <ScrollScene
-      id="belief"
-      stages={4}
-      className={`belief belief-scroll surface-noise ${compact ? "belief-compact" : ""}`}
-    >
-      <div className="wrap belief-inner">
-        <p className="eyebrow light">{content.eyebrow}</p>
-        <h2>{content.title}</h2>
-        <p>{content.copy}</p>
-        <div className="belief-wave" aria-hidden="true">
-          <svg viewBox="0 0 1200 180" preserveAspectRatio="none">
-            <path d="M0 100 C120 20 170 180 300 100 S480 20 600 100 S780 180 900 100 S1080 20 1200 100" />
-          </svg>
+    <section id="belief" className="belief section-pad">
+      <div className="wrap belief-grid">
+        <div>
+          <p className="eyebrow">{content.eyebrow}</p>
+          <h2>{content.title}</h2>
+          <p>{content.copy}</p>
+          <ol className="feedback-markers">
+            {content.labels.map((label, index) => (
+              <li key={label}>
+                <span>0{index + 1}</span>
+                {label}
+              </li>
+            ))}
+          </ol>
         </div>
-        <div className="feedback-markers">
-          {content.labels.map((label) => (
-            <span key={label}>{label}</span>
-          ))}
-        </div>
+        <ParaFigure
+          asset="graphics/para-progress-between-attempts.svg"
+          locale={locale}
+          caption={paraContent[locale].comparison}
+        />
       </div>
-    </ScrollScene>
+    </section>
   );
 }

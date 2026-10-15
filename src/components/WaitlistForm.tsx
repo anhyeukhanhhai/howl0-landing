@@ -1,80 +1,48 @@
-"use client";
-import { useState } from "react";
-import { submitWaitlist } from "@/lib/waitlist";
 import { content, type Locale } from "@/lib/i18n";
-
+import { ParaIcon } from "@/components/ParaIcon";
+/** No backend is connected. Disabled controls cannot imply a saved submission. */
 export function WaitlistForm({ locale }: { locale: Locale }) {
-  const dictionary = content[locale].waitlist;
-  const [state, setState] = useState<"idle" | "loading" | "success" | "error">(
-    "idle",
-  );
-  const [error, setError] = useState("");
-  async function submit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const form = e.currentTarget;
-    if (!form.reportValidity()) return;
-    const data = new FormData(form);
-    setState("loading");
-    setError("");
-    try {
-      await submitWaitlist({
-        name: String(data.get("name") || ""),
-        email: String(data.get("email") || ""),
-      });
-      setState("success");
-      form.reset();
-    } catch (err) {
-      setState("error");
-      setError(
-        err instanceof Error ? dictionary.error : dictionary.genericError,
-      );
-    }
-  }
+  const page = content[locale].waitlist;
   return (
-    <form className="waitlist-form" onSubmit={submit} noValidate={false}>
-      <p className="form-note">{dictionary.unavailable}</p>
+    <form className="waitlist-form" aria-describedby="waitlist-unavailable">
+      <p className="form-note" id="waitlist-unavailable">
+        <ParaIcon name="alert" />
+        {page.unavailable}
+      </p>
       <div className="field">
         <label htmlFor="waitlist-name">
-          {dictionary.nameLabel} <span aria-hidden="true">*</span>
+          {page.nameLabel} <span aria-hidden="true">*</span>
         </label>
         <input
           id="waitlist-name"
           name="name"
           type="text"
           autoComplete="name"
-          placeholder={dictionary.namePlaceholder}
           required
+          disabled
         />
       </div>
       <div className="field">
-        <label htmlFor="email">
-          {dictionary.emailLabel} <span aria-hidden="true">*</span>
+        <label htmlFor="waitlist-email">
+          {page.emailLabel} <span aria-hidden="true">*</span>
         </label>
         <input
-          id="email"
+          id="waitlist-email"
           name="email"
           type="email"
           autoComplete="email"
-          placeholder={dictionary.emailPlaceholder}
           required
+          disabled
         />
       </div>
       <button
         className="button button-primary form-submit"
-        disabled={state === "loading"}
+        disabled
         type="submit"
       >
-        {state === "loading" ? dictionary.loading : dictionary.button}{" "}
-        <span aria-hidden="true">↗</span>
+        {page.button}
       </button>
-      <p className="consent-note">{dictionary.consent}</p>
-      <p className="form-status" role="status" aria-live="polite">
-        {state === "error"
-          ? error
-          : state === "success"
-            ? dictionary.success
-            : ""}
-      </p>
+      <p className="consent-note">{page.consent}</p>
     </form>
   );
 }

@@ -1,50 +1,57 @@
-"use client";
-
-import { useRef, type CSSProperties } from "react";
+import { content, type Locale } from "@/lib/i18n";
+import { paraContent } from "@/lib/para";
+import { ParaIcon } from "@/components/ParaIcon";
 import { Reveal } from "@/components/Reveal";
-import { useVisibleAnimation } from "@/hooks/useVisibleAnimation";
+
+const icons = [
+  "assignment",
+  "practise",
+  "audio-recording",
+  "teacher-feedback",
+  "next-practice-step",
+];
 
 export function SubmissionFlow({
-  content,
+  locale,
+  active = 0,
 }: {
-  content: {
-    eyebrow: string;
-    title: string;
-    copy: string;
-    steps: readonly (readonly [string, string, string])[];
-  };
+  locale: Locale;
+  active?: number;
 }) {
-  const visual = useRef<HTMLDivElement>(null);
-  useVisibleAnimation(visual);
+  const page = content[locale].home.loop;
+  const extra = paraContent[locale];
   return (
     <section
       id="submission-flow"
-      className="submission-flow"
+      className="submission-flow section-pad"
       aria-labelledby="submission-flow-heading"
     >
-      <div className="wrap submission-flow-grid">
-        <Reveal className="submission-flow-copy">
-          <p className="eyebrow">{content.eyebrow}</p>
-          <h2 id="submission-flow-heading">{content.title}</h2>
-          <p>{content.copy}</p>
-        </Reveal>
-        <div ref={visual} className="submission-visual" data-playing="false">
-          <ol className="submission-sequence">
-            {content.steps.map(([number, label, role], index) => (
-              <li
-                key={label}
-                style={{ "--flow-index": index } as CSSProperties}
-              >
-                <span className="submission-number">{number}</span>
-                <span className="submission-role">{role}</span>
-                <strong>{label}</strong>
-              </li>
-            ))}
-          </ol>
-          <div className="submission-link" aria-hidden="true">
-            howl0.link/task <span>↗</span>
+      <div className="wrap">
+        <Reveal className="section-heading-grid">
+          <div>
+            <p className="eyebrow">{page.eyebrow}</p>
+            <h2 id="submission-flow-heading">{page.title}</h2>
           </div>
-        </div>
+          <p>{page.copy}</p>
+        </Reveal>
+        <ol className="submission-sequence">
+          {page.steps.map(([number, label], index) => (
+            <li
+              key={label}
+              aria-current={active === index ? "step" : undefined}
+            >
+              <span className="submission-number">{number}</span>
+              <ParaIcon name={icons[index]} music />
+              <h3>{label}</h3>
+              <p>{extra.details[index]}</p>
+            </li>
+          ))}
+        </ol>
+        <aside className="brand-story">
+          <p className="eyebrow">{extra.brandLabel}</p>
+          <h3>{extra.brandCycle}</h3>
+          <p>{extra.brandCopy}</p>
+        </aside>
       </div>
     </section>
   );

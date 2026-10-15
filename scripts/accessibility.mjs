@@ -49,6 +49,11 @@ for (const [width, height, device] of [
   for (const route of routes) {
     await page.goto(`${base}${route}`, { waitUntil: "networkidle" });
     await scan(page, `${colorScheme} ${device} ${route}`);
+    if (device === "mobile" && route === "/product") {
+      await page.getByRole("button", { name: "Menu", exact: true }).click();
+      await scan(page, `${colorScheme} mobile menu open`);
+      await page.keyboard.press("Escape");
+    }
     if (route.endsWith("/for-you")) {
       const tabs = page.getByRole("tab");
       for (const index of [1, 2]) {

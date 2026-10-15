@@ -1,23 +1,29 @@
-/** The approved wordmark geometry, with palette colours suited to each surface. */
+/** Exact supplied refined PARA assets. No path, crop or colour modification. */
 export function BrandLogo({
   width,
   height,
   className,
+  footer = false,
 }: {
   width: number;
   height: number;
   className?: string;
+  footer?: boolean;
 }) {
   return (
     <picture className="brand-logo">
       <source
         media="(prefers-color-scheme: dark)"
-        srcSet="/brand/howl0/01-logo/howl0-logo-dark.svg"
+        srcSet="/brand/para/logo/PARA_White.svg"
       />
       <img
         className={className}
-        src="/brand/howl0/01-logo/howl0-logo-master.svg"
-        alt="howl0"
+        src={
+          footer
+            ? "/brand/para/logo/PARA_Cocoa.svg"
+            : "/brand/para/logo/PARA_Raspberry.svg"
+        }
+        alt="PARA"
         width={width}
         height={height}
       />

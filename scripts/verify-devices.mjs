@@ -3,7 +3,7 @@ import { mkdir } from "node:fs/promises";
 import { chromium, webkit, devices } from "playwright";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/devices";
+const out = ".qa/para/devices";
 await mkdir(out, { recursive: true });
 const routes = [
   "",
@@ -57,15 +57,29 @@ async function checkLayout(page, label) {
         problems.push(`clipped ${el.tagName}: ${el.textContent.slice(0, 35)}`);
       }
     }
-    const sticky = document.querySelector(".practice-sticky");
-    if (sticky && getComputedStyle(sticky).position === "sticky") {
-      const top = parseFloat(getComputedStyle(sticky).top);
-      if (sticky.scrollHeight > innerHeight - top + 2)
-        problems.push("pinned learning loop taller than viewport");
-    }
+    const logo = document.querySelector(".brand img");
+    if (logo && logo.getBoundingClientRect().width < 104)
+      problems.push("wordmark below minimum size");
     return problems;
   });
   assert.deepEqual(issues, [], `${label}: ${issues.join(", ")}`);
+}
+
+async function prepareScreenshot(page) {
+  await page.evaluate(async () => {
+    for (
+      let y = 0;
+      y < document.documentElement.scrollHeight;
+      y += innerHeight * 0.8
+    ) {
+      scrollTo({ top: y, behavior: "instant" });
+      await new Promise((resolve) => setTimeout(resolve, 25));
+    }
+    await Promise.all(
+      [...document.images].map((img) => img.decode().catch(() => {})),
+    );
+    scrollTo({ top: 0, behavior: "instant" });
+  });
 }
 
 async function run(engine, settings) {
@@ -97,14 +111,15 @@ async function run(engine, settings) {
             .evaluate((el) => getComputedStyle(el).backgroundColor);
           assert.equal(
             bodyColor,
-            "rgb(42, 27, 34)",
+            "rgb(53, 36, 45)",
             `${path}: dark mode did not follow device`,
           );
-          await checkLogo(page, ".brand img", "howl0-logo-dark.svg");
+          await checkLogo(page, ".brand img", "PARA_White.svg");
           if (
             ["", "/people", "/how-it-works"].includes(route) &&
             ["android", "iphone", "desktop", "ultrawide"].includes(name)
           ) {
+            await prepareScreenshot(page);
             await page.screenshot({
               path: `${out}/${engine.name()}-${name}-${locale}-${route.slice(1) || "home"}-dark.png`,
               fullPage: true,
@@ -122,11 +137,15 @@ async function run(engine, settings) {
         "rgb(255, 247, 242)",
         "live switch back to light failed",
       );
-      await checkLogo(page, ".brand img", "howl0-logo-master.svg");
+      await checkLogo(page, ".brand img", "PARA_Raspberry.svg");
       await checkLayout(page, `${engine.name()} ${name} light`);
       const menu = page.locator(".menu-toggle");
       if (await menu.isVisible()) {
         await menu.click();
+        assert(
+          await page.locator("main").evaluate((el) => el.inert),
+          "open menu must make obscured page inert",
+        );
         const menuBounds = await page.locator(".nav-links").evaluate((el) => ({
           bottom: el.getBoundingClientRect().bottom,
           height: innerHeight,
@@ -149,8 +168,9 @@ async function run(engine, settings) {
       await page.emulateMedia({ colorScheme: "dark" });
       await page.evaluate(() => document.fonts.ready);
       await checkLayout(page, `${name} welcome`);
-      await checkLogo(page, ".welcome-logo", "howl0-logo-dark.svg");
+      await checkLogo(page, ".welcome-logo", "PARA_White.svg");
       if (["android", "iphone", "desktop", "ultrawide"].includes(name)) {
+        await prepareScreenshot(page);
         await page.screenshot({
           path: `${out}/${engine.name()}-${name}-welcome-dark.png`,
           fullPage: true,
@@ -174,7 +194,7 @@ async function run(engine, settings) {
       await page
         .locator("body")
         .evaluate((el) => getComputedStyle(el).backgroundColor),
-      "rgb(42, 27, 34)",
+      "rgb(53, 36, 45)",
     );
     await noJs.close();
   } finally {

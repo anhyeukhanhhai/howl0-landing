@@ -1,5 +1,8 @@
 "use client";
 import { useRef, useState } from "react";
+import type { Locale } from "@/lib/i18n";
+import { audienceScenes } from "@/lib/para";
+import { ParaFigure } from "@/components/ParaFigure";
 
 type Audience = {
   readonly name: string;
@@ -11,9 +14,11 @@ type Audience = {
 export function AudienceTabs({
   audience,
   label,
+  locale,
 }: {
   audience: readonly Audience[];
   label: string;
+  locale: Locale;
 }) {
   const [active, setActive] = useState(0);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -66,16 +71,29 @@ export function AudienceTabs({
             ))}
           </ul>
         </div>
-        <div className="audience-art" aria-hidden="true">
-          <div className="art-orbit">
-            <img
-              src="/brand/howl0/02-symbols/howl0-return-loop-master.svg"
-              alt=""
-            />
-          </div>
-          <span>{audience[active].name}</span>
-        </div>
+        <ParaFigure
+          asset={`illustrations/${audienceScenes[active]}`}
+          locale={locale}
+        />
       </div>
+      <noscript>
+        <div className="no-js-perspectives">
+          {audience.slice(1).map((item) => (
+            <article key={item.name}>
+              <h3>{item.name}</h3>
+              <p>
+                <strong>{item.title}</strong>
+              </p>
+              <p>{item.copy}</p>
+              <ul>
+                {item.benefits.map((benefit) => (
+                  <li key={benefit}>{benefit}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </noscript>
     </div>
   );
 }
