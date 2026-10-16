@@ -9,11 +9,7 @@ export function HowItWorksPage({ locale }: { locale: Locale }) {
   return (
     <main id="main" className="page-enter">
       <PageHero eyebrow={page.eyebrow} title={page.title} intro={page.intro}>
-        <ParaFigure
-          asset="illustrations/para-scene-03-student-submits.svg"
-          locale={locale}
-          eager
-        />
+        <ParaFigure asset="upload-transfer" locale={locale} eager />
       </PageHero>
       <PracticeLoop content={page} locale={locale} />
       <section className="flow-next section-pad">

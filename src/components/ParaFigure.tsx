@@ -1,6 +1,15 @@
 import { conceptCaption } from "@/lib/para";
 import type { Locale } from "@/lib/i18n";
 
+export type SignalAsset =
+  | "hero-signal"
+  | "practice-loop"
+  | "feedback-wave"
+  | "rhythm-grid"
+  | "progress-arc"
+  | "upload-transfer"
+  | "timestamp-markers";
+
 export function ParaFigure({
   asset,
   locale,
@@ -8,27 +17,20 @@ export function ParaFigure({
   eager = false,
   className = "",
 }: {
-  asset: string;
+  asset: SignalAsset;
   locale: Locale;
   caption?: string;
   eager?: boolean;
   className?: string;
 }) {
-  const [width, height] = asset.includes("hero")
-    ? [740, 530]
-    : asset.includes("learning-loop")
-      ? [760, 276]
-      : asset.includes("between-attempts")
-        ? [605, 260]
-        : [600, 420];
   return (
     <figure className={`para-figure ${className}`}>
       <div className="illustration-ground">
         <img
-          src={`/brand/para/${asset}`}
+          src={`/brand/para/abstract/${asset}.svg`}
           alt=""
-          width={width}
-          height={height}
+          width={640}
+          height={360}
           loading={eager ? "eager" : "lazy"}
           fetchPriority={eager ? "high" : "auto"}
         />

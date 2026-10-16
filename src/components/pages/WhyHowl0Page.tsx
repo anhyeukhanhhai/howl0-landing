@@ -17,10 +17,7 @@ export function WhyHowl0Page({ locale }: { locale: Locale }) {
             <p className="section-copy">{page.missingCopy}</p>
           </div>
           <div>
-            <ParaFigure
-              asset="illustrations/para-scene-06-parent-progress.svg"
-              locale={locale}
-            />
+            <ParaFigure asset="progress-arc" locale={locale} />
             <ul className="connected-signals">
               {page.fragments.map((fragment) => (
                 <li key={fragment}>{fragment}</li>

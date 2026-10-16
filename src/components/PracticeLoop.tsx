@@ -37,7 +37,7 @@ export function PracticeLoop({
             ))}
           </ol>
         </div>
-        <ParaFigure asset="graphics/para-learning-loop.svg" locale={locale} />
+        <ParaFigure asset="practice-loop" locale={locale} />
       </div>
     </section>
   );

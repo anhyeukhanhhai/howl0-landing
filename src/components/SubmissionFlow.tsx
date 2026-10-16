@@ -5,7 +5,7 @@ import { Reveal } from "@/components/Reveal";
 
 const icons = [
   "assignment",
-  "practise",
+  "listening",
   "audio-recording",
   "teacher-feedback",
   "next-practice-step",
@@ -47,11 +47,6 @@ export function SubmissionFlow({
             </li>
           ))}
         </ol>
-        <aside className="brand-story">
-          <p className="eyebrow">{extra.brandLabel}</p>
-          <h3>{extra.brandCycle}</h3>
-          <p>{extra.brandCopy}</p>
-        </aside>
       </div>
     </section>
   );

@@ -35,7 +35,7 @@ export const content = {
         ["People", "/people"],
         ["FAQ", "/faq"],
       ],
-      waitlist: "Join the waitlist",
+      waitlist: "Build status",
     },
     metadata: {
       title: "PARA — See progress between music lessons",
@@ -45,12 +45,12 @@ export const content = {
     home: {
       metadataTitle: "See progress between music lessons",
       hero: {
-        eyebrow: "MUSIC LEARNING, MADE VISIBLE",
-        title: "See the progress between lessons.",
+        eyebrow: "MUSIC LEARNING, BETWEEN LESSONS",
+        title: "Make every practice session lead somewhere.",
         intro:
-          "PARA is being built to connect practice, teacher feedback and the next step—so students, teachers and parents can understand how learning moves forward.",
-        primary: "Join the waitlist",
-        secondary: "See how it works",
+          "PARA is being built to connect assignments, recordings, teacher feedback and next steps in one music-learning journey.",
+        primary: "Learn how PARA works",
+        secondary: "Product direction",
         status:
           "Currently in development · Shaped with music educators and families",
         stages: ["Assign", "Practise", "Submit", "Respond", "Next step"],
@@ -104,7 +104,7 @@ export const content = {
     waitlist: {
       eyebrow: "STAY IN THE LOOP",
       title: "Follow PARA as it takes shape.",
-      copy: "Receive occasional development updates and invitations to future research or early testing.",
+      copy: "PARA is currently in development. Update registration will be available once the waitlist is connected.",
       nameLabel: "Name",
       namePlaceholder: "Your name",
       emailLabel: "Email address",
@@ -113,7 +113,7 @@ export const content = {
       loading: "Checking availability…",
       success: "You're in the loop. We'll keep you posted.",
       consent:
-        "By joining, you agree to receive PARA development updates. You can unsubscribe at any time.",
+        "This form is a preview only. It does not collect or send personal information.",
       unavailable:
         "The waitlist is being connected. Submissions are not saved yet.",
       error:
@@ -147,7 +147,7 @@ export const content = {
       principle:
         "Technology should carry a teacher's guidance forward, not replace it.",
       principleCopy:
-        "PARA organises the learning loop. The teacher remains responsible for direction, feedback and judgement.",
+        "PARA is being designed to organise the learning loop. The teacher remains responsible for direction, feedback and judgement.",
       ctaTitle: "Help shape PARA",
     },
     howItWorks: {
@@ -155,7 +155,7 @@ export const content = {
       eyebrow: "HOW IT WORKS",
       title: "From one task to a clearer picture of progress.",
       intro:
-        "The workflow begins with a simple link and keeps each attempt connected to teacher feedback and what happens next.",
+        "The intended workflow begins with a simple link and connects each attempt to teacher feedback and what happens next.",
       journeyEyebrow: "THE LEARNING LOOP",
       journeyTitle: "Every attempt becomes part of the picture.",
       journeySummary: "Assign → Practise → Submit → Respond → Continue",
@@ -165,7 +165,7 @@ export const content = {
         ["Practise", "The student works on the task between lessons."],
         [
           "Submit",
-          "The student opens one link and uploads an audio or video attempt.",
+          "The student opens one link and uploads an existing audio or video recording.",
         ],
         ["Respond", "The teacher adds feedback and a useful next step."],
         [
@@ -290,7 +290,7 @@ export const content = {
         ],
         [
           "Is PARA available now?",
-          "Not yet. The product is currently in development. Join the waitlist to receive updates and possible invitations to future research or testing.",
+          "Not yet. The product is currently in development, and the waitlist is not accepting submissions yet. The website describes the intended direction, not a finished service.",
         ],
         [
           "How will students submit practice?",
@@ -314,7 +314,7 @@ export const content = {
         ],
         [
           "Is joining the waitlist free?",
-          "Yes. Joining only means receiving occasional PARA updates and possible invitations to research or early testing. You can unsubscribe at any time.",
+          "The planned waitlist will be free, but it is not accepting submissions yet. The preview form does not save or send your details.",
         ],
       ],
     },
@@ -344,7 +344,7 @@ export const content = {
         ["Con người", "/people"],
         ["Câu hỏi thường gặp", "/faq"],
       ],
-      waitlist: "Đăng ký nhận tin",
+      waitlist: "Tiến độ phát triển",
     },
     metadata: {
       title: "PARA — Nhìn thấy tiến bộ giữa những buổi học nhạc",
@@ -354,12 +354,12 @@ export const content = {
     home: {
       metadataTitle: "Nhìn thấy tiến bộ giữa những buổi học nhạc",
       hero: {
-        eyebrow: "ĐỂ TIẾN BỘ ĐƯỢC NHÌN THẤY",
-        title: "Thấy được từng bước tiến bộ giữa những buổi học.",
+        eyebrow: "HỌC NHẠC, CẢ GIỮA NHỮNG BUỔI HỌC",
+        title: "Để mỗi lần luyện tập đều có hướng đi tiếp.",
         intro:
-          "PARA đang được xây dựng để kết nối phần luyện tập, góp ý của giáo viên và bước tiếp theo—giúp học sinh, giáo viên và phụ huynh cùng hiểu hành trình học đang tiến triển ra sao.",
-        primary: "Đăng ký nhận tin",
-        secondary: "Xem cách hoạt động",
+          "PARA đang được xây dựng để kết nối bài tập, bản thu, góp ý của giáo viên và bước luyện tập tiếp theo trong một hành trình học nhạc.",
+        primary: "Khám phá cách PARA hoạt động",
+        secondary: "Định hướng sản phẩm",
         status:
           "Đang phát triển · Được hoàn thiện cùng giáo viên và gia đình học nhạc",
         stages: ["Giao bài", "Luyện tập", "Gửi bài", "Góp ý", "Bước tiếp theo"],
@@ -414,7 +414,7 @@ export const content = {
     waitlist: {
       eyebrow: "CÙNG THEO DÕI HÀNH TRÌNH",
       title: "Cùng chờ xem PARA sẽ thành hình như thế nào.",
-      copy: "Nhận cập nhật khi PARA có bước tiến mới và lời mời tham gia nghiên cứu hoặc thử nghiệm sớm trong tương lai.",
+      copy: "PARA hiện vẫn đang được phát triển. Bạn sẽ có thể đăng ký nhận cập nhật khi hệ thống đăng ký được kết nối.",
       nameLabel: "Tên của bạn",
       namePlaceholder: "Nhập tên của bạn",
       emailLabel: "Email",
@@ -423,7 +423,7 @@ export const content = {
       loading: "Đang kiểm tra…",
       success: "Bạn đã vào nhịp cùng PARA. Chúng tôi sẽ sớm cập nhật.",
       consent:
-        "Khi đăng ký, bạn đồng ý nhận email cập nhật từ PARA và có thể hủy đăng ký bất cứ lúc nào.",
+        "Đây chỉ là biểu mẫu minh họa, không thu thập hay gửi thông tin cá nhân.",
       unavailable:
         "Hệ thống đăng ký đang được kết nối. Thông tin hiện chưa được lưu.",
       error: "Hệ thống đăng ký chưa nhận thông tin. Vui lòng quay lại sau.",
@@ -456,7 +456,7 @@ export const content = {
       principle:
         "Công nghệ nên giúp định hướng của giáo viên đi xa hơn, không thay thế giáo viên.",
       principleCopy:
-        "PARA giúp vòng học trở nên liền mạch. Giáo viên vẫn là người định hướng, góp ý và đưa ra đánh giá chuyên môn.",
+        "PARA đang được thiết kế để giúp vòng học trở nên liền mạch. Giáo viên vẫn là người định hướng, góp ý và đưa ra đánh giá chuyên môn.",
       ctaTitle: "Cùng góp phần hoàn thiện PARA",
     },
     howItWorks: {
@@ -464,7 +464,7 @@ export const content = {
       eyebrow: "CÁCH HOẠT ĐỘNG",
       title: "Từ một bài tập đến một hành trình tiến bộ rõ ràng hơn.",
       intro:
-        "Mọi thứ bắt đầu bằng một đường link đơn giản, rồi từng lần luyện tập được kết nối với góp ý của giáo viên và bước tiếp theo.",
+        "Quy trình dự kiến bắt đầu bằng một đường link đơn giản, kết nối từng lần luyện tập với góp ý của giáo viên và bước tiếp theo.",
       journeyEyebrow: "VÒNG HỌC LIÊN TỤC",
       journeyTitle: "Mỗi lần luyện tập đều cho thấy một bước tiến.",
       journeySummary: "Giao bài → Luyện tập → Gửi bài → Góp ý → Tiếp tục",
@@ -477,7 +477,7 @@ export const content = {
         ],
         [
           "Gửi bài",
-          "Học sinh mở một đường link và gửi bản thu âm hoặc video luyện tập.",
+          "Học sinh mở một đường link và gửi bản thu âm hoặc video đã có.",
         ],
         ["Góp ý", "Giáo viên phản hồi và đưa ra bước luyện tập tiếp theo."],
         [
@@ -604,7 +604,7 @@ export const content = {
         ],
         [
           "PARA đã có thể sử dụng chưa?",
-          "Chưa. Sản phẩm hiện vẫn đang được phát triển. Bạn có thể đăng ký nhận tin để theo dõi cập nhật và có cơ hội tham gia nghiên cứu hoặc thử nghiệm trong tương lai.",
+          "Chưa. Sản phẩm hiện vẫn đang được phát triển và hệ thống đăng ký chưa nhận thông tin. Website mô tả định hướng dự kiến, không phải một dịch vụ đã hoàn thiện.",
         ],
         [
           "Học sinh sẽ gửi bài luyện tập như thế nào?",
@@ -628,7 +628,7 @@ export const content = {
         ],
         [
           "Đăng ký nhận tin có miễn phí không?",
-          "Có. Việc đăng ký chỉ giúp bạn nhận một số cập nhật từ PARA và lời mời tham gia nghiên cứu hoặc thử nghiệm sớm nếu phù hợp. Bạn có thể hủy đăng ký bất cứ lúc nào.",
+          "Việc đăng ký nhận tin dự kiến sẽ miễn phí, nhưng hệ thống hiện chưa nhận thông tin. Biểu mẫu minh họa không lưu hay gửi thông tin của bạn.",
         ],
       ],
     },

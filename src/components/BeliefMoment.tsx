@@ -30,9 +30,9 @@ export function BeliefMoment({
           </ol>
         </div>
         <ParaFigure
-          asset="graphics/para-progress-between-attempts.svg"
+          asset="feedback-wave"
           locale={locale}
-          caption={paraContent[locale].comparison}
+          caption={paraContent[locale].concept}
         />
       </div>
     </section>

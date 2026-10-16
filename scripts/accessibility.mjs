@@ -23,6 +23,18 @@ const routes = [
 const browser = await chromium.launch({ headless: true });
 const tags = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 async function scan(page, label) {
+  // Reveal all editorial text and let its short entrance finish before measuring
+  // contrast. Measuring a partially faded frame produces transient false flags.
+  const height = await page.evaluate(
+    () => document.documentElement.scrollHeight,
+  );
+  const viewport = page.viewportSize().height;
+  for (let y = 0; y < height; y += viewport * 0.8) {
+    await page.evaluate((top) => scrollTo({ top, behavior: "instant" }), y);
+    await page.waitForTimeout(30);
+  }
+  await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+  await page.waitForTimeout(800);
   const results = await new AxeBuilder({ page }).withTags(tags).analyze();
   console.log(label, `${results.violations.length} violations`);
   for (const violation of results.violations) {

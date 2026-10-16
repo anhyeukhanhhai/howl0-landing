@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import type { Locale } from "@/lib/i18n";
-import { audienceScenes } from "@/lib/para";
+import { audienceSignals } from "@/lib/para";
 import { ParaFigure } from "@/components/ParaFigure";
 
 type Audience = {
@@ -71,10 +71,7 @@ export function AudienceTabs({
             ))}
           </ul>
         </div>
-        <ParaFigure
-          asset={`illustrations/${audienceScenes[active]}`}
-          locale={locale}
-        />
+        <ParaFigure asset={audienceSignals[active]} locale={locale} />
       </div>
       <noscript>
         <div className="no-js-perspectives">

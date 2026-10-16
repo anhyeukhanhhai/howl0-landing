@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { content as dictionaries, localePath, type Locale } from "@/lib/i18n";
-import { audienceScenes } from "@/lib/para";
+import { audienceSignals } from "@/lib/para";
 import { ParaFigure } from "@/components/ParaFigure";
 import { ParaIcon } from "@/components/ParaIcon";
 
@@ -77,10 +77,7 @@ export function PerspectiveSwitcher({
             tabIndex={0}
             aria-labelledby={`perspective-tab-${active}`}
           >
-            <ParaFigure
-              asset={`illustrations/${audienceScenes[active]}`}
-              locale={locale}
-            />
+            <ParaFigure asset={audienceSignals[active]} locale={locale} />
             <div className="perspective-copy" key={active}>
               <p className="eyebrow">{content.items[active].name}</p>
               <h3>{dictionaries[locale].forYou.views[active].title}</h3>

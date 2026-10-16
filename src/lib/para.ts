@@ -10,6 +10,19 @@ export const paraContent = {
     play: "Play story",
     pause: "Pause story",
     next: "Next step",
+    storyLabel: "A learning loop, illustrated",
+    storyStages: [
+      "Assign",
+      "Send a recording",
+      "Teacher feedback",
+      "Practise again",
+    ],
+    storyDetails: [
+      "The teacher shares a clear practice task.",
+      "The student opens a link and uploads an existing audio or video recording.",
+      "The teacher gives specific feedback on the attempt.",
+      "The student knows what to practise next—and tries again.",
+    ],
     brandLabel: "THE PARA IDEA",
     brandCycle: "Practice → Assess → Review → Again",
     brandCopy:
@@ -17,7 +30,7 @@ export const paraContent = {
     details: [
       "A clear practice task, shared by the teacher.",
       "Time to explore the phrase between lessons.",
-      "Open a link. Upload an audio or video attempt.",
+      "Open a link. Upload an existing audio or video recording.",
       "Useful guidance, in the context of the task.",
       "A next step—and another attempt.",
     ],
@@ -29,6 +42,19 @@ export const paraContent = {
     play: "Xem hành trình",
     pause: "Tạm dừng",
     next: "Bước tiếp theo",
+    storyLabel: "Minh họa vòng học",
+    storyStages: [
+      "Giao bài",
+      "Gửi bản thu",
+      "Góp ý của giáo viên",
+      "Luyện lại",
+    ],
+    storyDetails: [
+      "Giáo viên gửi một yêu cầu luyện tập rõ ràng.",
+      "Học sinh mở link, chọn bản thu âm hoặc video đã có và gửi bài.",
+      "Giáo viên góp ý cụ thể cho lần luyện tập.",
+      "Học sinh biết mình nên luyện gì tiếp theo và thử lại.",
+    ],
     brandLabel: "Ý NGHĨA PARA",
     brandCycle: "Luyện tập → Đánh giá → Xem lại → Thử lại",
     brandCopy:
@@ -36,17 +62,17 @@ export const paraContent = {
     details: [
       "Giáo viên chia sẻ một nhiệm vụ luyện tập rõ ràng.",
       "Luyện tập giữa những buổi học.",
-      "Mở liên kết. Tải lên bản ghi âm hoặc video.",
+      "Mở link. Gửi bản thu âm hoặc video đã có.",
       "Phản hồi hữu ích gắn với bài luyện tập.",
       "Một bước tiếp theo—và một lần thử mới.",
     ],
   },
 } as const;
 
-export const audienceScenes = [
-  "para-scene-04-teacher-feedback.svg",
-  "para-scene-05-next-attempt.svg",
-  "para-scene-06-parent-progress.svg",
+export const audienceSignals = [
+  "timestamp-markers",
+  "practice-loop",
+  "progress-arc",
 ] as const;
 
 export function conceptCaption(locale: Locale) {

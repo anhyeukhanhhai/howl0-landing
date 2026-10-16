@@ -2,12 +2,12 @@ import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/para";
+const out = ".qa/para-v2";
 const pages = [
   [
     "",
-    "See the progress between lessons.",
-    "Thấy được từng bước tiến bộ giữa những buổi học.",
+    "Make every practice session lead somewhere.",
+    "Để mỗi lần luyện tập đều có hướng đi tiếp.",
   ],
   [
     "product",
@@ -128,10 +128,7 @@ await anchored.close();
 
 const directSubpage = await browser.newPage();
 await directSubpage.goto(`${base}/people`, { waitUntil: "networkidle" });
-await directSubpage
-  .getByRole("link", { name: "Join the waitlist" })
-  .first()
-  .click();
+await directSubpage.getByRole("link", { name: "Build status" }).first().click();
 await directSubpage.waitForURL(`${base}/#waitlist`);
 assert(
   await directSubpage.locator("#waitlist").isVisible(),
@@ -204,6 +201,9 @@ for (const [width, height] of viewports) {
             [...document.images].some((img) =>
               img.src.includes("/brand/howl0/"),
             ),
+          literalArtwork: [...document.images].some((img) =>
+            /\/illustrations\/|\/para-scene-/.test(img.src),
+          ),
           clipped,
           heroSeparated: (() => {
             const copy = document.querySelector(".home-hero .hero-copy");
@@ -232,6 +232,10 @@ for (const [width, height] of viewports) {
       });
       assert(layout.lang === locale, `${path}: html lang ${layout.lang}`);
       assert(!layout.staleBrand, `${path}: old brand remains visible`);
+      assert(
+        !layout.literalArtwork,
+        `${path}: literal musician artwork remains`,
+      );
       assert(
         layout.title.includes("PARA") && layout.description,
         `${path}: localized metadata missing`,
@@ -425,19 +429,13 @@ await page
   .addCookies([{ name: "howl0-language-choice", value: "en", url: base }]);
 await page.goto(base, { waitUntil: "networkidle" });
 const label = page.locator(".flow-label");
-assert(
-  (await label.textContent()) === "Teacher assigns",
-  "story initial state failed",
-);
+assert((await label.textContent()) === "Assign", "story initial state failed");
 await page.waitForTimeout(1900);
-assert(
-  (await label.textContent()) === "Teacher assigns",
-  "story must not autoplay",
-);
+assert((await label.textContent()) === "Assign", "story must not autoplay");
 await page.getByRole("button", { name: "Play story" }).click();
 await page.waitForTimeout(1900);
 assert(
-  (await label.textContent()) === "Student practises",
+  (await label.textContent()) === "Send a recording",
   "story did not advance",
 );
 await page.getByRole("button", { name: "Pause story" }).click();
@@ -446,8 +444,63 @@ await page.waitForTimeout(1900);
 assert((await label.textContent()) === paused, "paused story continued");
 await page.getByRole("button", { name: "Next step", exact: true }).click();
 assert(
-  (await label.textContent()) === "Student submits",
+  (await label.textContent()) === "Teacher feedback",
   "manual story next failed",
+);
+assert(
+  (await page.locator(".story-stages button").count()) === 4,
+  "all four concept stages must remain visible",
+);
+await page.getByRole("button", { name: "Play story" }).click();
+await page.locator(".signal-canvas").hover();
+const hoverState = await label.textContent();
+await page.waitForTimeout(2100);
+assert((await label.textContent()) === hoverState, "hover must pause story");
+await page.mouse.move(0, 0);
+await page.waitForTimeout(1900);
+assert(
+  (await label.textContent()) !== hoverState,
+  "story must resume after hover",
+);
+await page.getByRole("button", { name: "Pause story" }).click();
+await page.locator(".story-stages button").first().click();
+await page.getByRole("button", { name: "Play story" }).click();
+await page.mouse.move(0, 0);
+await page.locator(".story-stages button").first().focus();
+const focusedState = await label.textContent();
+await page.waitForTimeout(2100);
+assert(
+  (await label.textContent()) === focusedState,
+  "keyboard focus must pause story",
+);
+await page.getByRole("button", { name: "Pause story" }).click();
+await page
+  .getByRole("link", { name: "Learn how PARA works", exact: true })
+  .click();
+assert(
+  new URL(page.url()).hash === "#submission-flow",
+  "primary CTA must explain the product, not imply working registration",
+);
+await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+await page.getByRole("button", { name: "Play story" }).click();
+await page.mouse.move(0, 0);
+await page.evaluate(() =>
+  scrollTo({ top: document.body.scrollHeight, behavior: "instant" }),
+);
+const offscreen = await label.textContent();
+await page.waitForTimeout(2100);
+assert((await label.textContent()) === offscreen, "offscreen story must pause");
+await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+await page.waitForTimeout(7500);
+assert(
+  (await page
+    .getByRole("button", { name: "Play story" })
+    .getAttribute("aria-pressed")) === "false",
+  "story must stop after one cycle",
+);
+assert(
+  (await page.locator("audio,video,input[type=file]").count()) === 0,
+  "concept must not imply a functioning upload or player",
 );
 await page.close();
 
@@ -501,6 +554,18 @@ for (const [path, selector] of [
     assert(
       (await reduced.locator(".practice-step").count()) === 5,
       "reduced-motion loop is incomplete",
+    );
+  } else {
+    assert(
+      (await reduced.locator(".story-stages button:visible").count()) === 4,
+      "reduced-motion stages missing",
+    );
+    await reduced.getByRole("button", { name: "Play story" }).click();
+    const state = await reduced.locator(".flow-label").textContent();
+    await reduced.waitForTimeout(2100);
+    assert(
+      (await reduced.locator(".flow-label").textContent()) === state,
+      "reduced motion must not loop",
     );
   }
   await reduced.screenshot({

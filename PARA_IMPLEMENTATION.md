@@ -1,89 +1,63 @@
-# PARA implementation handoff
+# PARA v2 website implementation
 
-Implemented locally in the existing Next.js application on `feat/reposition-progress-visibility`. No commit, push, deployment, route rename or backend connection was made.
+Local redesign in the existing Next.js repository. No commit, push, deployment or backend/infrastructure change was made for this revision.
 
-## Sources and decisions applied
+## Source precedence and design
 
-- The refined logo package takes precedence over the music pack's older wordmark exports. The four SVGs in `public/brand/para/logo/` match their supplied refined originals byte for byte. Navigation uses Raspberry; the footer uses Cocoa; device dark mode uses White. Geometry, viewports and proportions are unchanged. The rejected guitar-body logo and compact P proposal are not used.
-- The music resource pack supplies the licensed Cormorant Garamond and Be Vietnam Pro WOFF2 files, Warm Signal tokens, original music/UI icons, conceptual learning illustrations, progress graphics and reference layouts. Font licences accompany the production files.
-- Active styles are `src/app/para.css` and `src/app/para-tokens.css`. Earlier styles and howl0 assets remain in the repository but are not imported by the PARA layouts.
-- The original product dictionaries remain the factual copy source, with visible brand names updated to PARA. Existing Vietnamese headlines, teacher/student/parent meanings, People biographies, development qualifications and FAQ answers are retained. The additional name explanation, workflow descriptions and conceptual captions in `src/lib/para.ts` come from the supplied pack.
-- The homepage keeps progress, the five-step loop, three perspectives, the feedback belief and the waitlist in that order. The simple submission-link sequence remains visible in the hero and workflow page. No PARA submission domain is invented.
-- Playback is user-started, finishes after one cycle, pauses on document hiding and cleans up on navigation. Reduced motion uses manual state changes. Reading content and illustrations are visible without JavaScript; the audience page provides additional no-JavaScript perspective copy.
-- Device dark mode continues to work. Transparent line art sits on Paper panels; exact White logos are used on Cocoa surfaces. Raspberry remains the primary action colour.
+1. `design-resources/para/PARA_Refined_Logo_Package/` remains the logo authority. Existing production Raspberry, Cocoa, White and Black SVGs are unchanged copies. The rejected guitar-body treatment, text approximations and proposed compact icon are not used.
+2. `design-resources/PARA_Design_Resource_Pack_v2/` supplies shared foundations, tokens, motion guidance, abstract SVGs and bilingual website direction. Its preview HTML was reviewed, not copied wholesale. Platform templates inform visual consistency only; no product workflow or backend was implemented.
+3. Existing original content preserves teacher-led guidance, student practice, authorised/contextual parent understanding and the development boundary. The core belief remains “Feedback is a signal, not a verdict.” People roles and biographies are unchanged.
 
-## Preserved route contract
+The website uses Cormorant Garamond and Be Vietnam Pro, Raspberry/Cocoa/Paper with restrained Apricot/Butter music accents, a 1240px reading grid, generous spacing, subtle grain and warm gradients. V2 surface, muted, border, focus, radius and duration values are mapped into the existing tokens. Device dark mode retains exact supplied White wordmarks and accessible art/text surfaces.
 
-English `/` and Vietnamese `/vi`, with equivalent `product`, `how-it-works`, `why-howl0`, `for-you`, `people` and `faq` subpages. The `why-howl0` slug is intentionally retained. Existing educator and legacy redirects remain.
+All active illustrations are abstract: signals, waves, rhythm, feedback markers and practice arcs. Older people/instrument illustrations remain stored but are no longer rendered. Seven v2 SVGs are copied verbatim to `public/brand/para/abstract/`. The new inline hero recomposes approved abstract geometry; it does not modify or reconstruct the logo.
 
-The shared welcome page, validated `choose-language/[locale]` handler, `next` destinations and existing `howl0-language-choice` cookie remain. Language switching now also retains the homepage waitlist fragment. Both locale layouts continue to supply their correct document language and metadata.
+## Story, behaviour and truthfulness
 
-## Files changed or added
+- Hero: the v2 headline, qualified “being built” supporting copy and a safe explanation CTA.
+- The concept story shows teacher assignment → student uploading an existing audio/video recording through a link → specific teacher feedback → another practice attempt. All four labels remain visible; every illustration is labelled as conceptual and in development.
+- Playback starts only on request, takes 7.2 seconds for one four-stage cycle and then stops. It pauses on artwork hover, stage-control focus and while offscreen; hiding the document or enabling reduced motion stops it. Manual stage selection/Next works independently. No autoplay audio, fake percentage, scoring or functioning upload is simulated.
+- The original five-step workflow remains below the hero. Three keyboard-accessible audience perspectives, the feedback belief and development status remain in the established order. The secondary PARA acronym block was removed from the homepage to keep the product story concise; no product meaning depends on that block.
+- Navigation says “Build status,” not an invitation to unavailable registration. Waitlist/FAQ wording explicitly reflects missing storage. The legacy `#waitlist` destination and two disabled Name/Email fields remain. Nothing is collected, sent or saved.
+- Product/workflow introductions are qualified as intended or being designed. No AI, launch date, pricing, outcome, customer or guardian-access implementation claim was added.
 
-Presentation and shared layouts:
+## Routes and bilingual behaviour
 
-- `src/app/para.css` (new)
-- `src/app/para-tokens.css` (new)
-- `src/app/(en)/layout.tsx`
-- `src/app/vi/layout.tsx`
-- `src/app/(welcome)/layout.tsx`
-- `src/app/(welcome)/welcome/page.tsx`
-- `src/lib/i18n.ts`
-- `src/lib/metadata.ts`
-- `src/lib/viewport.ts`
-- `src/lib/para.ts` (new)
+All seven page pairs remain: `/` ↔ `/vi`, and `product`, `how-it-works`, `why-howl0`, `for-you`, `people`, `faq` under both roots. Legacy educator and other redirects remain unchanged. Welcome, the validated language-choice handler, existing preference cookie, EN/VI navigation and waitlist fragments are retained. Shared components and dictionaries prevent structural locale drift.
 
-Components:
+The v2 EN/VI hero and safe CTA are used, with development qualifications added. Additional technical/transitional labels documented for native editorial review: “Build status” / “Tiến độ phát triển”; “A learning loop, illustrated” / “Minh họa vòng học”; four concept-stage descriptions; disabled-form privacy wording and honest availability FAQ answers. Existing approved belief wording is retained in both languages.
 
-- `src/components/BrandHead.tsx` (new)
-- `src/components/BrandLogo.tsx`
-- `src/components/HomeIntro.tsx` (new)
-- `src/components/ParaFigure.tsx` (new)
-- `src/components/ParaIcon.tsx` (new)
-- `src/components/Navigation.tsx`
-- `src/components/SiteFooter.tsx`
-- `src/components/PageCta.tsx`
-- `src/components/AudienceTabs.tsx`
-- `src/components/BeliefMoment.tsx`
-- `src/components/PerspectiveSwitcher.tsx`
-- `src/components/PracticeLoop.tsx`
-- `src/components/SubmissionFlow.tsx`
-- `src/components/WaitlistForm.tsx`
-- `src/components/WaitlistSection.tsx`
-- `src/components/pages/HomePage.tsx`
-- `src/components/pages/ProductPage.tsx`
-- `src/components/pages/HowItWorksPage.tsx`
-- `src/components/pages/WhyHowl0Page.tsx`
-- `src/components/pages/ForYouPage.tsx`
+## Files changed in this revision
 
-Checks, documentation and source exclusions:
+- `src/app/para-tokens.css`, `src/app/para.css`: v2 foundations, signal animation, spacing, responsiveness and theme support.
+- `src/components/SignalStory.tsx` (new), `HomeIntro.tsx`: abstract four-stage concept and finite animation controls.
+- `src/components/ParaFigure.tsx`: typed v2 abstract asset selection and correct 640×360 proportions.
+- `src/components/SubmissionFlow.tsx`, `PracticeLoop.tsx`, `BeliefMoment.tsx`: concise five-step workflow, abstract loop/feedback art.
+- `src/components/PerspectiveSwitcher.tsx`, `AudienceTabs.tsx`: abstract teacher/student/parent views, preserving keyboard tabs and no-JavaScript audience fallback.
+- `src/components/pages/ProductPage.tsx`, `HowItWorksPage.tsx`, `WhyHowl0Page.tsx`: v2 artwork on existing pages.
+- `src/lib/i18n.ts`, `src/lib/para.ts`: bilingual story, safe CTAs, factual development/registration boundaries.
+- `public/brand/para/abstract/` (seven new supplied SVGs).
+- `scripts/verify.mjs`, `scripts/verify-devices.mjs`, `scripts/accessibility.mjs`: current copy/story assertions, no literal artwork, motion/CTA regressions, settled-reveal contrast scans and separate v2 screenshots.
+- `README.md`, `PARA_IMPLEMENTATION.md`: current behaviour, source mapping and handoff.
 
-- `scripts/verify.mjs`
-- `scripts/verify-devices.mjs`
-- `scripts/accessibility.mjs`
-- `eslint.config.mjs`
-- `.prettierignore`
-- `README.md`
-- `PARA_IMPLEMENTATION.md` (new)
+Original resource folders, logo files, routing handlers, layouts, backend adapter, infrastructure, dependencies and package lock were not changed.
 
-Production assets: 53 supplied files under `public/brand/para/`: four refined SVG logos, six WOFF2 fonts and two licences, 27 SVG icons, seven illustration SVGs, six graphic SVGs and the supplied token stylesheet. The original `design-resources/` folders were present as untracked user resources and were not altered or staged.
+## Verification
 
-## Verification completed
+- `npm run format`, `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm run build`, `git diff --check`: passed. Build retains all 22 route entries, including legacy redirects.
+- `npm run test:visual`: passed for seven English/Vietnamese page pairs at 390×844, 430×932, 768×1024, 1440×900, 1920×1080, 2560×1080 and 3440×1440. Covers direct routes, metadata/lang, overflow/clipping, no old brand or literal musician art, welcome/persistence, equivalent language paths and history, redirects, waitlist fragments, tabs/FAQ, two disabled fields, truthful CTAs, Play/Pause/Next, hover/focus/offscreen suspension, finite playback and reduced motion.
+- `npm run test:devices`: passed in Chromium at 320px minimum, Android, phone landscape, tablet, short laptop, laptop, desktop and ultrawide; WebKit iPhone portrait/landscape and MacBook. Covers all route pairs in dark mode, live theme changes, supplied logo selection/minimum size, menu focus/reachability, inert content and no-JavaScript dark mode.
+- `npm run test:a11y` and `COLOR_SCHEME=dark npm run test:a11y`: passed with zero automated WCAG A/AA violations at 1440px and 390px across 15 routes, audience tabs, expanded FAQ, open mobile navigation and reduced motion. Entrance motion is allowed to settle before contrast is measured.
+- Additional checks passed: all four hero frames in both languages at desktop/mobile, no browser console errors during those interactions, no-JavaScript stage/workflow/audience content, and 200% equivalent reflow on representative routes.
+- All four production logo variants and seven abstract SVG copies were compared byte-for-byte with their supplied originals: identical.
+- Rendered and visually inspected all seven main page pairs at desktop/mobile, plus welcome, dark, ultrawide and individual hero-state captures. Corrected the inherited panel-radius override found during review. No further clipping or overlap was found.
 
-- Formatting and `npm run format:check`: passed.
-- ESLint: passed without warnings.
-- Production build: passed; all established routes are present.
-- TypeScript: passed.
-- `npm run test:visual`: passed across seven viewport sizes from 390×844 through 3440×1440, for all seven page pairs. Covers direct routes, redirects, language choices and cookies, Back/Forward, waitlist fragments, old-brand removal, keyboard tabs, FAQ, disabled two-field waitlist, menu focus/resize and story controls.
-- `npm run test:devices`: passed with Chromium phone/Android/landscape/tablet/laptop/desktop/ultrawide profiles and WebKit iPhone portrait/landscape and MacBook profiles, including 320px minimum width. Device dark mode, live theme changes, complete logo sizing, clipping and menu scrolling/inert behaviour passed.
-- `npm run test:a11y` and `COLOR_SCHEME=dark npm run test:a11y`: zero WCAG A/AA violations in both themes, desktop and mobile, including audience tabs, expanded FAQs and open navigation.
-- Additional no-JavaScript audience fallback, 200% equivalent reflow, and reduced-motion manual story checks passed. Browser/device coverage is emulation.
-- All main pages were rendered and visually inspected in English and Vietnamese at 1440×900 and 390×844, along with welcome, dark-mode and ultrawide samples. Screenshots are in the ignored `.qa/para/` directory. The missing Product pillar spacing found during review was corrected.
-- All four refined logo copies were compared directly against the supplied originals. No old logo, rejected guitar-body logo, proposed compact icon, fake dashboard, testimonial, pricing or completed-capability claim was introduced.
+Screenshots are under ignored `.qa/para-v2/`; initial comparison captures are in `.qa/para-v2-before/`. Tests were run against the production build. A first test invocation using the numeric loopback host was rerun using the application's normal `localhost` origin so language redirects and cookies share the same origin; no routing handler was changed.
 
-## Remaining decisions and dependencies
+## Remaining limitations and owner decisions
 
-- There is no approved compact favicon/app icon. The review-only compact P is not adopted, and the previous howl0 favicon and social image metadata are removed. A PARA favicon/social preview asset still needs approval.
-- Waitlist storage is still absent. Name and email remain the only fields; submission and fields are disabled with the honest pending notice. No data is sent or saved. Endpoint/persistence, consent, unsubscribe and privacy arrangements must be completed before enabling it.
-- The pack asks for native editorial review of its new Vietnamese brand explanation and conceptual captions. Existing approved Vietnamese product copy was retained.
-- Submission domains, contact details and legal identity remain separate owner decisions. No replacement domain, contact address, legal page or launch date was invented.
+- Waitlist storage, email delivery, consent, unsubscribe and privacy arrangements are not implemented. Keep fields/submission disabled until connected and tested.
+- Actual uploads, media processing, teacher review, notifications and guardian access remain product development—not capabilities of this marketing site. Identity verification, access controls, minors' consent and retention/deletion need decisions before platform implementation.
+- Approved compact favicon/social-preview artwork and confirmed legal/contact/submission domains are still missing. No substitutes or dead legal links were introduced.
+- The resource pack labels its copy as proposed; native Vietnamese editorial review and owner approval of newly adapted microcopy remain advisable. Existing licensed font files and their licence documents were retained.
+- Browser/device testing is emulation, not a claim of physical-device or assistive-technology certification.

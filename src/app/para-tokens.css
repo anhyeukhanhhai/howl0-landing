@@ -1,4 +1,5 @@
-/* PARA Music — Warm Signal v1.0.0. Use alongside examples/para-components.css */
+/* PARA v2 shared tokens, adapted for the existing editorial website.
+   Source: PARA_Design_Resource_Pack_v2/shared/tokens.json. */
 :root {
   --para-raspberry: #a92e5d;
   --para-cocoa: #35242d;
@@ -9,9 +10,9 @@
   --para-black: #000000;
   --para-raspberry-hover: #8f234d;
   --para-raspberry-pressed: #741b3e;
-  --para-rose: #f6e5ec;
-  --para-muted: #73646d;
-  --para-border: #d9c8cc;
+  --para-rose: #f9ece9;
+  --para-muted: #66555d;
+  --para-border: #dac8cb;
   --para-control-border: #9b7d8a;
   --para-disabled: #ebdde2;
   --color-background: var(--para-paper);
@@ -23,11 +24,11 @@
   --color-action-pressed: var(--para-raspberry-pressed);
   --color-on-action: var(--para-white);
   --color-border: var(--para-border);
-  --color-focus: var(--para-cocoa);
+  --color-focus: #4c2482;
   --color-inverse-background: var(--para-cocoa);
   --color-inverse-text: var(--para-paper);
-  --color-error: var(--para-raspberry);
-  --color-success: var(--para-cocoa);
+  --color-error: #a42d42;
+  --color-success: #246c52;
   --color-disabled-background: var(--para-disabled);
   --color-disabled-text: var(--para-muted);
   --color-control-border: var(--para-control-border);
@@ -46,17 +47,17 @@
   --space-96: 96px;
   --space-120: 120px;
   --radius-none: 0px;
-  --radius-control: 4px;
-  --radius-panel: 8px;
+  --radius-control: 10px;
+  --radius-panel: 28px;
   --radius-round: 999px;
   --font-display: "Cormorant Garamond", Georgia, serif;
   --font-body: "Be Vietnam Pro", system-ui, sans-serif;
-  --container-max: 1248px;
+  --container-max: 1240px;
   --gutter: 24px;
   --ease-phrase: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --duration-feedback: 140ms;
-  --duration-tab: 220ms;
-  --duration-entrance: 480ms;
+  --duration-feedback: 160ms;
+  --duration-tab: 280ms;
+  --duration-entrance: 720ms;
   --shadow-menu: 0 12px 32px #35242d14;
 }
 @media (min-width: 1024px) {

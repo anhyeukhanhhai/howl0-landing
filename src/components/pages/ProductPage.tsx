@@ -11,11 +11,7 @@ export function ProductPage({ locale }: { locale: Locale }) {
     <main id="main" className="page-enter">
       <PageHero eyebrow={page.eyebrow} title={page.title} intro={page.intro}>
         <div>
-          <ParaFigure
-            asset="illustrations/para-scene-02-student-practises.svg"
-            locale={locale}
-            eager
-          />
+          <ParaFigure asset="rhythm-grid" locale={locale} eager />
           <p className="flow-summary">{page.visual}</p>
         </div>
       </PageHero>

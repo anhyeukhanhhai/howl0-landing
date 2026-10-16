@@ -4,18 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { content, localePath, type Locale } from "@/lib/i18n";
 import { paraContent } from "@/lib/para";
-import { ParaFigure } from "@/components/ParaFigure";
+import { SignalStory } from "@/components/SignalStory";
 import { ParaIcon } from "@/components/ParaIcon";
 import { SubmissionFlow } from "@/components/SubmissionFlow";
 
-/** One user-started controller, shared by the hero and five-step workflow. */
+/** One finite, user-started story. Essential stages remain visible at all times. */
 export function HomeIntro({ locale }: { locale: Locale }) {
   const hero = content[locale].home.hero;
   const copy = paraContent[locale];
   const [stage, setStage] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [reduced, setReduced] = useState(true);
-  const remaining = useRef(5);
+  const [visible, setVisible] = useState(true);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const surface = useRef<HTMLDivElement>(null);
+  const remaining = useRef(4);
   useEffect(() => {
     const media = matchMedia("(prefers-reduced-motion: reduce)");
     const change = () => {
@@ -26,32 +30,38 @@ export function HomeIntro({ locale }: { locale: Locale }) {
       if (document.hidden) setPlaying(false);
     };
     change();
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.25 },
+    );
+    if (surface.current) observer.observe(surface.current);
     media.addEventListener("change", change);
     document.addEventListener("visibilitychange", visibility);
     return () => {
+      observer.disconnect();
       media.removeEventListener("change", change);
       document.removeEventListener("visibilitychange", visibility);
     };
   }, []);
   useEffect(() => {
-    if (!playing || reduced) return;
+    if (!playing || reduced || !visible || hovered || focused) return;
     const timer = setTimeout(() => {
-      setStage((stage + 1) % 5);
+      setStage((stage + 1) % 4);
       remaining.current -= 1;
       if (!remaining.current) setPlaying(false);
     }, 1800);
     return () => clearTimeout(timer);
-  }, [playing, reduced, stage]);
-  function next() {
+  }, [playing, reduced, stage, visible, hovered, focused]);
+  function select(next: number) {
     setPlaying(false);
-    setStage((value) => (value + 1) % 5);
+    setStage(next);
   }
   function toggle() {
     if (reduced) {
-      next();
+      select((stage + 1) % 4);
       return;
     }
-    remaining.current = 5;
+    remaining.current = 4;
     setPlaying((value) => !value);
   }
   return (
@@ -63,15 +73,13 @@ export function HomeIntro({ locale }: { locale: Locale }) {
             <h1>{hero.title}</h1>
             <p className="hero-lead">{hero.intro}</p>
             <div className="hero-actions">
-              <a
-                className="button button-primary"
-                href={`${localePath(locale, "/")}#waitlist`}
-              >
+              <a className="button button-primary" href="#submission-flow">
                 {hero.primary}
+                <ParaIcon name="arrow-right" />
               </a>
               <Link
                 className="text-link"
-                href={localePath(locale, "/how-it-works")}
+                href={localePath(locale, "/product")}
                 prefetch={false}
               >
                 {hero.secondary}
@@ -80,18 +88,41 @@ export function HomeIntro({ locale }: { locale: Locale }) {
             </div>
             <p className="development-label">{hero.status}</p>
           </div>
-          <div className="hero-visual" data-stage={stage}>
-            <ParaFigure
-              asset="illustrations/para-hero-submission-feedback.svg"
-              locale={locale}
-              eager
-            />
-            <p className="submission-entry">
-              {content[locale].howItWorks.simpleFlow}
-            </p>
+          <div
+            className="hero-visual"
+            data-stage={stage}
+            data-playing={playing}
+          >
+            <div
+              ref={surface}
+              className="story-surface"
+              onMouseEnter={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
+              onFocusCapture={() => setFocused(true)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget))
+                  setFocused(false);
+              }}
+            >
+              <p className="story-eyebrow">{copy.storyLabel}</p>
+              <SignalStory locale={locale} stage={stage} />
+              <ol className="story-stages" aria-label={copy.storyLabel}>
+                {copy.storyStages.map((label, index) => (
+                  <li key={label}>
+                    <button
+                      onClick={() => select(index)}
+                      aria-current={index === stage ? "step" : undefined}
+                    >
+                      <span>0{index + 1}</span>
+                      {label}
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </div>
             <div className="hero-controls">
               <span className="flow-label" aria-live="polite">
-                {content[locale].home.loop.steps[stage][1]}
+                {copy.storyStages[stage]}
               </span>
               <div>
                 <button
@@ -105,16 +136,22 @@ export function HomeIntro({ locale }: { locale: Locale }) {
                 <button
                   className="story-control story-next"
                   aria-label={copy.next}
-                  onClick={next}
+                  onClick={() => select((stage + 1) % 4)}
                 >
                   <ParaIcon name="arrow-right" />
                 </button>
               </div>
             </div>
+            <p className="story-detail" key={stage}>
+              {copy.storyDetails[stage]}
+            </p>
+            <p className="submission-entry">
+              {content[locale].howItWorks.simpleFlow}
+            </p>
           </div>
         </div>
       </section>
-      <SubmissionFlow locale={locale} active={stage} />
+      <SubmissionFlow locale={locale} active={[0, 2, 3, 4][stage]} />
     </>
   );
 }
