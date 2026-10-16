@@ -28,12 +28,25 @@ export function useScrollProgress<T extends HTMLElement>(
       if (!active) return;
       if (reduced.matches) {
         element.style.setProperty("--scene-progress", "1");
+        element.style.setProperty("--scene-enter", "1");
+        element.style.setProperty("--scene-exit", "0");
         if (stages) element.dataset.stage = String(stages - 1);
         onProgress?.(1);
         return;
       }
       const rect = element.getBoundingClientRect();
       const height = window.innerHeight;
+      element.style.setProperty(
+        "--scene-enter",
+        clamp((height - rect.top) / (height * 0.65)).toFixed(4),
+      );
+      element.style.setProperty(
+        "--scene-exit",
+        clamp(-rect.top / Math.max(1, rect.height * 0.75)).toFixed(4),
+      );
+      element.dataset.sceneVisible = String(
+        rect.top < height * 0.85 && rect.bottom > 0,
+      );
       const progress =
         mode === "pin"
           ? clamp(-rect.top / Math.max(1, rect.height - height))

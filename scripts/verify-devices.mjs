@@ -3,7 +3,7 @@ import { mkdir } from "node:fs/promises";
 import { chromium, webkit, devices } from "playwright";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/para-v2/devices";
+const out = ".qa/para-studio/devices";
 await mkdir(out, { recursive: true });
 const routes = [
   "",

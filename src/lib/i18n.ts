@@ -46,10 +46,10 @@ export const content = {
       metadataTitle: "See progress between music lessons",
       hero: {
         eyebrow: "MUSIC LEARNING, BETWEEN LESSONS",
-        title: "Make every practice session lead somewhere.",
+        title: "See the progress between lessons.",
         intro:
           "PARA is being built to connect assignments, recordings, teacher feedback and next steps in one music-learning journey.",
-        primary: "Learn how PARA works",
+        primary: "See the learning loop",
         secondary: "Product direction",
         status:
           "Currently in development · Shaped with music educators and families",
@@ -355,10 +355,10 @@ export const content = {
       metadataTitle: "Nhìn thấy tiến bộ giữa những buổi học nhạc",
       hero: {
         eyebrow: "HỌC NHẠC, CẢ GIỮA NHỮNG BUỔI HỌC",
-        title: "Để mỗi lần luyện tập đều có hướng đi tiếp.",
+        title: "Thấy từng bước tiến giữa những buổi học.",
         intro:
           "PARA đang được xây dựng để kết nối bài tập, bản thu, góp ý của giáo viên và bước luyện tập tiếp theo trong một hành trình học nhạc.",
-        primary: "Khám phá cách PARA hoạt động",
+        primary: "Xem vòng học",
         secondary: "Định hướng sản phẩm",
         status:
           "Đang phát triển · Được hoàn thiện cùng giáo viên và gia đình học nhạc",

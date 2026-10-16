@@ -12,6 +12,7 @@
     "format:check": "prettier --check .",
     "test:visual": "node scripts/verify.mjs",
     "test:devices": "node scripts/verify-devices.mjs",
+    "test:story": "node scripts/verify-story.mjs",
     "test:a11y": "node scripts/accessibility.mjs"
   },
   "dependencies": {

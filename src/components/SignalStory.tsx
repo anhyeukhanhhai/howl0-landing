@@ -1,9 +1,10 @@
-"use client";
-
+import { useId } from "react";
 import { content, type Locale } from "@/lib/i18n";
-import { paraContent } from "@/lib/para";
+import { sceneCopy } from "@/lib/studio";
+import { ParaIcon } from "@/components/ParaIcon";
 
-/** Geometry adapted from v2 signal, feedback and loop assets. Not a live UI. */
+/** Separate abstract artwork, never logo geometry. Shared-position handoffs,
+ * not interpolation between incompatible SVG paths or a functioning interface. */
 export function SignalStory({
   locale,
   stage,
@@ -11,98 +12,83 @@ export function SignalStory({
   locale: Locale;
   stage: number;
 }) {
-  const copy = paraContent[locale];
+  const copy = sceneCopy(locale);
+  const id = useId();
   return (
-    <figure className="signal-story" data-stage={stage}>
+    <figure className="signal-story sculpture-stage" data-stage={stage}>
       <div
-        className="signal-canvas"
+        className="signal-sculpture"
         role="img"
         aria-label={content[locale].home.hero.aria}
       >
-        <svg viewBox="0 0 640 400" fill="none" aria-hidden="true">
-          <g className="signal-staff">
-            {[120, 160, 200, 240, 280].map((y) => (
-              <path key={y} d={`M24 ${y}H616`} />
-            ))}
-            {[104, 248, 392, 536].map((x) => (
-              <path key={x} d={`M${x} 80V320`} />
-            ))}
+        <svg viewBox="0 0 680 640" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient
+              id={id}
+              x1="140"
+              y1="60"
+              x2="570"
+              y2="580"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="#A92E5D" />
+              <stop offset=".57" stopColor="#8F234D" />
+              <stop offset="1" stopColor="#F0A06B" />
+            </linearGradient>
+          </defs>
+          <g className="sculpture-guides">
+            <path d="M55 170H625M55 270H625M55 370H625M55 470H625" />
+            <path d="M180 60V590M340 60V590M500 60V590" />
           </g>
-          <circle className="signal-orbit" cx="320" cy="200" r="156" />
-          <g className="signal-phase signal-assignment">
+          <g className="sculpture-ribbon ambient">
             <path
-              className="signal-echo"
-              d="M35 200C135 80 170 320 270 200S405 80 605 200"
-            />
-            <path
-              className="signal-wave"
-              d="M24 200h72c12 0 14-65 28-65s18 132 32 132 18-111 32-111 16 76 31 76 19-38 32-38h54C380 194 407 140 450 164S530 220 616 200"
-            />
-            <circle className="signal-pin" cx="305" cy="194" r="10" />
-          </g>
-          <g className="signal-phase signal-transfer">
-            <path
-              className="signal-wave"
-              d="M24 200h72c12 0 14-65 28-65s18 132 32 132 18-111 32-111 16 76 31 76 19-38 32-38h100"
-            />
-            <rect
-              className="signal-file"
-              x="370"
-              y="108"
-              width="222"
-              height="184"
-              rx="18"
+              className="ribbon-shadow"
+              d="M110 465C170 550 290 538 330 421C370 304 175 250 220 143C265 36 455 60 497 183C539 306 420 375 450 469C470 531 533 541 590 510"
             />
             <path
-              className="signal-wave"
-              d="M402 196h24l9-30 13 64 14-80 15 94 12-49 13 23 9-37 15 28h31"
-            />
-            <path className="signal-file-line" d="M403 260h112" />
-            <circle className="signal-pin" cx="352" cy="194" r="8" />
-          </g>
-          <g className="signal-phase signal-response">
-            <path
-              className="signal-wave"
-              d="M40 200h46l12-45 17 94 19-141 19 182 18-101 14 28 18-53 20 77 20-113 17 146 20-62 20-40 19 54 20-28h210"
+              className="ribbon-body"
+              stroke={`url(#${id})`}
+              d="M110 465C170 550 290 538 330 421C370 304 175 250 220 143C265 36 455 60 497 183C539 306 420 375 450 469C470 531 533 541 590 510"
             />
             <path
-              className="signal-marker"
-              d="M110 76V310M277 76V310M490 76V310"
-            />
-            <circle className="signal-pin" cx="110" cy="200" r="10" />
-            <circle
-              className="signal-pin signal-pin-apricot"
-              cx="277"
-              cy="200"
-              r="10"
-            />
-            <circle className="signal-pin" cx="490" cy="200" r="10" />
-          </g>
-          <g className="signal-phase signal-repeat">
-            <path
-              className="signal-loop-berry"
-              d="M320 81a119 119 0 0 1 114 85m0 0-23-7m23 7-11-24"
-            />
-            <path
-              className="signal-loop-apricot"
-              d="M439 200a119 119 0 0 1-113 119m0 0 17-19m-17 19 30 0"
-            />
-            <path
-              className="signal-loop-ink"
-              d="M320 319a119 119 0 0 1-114-85m0 0 23 7m-23-7 11 24"
-            />
-            <path
-              className="signal-loop-butter"
-              d="M201 200A119 119 0 0 1 314 81"
-            />
-            <path
-              className="signal-wave"
-              d="M252 200h25l10-28 13 60 15-78 15 86 15-40h45"
+              className="ribbon-thread"
+              d="M110 465C170 550 290 538 330 421C370 304 175 250 220 143C265 36 455 60 497 183C539 306 420 375 450 469C470 531 533 541 590 510"
             />
           </g>
+          <path
+            className="sculpture-unfold"
+            d="M110 465C170 550 290 538 330 421C370 304 175 250 220 143C265 36 455 60 497 183C539 306 420 375 450 469C470 531 533 541 590 510"
+          />
+          <g className="sculpture-recording">
+            <path
+              className="sculpture-wave"
+              d="M345 355H370L382 325L395 388L410 296L427 410L442 335L455 373L470 320L484 382L499 347H585"
+            />
+            <path
+              className="sculpture-time"
+              d="M395 290V416M470 290V416M552 290V416"
+            />
+            <circle className="sculpture-pin pin-1" cx="395" cy="355" r="8" />
+            <circle className="sculpture-pin pin-2" cx="470" cy="355" r="8" />
+            <circle className="sculpture-pin pin-3" cx="552" cy="355" r="8" />
+          </g>
+          <path
+            className="sculpture-next"
+            d="M345 355C440 355 450 505 568 485L590 476M578 462L596 475L582 491"
+          />
         </svg>
-        <span className="signal-stage-index" aria-hidden="true">
-          0{stage + 1}
+        <span className="assignment-capsule ambient">
+          <ParaIcon name="assignment" music />
+          <span>{copy.assignment}</span>
+          <span aria-hidden="true">↗</span>
+        </span>
+        <span className="sculpture-label recording-label">
+          {copy.recording}
+        </span>
+        <span className="sculpture-label feedback-label">{copy.feedback}</span>
+        <span className="sculpture-label next-label">{copy.nextPractice}</span>
+        <span className="sculpture-timing" aria-hidden="true">
+          01 — 05
         </span>
       </div>
       <figcaption>{copy.concept}</figcaption>

@@ -2,12 +2,12 @@ import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/para-v2";
+const out = ".qa/para-studio";
 const pages = [
   [
     "",
-    "Make every practice session lead somewhere.",
-    "Để mỗi lần luyện tập đều có hướng đi tiếp.",
+    "See the progress between lessons.",
+    "Thấy từng bước tiến giữa những buổi học.",
   ],
   [
     "product",
@@ -40,6 +40,7 @@ const viewports = [
   [390, 844],
   [430, 932],
   [768, 1024],
+  [1024, 900],
   [1440, 900],
   [1920, 1080],
   [2560, 1080],
@@ -428,75 +429,49 @@ await page
   .context()
   .addCookies([{ name: "howl0-language-choice", value: "en", url: base }]);
 await page.goto(base, { waitUntil: "networkidle" });
-const label = page.locator(".flow-label");
-assert((await label.textContent()) === "Assign", "story initial state failed");
-await page.waitForTimeout(1900);
-assert((await label.textContent()) === "Assign", "story must not autoplay");
-await page.getByRole("button", { name: "Play story" }).click();
-await page.waitForTimeout(1900);
-assert(
-  (await label.textContent()) === "Send a recording",
-  "story did not advance",
-);
-await page.getByRole("button", { name: "Pause story" }).click();
-const paused = await label.textContent();
-await page.waitForTimeout(1900);
-assert((await label.textContent()) === paused, "paused story continued");
-await page.getByRole("button", { name: "Next step", exact: true }).click();
-assert(
-  (await label.textContent()) === "Teacher feedback",
-  "manual story next failed",
-);
-assert(
-  (await page.locator(".story-stages button").count()) === 4,
-  "all four concept stages must remain visible",
-);
-await page.getByRole("button", { name: "Play story" }).click();
-await page.locator(".signal-canvas").hover();
-const hoverState = await label.textContent();
-await page.waitForTimeout(2100);
-assert((await label.textContent()) === hoverState, "hover must pause story");
+const hero = page.locator(".scene-hero");
 await page.mouse.move(0, 0);
-await page.waitForTimeout(1900);
+const initial = await hero.getAttribute("data-stage");
+await page.waitForTimeout(2400);
 assert(
-  (await label.textContent()) !== hoverState,
-  "story must resume after hover",
+  (await hero.getAttribute("data-stage")) !== initial,
+  "visible ambient story did not advance",
 );
-await page.getByRole("button", { name: "Pause story" }).click();
-await page.locator(".story-stages button").first().click();
-await page.getByRole("button", { name: "Play story" }).click();
-await page.mouse.move(0, 0);
-await page.locator(".story-stages button").first().focus();
-const focusedState = await label.textContent();
-await page.waitForTimeout(2100);
+await page.getByRole("button", { name: "Pause animation" }).click();
+const paused = await hero.getAttribute("data-stage");
+await page.waitForTimeout(2400);
 assert(
-  (await label.textContent()) === focusedState,
-  "keyboard focus must pause story",
+  (await hero.getAttribute("data-stage")) === paused,
+  "pause did not stop story",
 );
-await page.getByRole("button", { name: "Pause story" }).click();
+await page.getByRole("button", { name: "Next stage" }).click();
+assert(
+  (await hero.getAttribute("data-stage")) !== paused,
+  "manual next failed",
+);
+assert(
+  (await page.locator(".hero-stage-keys button").count()) === 5,
+  "five stage labels missing",
+);
 await page
-  .getByRole("link", { name: "Learn how PARA works", exact: true })
+  .getByRole("link", { name: "See the learning loop", exact: true })
   .click();
 assert(
   new URL(page.url()).hash === "#submission-flow",
   "primary CTA must explain the product, not imply working registration",
 );
 await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
-await page.getByRole("button", { name: "Play story" }).click();
+await page.getByRole("button", { name: "Resume animation" }).click();
 await page.mouse.move(0, 0);
 await page.evaluate(() =>
   scrollTo({ top: document.body.scrollHeight, behavior: "instant" }),
 );
-const offscreen = await label.textContent();
-await page.waitForTimeout(2100);
-assert((await label.textContent()) === offscreen, "offscreen story must pause");
-await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
-await page.waitForTimeout(7500);
+await page.waitForTimeout(150);
+const offscreen = await hero.getAttribute("data-stage");
+await page.waitForTimeout(2400);
 assert(
-  (await page
-    .getByRole("button", { name: "Play story" })
-    .getAttribute("aria-pressed")) === "false",
-  "story must stop after one cycle",
+  (await hero.getAttribute("data-stage")) === offscreen,
+  "offscreen story must pause",
 );
 assert(
   (await page.locator("audio,video,input[type=file]").count()) === 0,
@@ -557,14 +532,16 @@ for (const [path, selector] of [
     );
   } else {
     assert(
-      (await reduced.locator(".story-stages button:visible").count()) === 4,
+      (await reduced.locator(".hero-stage-keys button:visible").count()) === 5,
       "reduced-motion stages missing",
     );
-    await reduced.getByRole("button", { name: "Play story" }).click();
-    const state = await reduced.locator(".flow-label").textContent();
-    await reduced.waitForTimeout(2100);
+    const state = await reduced
+      .locator(".scene-hero")
+      .getAttribute("data-stage");
+    await reduced.waitForTimeout(2400);
     assert(
-      (await reduced.locator(".flow-label").textContent()) === state,
+      (await reduced.locator(".scene-hero").getAttribute("data-stage")) ===
+        state,
       "reduced motion must not loop",
     );
   }
