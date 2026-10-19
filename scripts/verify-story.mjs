@@ -3,7 +3,7 @@ import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/para-studio/story";
+const out = ".qa/para-material/story";
 await mkdir(out, { recursive: true });
 const browser = await chromium.launch();
 for (const [width, height] of [
@@ -11,7 +11,11 @@ for (const [width, height] of [
   [1024, 900],
   [390, 844],
 ]) {
+  if (process.env.STORY_WIDTH && width !== Number(process.env.STORY_WIDTH))
+    continue;
   for (const locale of ["en", "vi"]) {
+    if (process.env.STORY_LOCALE && locale !== process.env.STORY_LOCALE)
+      continue;
     const record =
       (width === 1440 && locale === "en") || (width === 390 && locale === "vi");
     const context = await browser.newContext({
@@ -211,4 +215,6 @@ for (const locale of ["en", "vi"]) {
   await context.close();
 }
 await browser.close();
-console.log("Studio story QA passed. Two scroll walkthroughs recorded.");
+console.log(
+  "Studio story QA passed. Captures and available walkthroughs saved.",
+);

@@ -1,8 +1,8 @@
 # PARA website
 
-The existing howl0 Next.js application, rebranded to PARA. The current website follows PARA Design Resource Pack v2, with the Refined Logo Package remaining the sole logo authority. Shared English/Vietnamese components and established routes remain in place.
+The existing howl0 Next.js application, rebranded to PARA. The current website follows `design-resources/PARA_Brand_Resources`: the approved Musical Window logo, Sandalwood colours and grain material system supersede earlier packs. Shared English/Vietnamese components and established routes remain in place.
 
-See [PARA_STUDIO_HANDOFF.md](PARA_STUDIO_HANDOFF.md) for the current five-scene homepage, motion/reference notes, changed files and verification. [PARA_IMPLEMENTATION.md](PARA_IMPLEMENTATION.md) records the preceding v2 revision.
+See [PARA_MATERIAL_HANDOFF.md](PARA_MATERIAL_HANDOFF.md) for the current assets, glass/motion system and verification. [PARA_STUDIO_HANDOFF.md](PARA_STUDIO_HANDOFF.md) and [PARA_IMPLEMENTATION.md](PARA_IMPLEMENTATION.md) record preceding revisions.
 
 ## Run locally
 
@@ -13,17 +13,16 @@ npm run dev
 
 Open http://localhost:3000. For production verification, run `npm run build` followed by `npm start`.
 
-Checks: `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm run build`. With a server running, use `npm run test:visual`, `npm run test:devices`, `npm run test:story`, `npm run test:a11y`, and `COLOR_SCHEME=dark npm run test:a11y`. Set `BASE_URL` to use a different port. Screenshots and two scroll walkthrough videos are generated under ignored `.qa/para-studio/`.
+Checks: `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm run build`. With a server running, use `npm run test:visual`, `npm run test:devices`, `npm run test:story`, `npm run test:materials`, `npm run test:a11y`, and `COLOR_SCHEME=dark npm run test:a11y`. Set `BASE_URL` to use a different port. Current screenshots and two scroll walkthrough videos are generated under ignored `.qa/para-material/`.
 
 ## Brand sources and assets
 
-- `design-resources/PARA_Design_Resource_Pack_v2/`: controlling shared palette, typography, abstract SVGs, website copy and motion guidance. Platform examples are design references, not functioning screens or released capabilities.
-- `design-resources/para/PARA_Music_Resource_Pack/`: licensed fonts and supporting UI/music icons. Its literal illustrations are no longer rendered.
-- `design-resources/para/PARA_Refined_Logo_Package/`: the controlling logo source. Production Raspberry, Cocoa and White SVGs are supplied copies, without modified paths or crops.
-- `public/brand/para/`: selected production assets, WOFF2 files and font licences. The compact P/favicon proposal is not used.
-- `src/app/para.css` and `para-tokens.css`: the active shared presentation system; `studio.css` is scoped to the homepage. Earlier styles and howl0 assets are retained as historical resources and are not imported into the PARA pages.
+- `design-resources/PARA_Brand_Resources/`: controlling production logo geometry, five-colour palette, typography, icon families, EN/VI listening artwork and raster-grain materials. Explicitly marked app/favicon proposals are excluded.
+- `public/brand/para/resources/`: exact production copies, local WOFF2 fonts, OFL licences and `asset-provenance.json`. `npm run brand:sync` rebuilds this explicit allowlist from the package. Source assets are not edited.
+- `src/app/para.css` and `para-tokens.css`: shared presentation and semantic colour/type roles. Legacy variable names are compatibility aliases to the new palette, not old colours.
+- `studio.css` retains the established five-scene choreography; `material.css` applies the new artwork, typography and selective glass. Historical assets remain on disk but are not rendered by current pages.
 
-Headlines use Cormorant Garamond 500; body text uses Be Vietnam Pro. Paper, Cocoa and Raspberry carry the interface; Apricot and Butter remain music accents. Device dark mode uses the supplied White wordmark and Paper illustration panels. Only serif Roman and body Regular are preloaded.
+Headlines use Plus Jakarta Sans 600; body text uses Be Vietnam Pro 400–600. Espresso, Ivory, Sand and Saddle Brown carry the interface, with Cool Grey confined to supplied artwork. Device dark mode uses the exact Ivory logo and inverse reading colours. Only the variable heading font and body Regular are preloaded. Solid logos are used at small sizes; larger closing/footer logos use the approved grain exports. Grain stays inside artwork, not on text or controls.
 
 ## Routes and content
 
@@ -33,7 +32,7 @@ The seven shared page pairs are `/` ↔ `/vi`, plus `/product`, `/how-it-works`,
 
 Core copy remains in `src/lib/i18n.ts`, adapted from the approved original content and v2 bilingual copy. `src/lib/studio.ts` holds the latest brief's concise bilingual scene copy; `src/lib/para.ts` retains supporting resource-pack captions. Product capabilities remain qualified as intended or in development. Henry and Aaron's approved roles and music backgrounds remain.
 
-The homepage has five connected scenes: learning signal → five-stage learning loop → three perspectives → feedback belief → open-loop development status. An abstract ribbon, floating assignment capsule, recording waveform, teacher markers and next-practice path express the same journey. The primary CTA explains the product, rather than implying registration is operational. Legacy `#waitlist` anchors still work.
+The homepage has five connected scenes: learning signal → five-stage learning loop → three perspectives → feedback belief → open-loop development status. Approved listening artwork, a floating assignment capsule, recording waveform, timestamp markers and next-practice path express the same journey. Glass is selective, uses opaque fallbacks and honours reduced transparency. Mobile drops artwork backdrop blur and uses expressive symbols rather than miniature text inside detailed illustrations. The primary CTA explains the product, rather than implying registration is operational. Legacy `#waitlist` anchors still work.
 
 The hero uses an 11-second ambient sequence with explicit Pause/Resume and manual stages. It pauses over the artwork, while offscreen or when the document is hidden. Manual selection pauses playback. Reduced motion disables ambient movement and pinning, with the five stages and complete learning story visible. The desktop learning loop uses a short native-scroll sticky scene; mobile and short screens use normal flow. Audience tabs change only through user interaction and reserve their text height. There is no audio, grading, live upload or fake progress percentage.
 

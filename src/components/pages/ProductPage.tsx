@@ -2,7 +2,7 @@ import { PageCta } from "@/components/PageCta";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { ParaFigure } from "@/components/ParaFigure";
-import { ParaIcon } from "@/components/ParaIcon";
+import { ExpressiveIcon } from "@/components/ExpressiveIcon";
 import { content, type Locale } from "@/lib/i18n";
 
 export function ProductPage({ locale }: { locale: Locale }) {
@@ -28,15 +28,8 @@ export function ProductPage({ locale }: { locale: Locale }) {
             {page.pillars.map(([number, title, copy], index) => (
               <li key={title}>
                 <span>{number}</span>
-                <ParaIcon
-                  name={
-                    [
-                      "audio-recording",
-                      "teacher-feedback",
-                      "progress-over-time",
-                    ][index]
-                  }
-                  music
+                <ExpressiveIcon
+                  name={["recording", "feedback", "progress"][index]}
                 />
                 <h3>{title}</h3>
                 <p>{copy}</p>

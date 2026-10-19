@@ -22,7 +22,7 @@ export function WaitlistSection({ locale }: { locale: Locale }) {
               />
               <circle cx="395" cy="165" r="5" />
             </svg>
-            <BrandLogo width={168} height={72} />
+            <BrandLogo width={280} height={76} footer />
           </figure>
           <p className="eyebrow">{page.eyebrow}</p>
           <SceneHeading lines={copy.closeLines} />

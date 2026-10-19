@@ -3,7 +3,7 @@ import { mkdir } from "node:fs/promises";
 import { chromium, webkit, devices } from "playwright";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/para-studio/devices";
+const out = ".qa/para-material/devices";
 await mkdir(out, { recursive: true });
 const routes = [
   "",
@@ -58,7 +58,7 @@ async function checkLayout(page, label) {
       }
     }
     const logo = document.querySelector(".brand img");
-    if (logo && logo.getBoundingClientRect().width < 104)
+    if (logo && logo.getBoundingClientRect().width < 140)
       problems.push("wordmark below minimum size");
     return problems;
   });
@@ -111,10 +111,14 @@ async function run(engine, settings) {
             .evaluate((el) => getComputedStyle(el).backgroundColor);
           assert.equal(
             bodyColor,
-            "rgb(53, 36, 45)",
+            "rgb(59, 47, 42)",
             `${path}: dark mode did not follow device`,
           );
-          await checkLogo(page, ".brand img", "PARA_White.svg");
+          await checkLogo(
+            page,
+            ".brand img",
+            "para-horizontal-ivory-optical.svg",
+          );
           if (
             ["", "/people", "/how-it-works"].includes(route) &&
             ["android", "iphone", "desktop", "ultrawide"].includes(name)
@@ -134,10 +138,14 @@ async function run(engine, settings) {
         await page
           .locator("body")
           .evaluate((el) => getComputedStyle(el).backgroundColor),
-        "rgb(255, 247, 242)",
+        "rgb(243, 237, 226)",
         "live switch back to light failed",
       );
-      await checkLogo(page, ".brand img", "PARA_Raspberry.svg");
+      await checkLogo(
+        page,
+        ".brand img",
+        "para-horizontal-espresso-optical.svg",
+      );
       await checkLayout(page, `${engine.name()} ${name} light`);
       const menu = page.locator(".menu-toggle");
       if (await menu.isVisible()) {
@@ -168,7 +176,11 @@ async function run(engine, settings) {
       await page.emulateMedia({ colorScheme: "dark" });
       await page.evaluate(() => document.fonts.ready);
       await checkLayout(page, `${name} welcome`);
-      await checkLogo(page, ".welcome-logo", "PARA_White.svg");
+      await checkLogo(
+        page,
+        ".welcome-logo",
+        "para-horizontal-ivory-optical.svg",
+      );
       if (["android", "iphone", "desktop", "ultrawide"].includes(name)) {
         await prepareScreenshot(page);
         await page.screenshot({
@@ -194,7 +206,7 @@ async function run(engine, settings) {
       await page
         .locator("body")
         .evaluate((el) => getComputedStyle(el).backgroundColor),
-      "rgb(53, 36, 45)",
+      "rgb(59, 47, 42)",
     );
     await noJs.close();
   } finally {

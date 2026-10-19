@@ -2,7 +2,7 @@ import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/para-studio";
+const out = ".qa/para-material/routes";
 const pages = [
   [
     "",

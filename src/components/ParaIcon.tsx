@@ -8,7 +8,10 @@ export function ParaIcon({
   name: string;
   music?: boolean;
 }) {
-  const path = `/brand/para/icons/${music ? `music/para-icon-${name}` : `ui/para-ui-${name}`}.svg`;
+  // Application icons stay solid/currentColor, even when next to music copy.
+  const asset =
+    name === "arrow-right" ? "forward" : name === "alert" ? "warning" : name;
+  const path = `/brand/para/resources/para-ui-${asset}-24-solid.svg`;
   return (
     <span
       className={`para-icon ${music ? "music-icon" : ""}`}

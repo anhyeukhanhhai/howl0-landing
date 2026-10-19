@@ -1,10 +1,9 @@
-import { useId } from "react";
 import { content, type Locale } from "@/lib/i18n";
 import { sceneCopy } from "@/lib/studio";
 import { ParaIcon } from "@/components/ParaIcon";
 
-/** Separate abstract artwork, never logo geometry. Shared-position handoffs,
- * not interpolation between incompatible SVG paths or a functioning interface. */
+/** Approved listening artwork; surrounding paths are separate concept geometry.
+ * Raster-grain artwork uses crop/position/crossfade, never a fake path morph. */
 export function SignalStory({
   locale,
   stage,
@@ -13,82 +12,93 @@ export function SignalStory({
   stage: number;
 }) {
   const copy = sceneCopy(locale);
-  const id = useId();
   return (
-    <figure className="signal-story sculpture-stage" data-stage={stage}>
+    <figure
+      className="signal-story sculpture-stage material-story"
+      data-stage={stage}
+    >
       <div
         className="signal-sculpture"
         role="img"
         aria-label={content[locale].home.hero.aria}
       >
-        <svg viewBox="0 0 680 640" fill="none" aria-hidden="true">
-          <defs>
-            <linearGradient
-              id={id}
-              x1="140"
-              y1="60"
-              x2="570"
-              y2="580"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#A92E5D" />
-              <stop offset=".57" stopColor="#8F234D" />
-              <stop offset="1" stopColor="#F0A06B" />
-            </linearGradient>
-          </defs>
+        <div className="signal-material ambient" aria-hidden="true" />
+        <svg
+          className="hero-signal-path"
+          viewBox="0 0 680 640"
+          fill="none"
+          aria-hidden="true"
+        >
           <g className="sculpture-guides">
-            <path d="M55 170H625M55 270H625M55 370H625M55 470H625" />
-            <path d="M180 60V590M340 60V590M500 60V590" />
+            <path d="M40 180H640M40 320H640M40 460H640" />
           </g>
-          <g className="sculpture-ribbon ambient">
-            <path
-              className="ribbon-shadow"
-              d="M110 465C170 550 290 538 330 421C370 304 175 250 220 143C265 36 455 60 497 183C539 306 420 375 450 469C470 531 533 541 590 510"
-            />
-            <path
-              className="ribbon-body"
-              stroke={`url(#${id})`}
-              d="M110 465C170 550 290 538 330 421C370 304 175 250 220 143C265 36 455 60 497 183C539 306 420 375 450 469C470 531 533 541 590 510"
-            />
-            <path
-              className="ribbon-thread"
-              d="M110 465C170 550 290 538 330 421C370 304 175 250 220 143C265 36 455 60 497 183C539 306 420 375 450 469C470 531 533 541 590 510"
-            />
-          </g>
+          <path
+            className="signal-quiet"
+            pathLength="1"
+            d="M30 370C130 370 135 100 340 100S610 190 610 340S565 590 420 590"
+          />
           <path
             className="sculpture-unfold"
-            d="M110 465C170 550 290 538 330 421C370 304 175 250 220 143C265 36 455 60 497 183C539 306 420 375 450 469C470 531 533 541 590 510"
+            d="M30 370C130 370 135 100 340 100S610 190 610 340S565 590 420 590"
           />
-          <g className="sculpture-recording">
-            <path
-              className="sculpture-wave"
-              d="M345 355H370L382 325L395 388L410 296L427 410L442 335L455 373L470 320L484 382L499 347H585"
-            />
-            <path
-              className="sculpture-time"
-              d="M395 290V416M470 290V416M552 290V416"
-            />
-            <circle className="sculpture-pin pin-1" cx="395" cy="355" r="8" />
-            <circle className="sculpture-pin pin-2" cx="470" cy="355" r="8" />
-            <circle className="sculpture-pin pin-3" cx="552" cy="355" r="8" />
-          </g>
           <path
             className="sculpture-next"
-            d="M345 355C440 355 450 505 568 485L590 476M578 462L596 475L582 491"
+            d="M420 590C555 590 555 505 625 505M609 490L628 505L612 521"
           />
+          <circle className="signal-origin" cx="30" cy="370" r="6" />
         </svg>
-        <span className="assignment-capsule ambient">
-          <ParaIcon name="assignment" music />
+        <picture className="approved-listening ambient">
+          <source
+            media="(min-width: 1200px)"
+            srcSet={`/brand/para/resources/para-art-03-listen-${locale}-grain.svg`}
+          />
+          <img
+            src="/brand/para/resources/para-expressive-listening-grain.svg"
+            alt=""
+            width={680}
+            height={540}
+            fetchPriority="high"
+          />
+        </picture>
+        <span className="assignment-capsule glass-surface ambient">
+          <ParaIcon name="assignment" />
           <span>{copy.assignment}</span>
           <span aria-hidden="true">↗</span>
         </span>
-        <span className="sculpture-label recording-label">
-          {copy.recording}
+        <div className="recording-glass glass-surface">
+          <span className="recording-meta">
+            <ParaIcon name="upload" />
+            {copy.recording}
+            <span aria-hidden="true">01</span>
+          </span>
+          <svg viewBox="0 0 440 100" fill="none" aria-hidden="true">
+            <path
+              className="sculpture-wave"
+              d="M16 50H48L59 30L70 73L83 14L98 86L111 39L127 61L141 22L155 76L170 40L185 63L201 26L217 78L233 43L249 60L265 25L280 72L298 39L315 61L329 45H424"
+            />
+            <g className="sculpture-time">
+              <path d="M83 5V95M201 5V95M329 5V95" />
+            </g>
+            <circle className="sculpture-pin pin-1" cx="83" cy="50" r="7" />
+            <circle className="sculpture-pin pin-2" cx="201" cy="50" r="7" />
+            <circle className="sculpture-pin pin-3" cx="329" cy="50" r="7" />
+          </svg>
+          <span className="recording-timestamps" aria-hidden="true">
+            <span>0:12</span>
+            <span>0:28</span>
+            <span>0:41</span>
+          </span>
+        </div>
+        <span className="sculpture-label feedback-label glass-surface">
+          <ParaIcon name="comment" />
+          {copy.feedback}
         </span>
-        <span className="sculpture-label feedback-label">{copy.feedback}</span>
-        <span className="sculpture-label next-label">{copy.nextPractice}</span>
+        <span className="sculpture-label next-label">
+          {copy.nextPractice}
+          <span aria-hidden="true"> ↗</span>
+        </span>
         <span className="sculpture-timing" aria-hidden="true">
-          01 — 05
+          0{stage + 1} / 05
         </span>
       </div>
       <figcaption>{copy.concept}</figcaption>

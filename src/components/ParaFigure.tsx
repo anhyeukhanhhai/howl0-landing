@@ -23,11 +23,20 @@ export function ParaFigure({
   eager?: boolean;
   className?: string;
 }) {
+  const symbols: Record<SignalAsset, string> = {
+    "hero-signal": "listening",
+    "practice-loop": "repeat-improve",
+    "feedback-wave": "feedback",
+    "rhythm-grid": "rhythm",
+    "progress-arc": "progress",
+    "upload-transfer": "recording",
+    "timestamp-markers": "review",
+  };
   return (
     <figure className={`para-figure ${className}`}>
       <div className="illustration-ground">
         <img
-          src={`/brand/para/abstract/${asset}.svg`}
+          src={`/brand/para/resources/para-expressive-${symbols[asset]}-grain.svg`}
           alt=""
           width={640}
           height={360}

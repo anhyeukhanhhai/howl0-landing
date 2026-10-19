@@ -1,5 +1,6 @@
 import { sceneCopy } from "@/lib/studio";
 import type { Locale } from "@/lib/i18n";
+import { ExpressiveIcon } from "@/components/ExpressiveIcon";
 
 export function PerspectiveSignal({
   locale,
@@ -12,6 +13,16 @@ export function PerspectiveSignal({
   return (
     <figure className="perspective-signal" data-perspective={active}>
       <div role="img" aria-label={copy.perspectives[active]}>
+        <div className="perspective-material" aria-hidden="true" />
+        <div className="perspective-emblems" aria-hidden="true">
+          {["feedback", "next-step", "review"].map((name, index) => (
+            <ExpressiveIcon
+              key={name}
+              name={name}
+              className={`perspective-emblem emblem-${index}`}
+            />
+          ))}
+        </div>
         <svg viewBox="0 0 680 440" fill="none" aria-hidden="true">
           <path
             className="perspective-guide"

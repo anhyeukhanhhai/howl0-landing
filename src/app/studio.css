@@ -36,7 +36,7 @@
 }
 .studio-home .scene-hero {
   isolation: isolate;
-  background: radial-gradient(ellipse at 75% 50%, #f0a06b12, transparent 58%);
+  background: none;
 }
 .studio-home .hero-grid {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.03fr);
@@ -109,7 +109,7 @@
   stroke-linecap: butt;
 }
 .studio-home .ribbon-shadow {
-  stroke: #35242d0c;
+  stroke: #3b2f2a0c;
   stroke-width: 76;
   transform: translate(6px, 12px);
 }
@@ -138,7 +138,7 @@
   padding: 16px 20px;
   background: var(--color-background);
   border: 1px solid var(--color-control-border);
-  box-shadow: 0 12px 32px #35242d0c;
+  box-shadow: 0 12px 32px #3b2f2a0c;
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
@@ -761,7 +761,7 @@
   fill: var(--para-raspberry);
 }
 
-/* The feedback pin opens into a cocoa/raspberry field. Text is always on a
+/* The feedback pin opens into an Espresso field. Text is always on a
    contrast-safe base; only the decorative boundary expands with native scroll. */
 .studio-home .scene-belief {
   isolation: isolate;
@@ -773,12 +773,7 @@
   position: absolute;
   z-index: -1;
   inset: -95px 0 0;
-  background: linear-gradient(
-    115deg,
-    var(--para-cocoa) 18%,
-    #51243a 68%,
-    #712849
-  );
+  background: var(--para-espresso);
   clip-path: ellipse(calc(65% + var(--scene-enter) * 70%) 100% at 74% 100%);
 }
 .studio-home .scene-belief .eyebrow {
@@ -839,7 +834,7 @@
   gap: 28px;
 }
 .studio-home .belief-cues li {
-  border-top: 1px solid #fff7f240;
+  border-top: 1px solid #f3ede240;
   padding-top: 16px;
   font-size: 12px;
 }

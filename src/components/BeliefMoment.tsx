@@ -4,6 +4,7 @@ import type { Locale } from "@/lib/i18n";
 import { SceneHeading } from "@/components/SceneHeading";
 import { ScrollScene } from "@/components/ScrollScene";
 import { sceneCopy } from "@/lib/studio";
+import { ExpressiveIcon } from "@/components/ExpressiveIcon";
 export function BeliefMoment({
   content,
   locale,
@@ -25,6 +26,7 @@ export function BeliefMoment({
         <div className="belief-aperture" aria-hidden="true" />
         <div className="wrap belief-statement">
           <p className="eyebrow">{content.eyebrow}</p>
+          <ExpressiveIcon name="feedback" className="belief-emblem" />
           <SceneHeading lines={copy.beliefLines} />
           <p className="belief-support">{copy.beliefCopy}</p>
           <div className="belief-signal" aria-hidden="true">
