@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ParaIcon } from "@/components/ParaIcon";
+import { GlassLayers } from "@/components/GlassSurface";
 import {
   content,
   homeHref,
@@ -89,10 +90,11 @@ export function Navigation({ locale }: { locale: Locale }) {
   }
 
   return (
-    <header className="site-header">
+    <header className="site-header para-glass para-glass--quiet">
+      <GlassLayers />
       <nav
         ref={navigation}
-        className="nav wrap"
+        className="nav wrap para-glass__content"
         aria-label={dictionary.label}
         onKeyDown={handleKeys}
       >

@@ -1,6 +1,10 @@
 @import "./para-tokens.css";
 @import "./studio.css";
 @import "./material.css";
+@import "./glass/para-glass-tokens.css";
+@import "./glass/para-glass.css";
+@import "./glass-refinement.css";
+@import "./glass/para-glass-fallbacks.css";
 
 @font-face {
   font-family: "Plus Jakarta Sans";

@@ -5,7 +5,7 @@ import { chromium } from "playwright";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
 const root = "public/brand/para/resources";
-const out = ".qa/para-material";
+const out = ".qa/para-glass";
 await mkdir(out, { recursive: true });
 const provenance = JSON.parse(
   await readFile(`${root}/asset-provenance.json`, "utf8"),
@@ -40,6 +40,15 @@ for (const asset of provenance.assets) {
 console.log(
   `${provenance.assets.length} production assets match original bytes; no proposals.`,
 );
+const glassSource = JSON.parse(
+  await readFile("public/brand/para/glass/provenance.json", "utf8"),
+);
+for (const asset of glassSource.assets) {
+  const data = await readFile(`public/brand/para/glass/${asset.file}`);
+  assert(data.equals(await readFile(`${glassSource.source}/${asset.source}`)));
+  assert.equal(createHash("sha256").update(data).digest("hex"), asset.sha256);
+}
+console.log("All 3 glass layer assets match the supplied originals.");
 const browser = await chromium.launch();
 for (const width of [1440, 1024, 390])
   for (const locale of ["en", "vi"]) {
@@ -100,30 +109,56 @@ for (const width of [1440, 1024, 390])
     await page.screenshot({
       path: `${out}/${locale}-${width}-hero-feedback.png`,
     });
-    const glass = await page.locator(".recording-glass").evaluate((el) => ({
-      color: getComputedStyle(el).color,
-      blur: getComputedStyle(el).backdropFilter,
-    }));
+    const glass = await page
+      .locator(".recording-material > .para-glass__surface")
+      .evaluate((el) => ({
+        color: getComputedStyle(el).color,
+        blur: getComputedStyle(el).backdropFilter,
+      }));
     assert.equal(glass.color, "rgb(59, 47, 42)");
-    if (width > 640) assert.equal(glass.blur, "blur(12px)");
-    else assert.equal(glass.blur, "none");
+    assert.equal(glass.blur, `blur(${width > 640 ? 18 : 10}px) saturate(1)`);
+    assert.equal(
+      await page
+        .locator(".recording-material")
+        .evaluate((el) => getComputedStyle(el).opacity),
+      "1",
+    );
+    if (width <= 640)
+      assert.equal(
+        await page
+          .locator(".perspective-reading > .para-glass__surface")
+          .evaluate((el) => getComputedStyle(el).backdropFilter),
+        "none",
+      );
     const cdp = await context.newCDPSession(page);
     await cdp.send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-transparency", value: "reduce" }],
     });
     assert.equal(
       await page
-        .locator(".recording-glass")
+        .locator(".recording-material > .para-glass__surface")
         .evaluate((el) => getComputedStyle(el).backdropFilter),
       "none",
     );
     assert.equal(
       await page
-        .locator(".recording-glass")
+        .locator(".recording-material > .para-glass__surface")
         .evaluate((el) => getComputedStyle(el).backgroundColor),
       "rgb(243, 237, 226)",
     );
     await cdp.send("Emulation.setEmulatedMedia", { features: [] });
+    await page.evaluate(
+      () => (document.documentElement.dataset.paraGlass = "solid"),
+    );
+    assert.equal(
+      await page
+        .locator(".recording-material > .para-glass__surface")
+        .evaluate((el) => getComputedStyle(el).backdropFilter),
+      "none",
+    );
+    await page.evaluate(
+      () => delete document.documentElement.dataset.paraGlass,
+    );
     const before = await page
       .locator(".scene-loop")
       .evaluate((el) => el.getBoundingClientRect().top + scrollY);

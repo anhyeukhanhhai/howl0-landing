@@ -7,6 +7,7 @@ import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { SceneHeading } from "@/components/SceneHeading";
 import { ParaIcon } from "@/components/ParaIcon";
 import { ExpressiveIcon } from "@/components/ExpressiveIcon";
+import { GlassSurface } from "@/components/GlassSurface";
 
 const route =
   "M126 114C220 20 362 18 444 110S615 243 540 332S398 498 260 438S60 305 126 114";
@@ -93,10 +94,9 @@ export function SubmissionFlow({ locale }: { locale: Locale }) {
                 />
               ))}
             </div>
-            <div
-              className="loop-recording-ground glass-surface"
-              aria-hidden="true"
-            />
+            <div className="loop-recording-ground" aria-hidden="true">
+              <GlassSurface rising />
+            </div>
             <svg viewBox="0 0 680 540" fill="none" aria-hidden="true">
               <path className="loop-route-base" d={route} />
               <path
@@ -134,18 +134,22 @@ export function SubmissionFlow({ locale }: { locale: Locale }) {
               </g>
               <circle className="loop-start" cx="126" cy="114" r="6" />
             </svg>
-            <span className="loop-task-capsule glass-surface">
-              <ParaIcon name="assignment" music />
-              {copy.assignment}
-              <span aria-hidden="true">↗</span>
-            </span>
+            <div className="loop-task-capsule">
+              <GlassSurface material="quiet" className="assignment-material">
+                <ParaIcon name="assignment" music />
+                {copy.assignment}
+                <span aria-hidden="true">↗</span>
+              </GlassSurface>
+            </div>
             <span className="loop-record-label">{copy.recording}</span>
             <span className="loop-response-label">{copy.feedback}</span>
-            <span className="loop-timestamp glass-surface">
-              <ParaIcon name="comment" />
-              <span aria-hidden="true">0:28</span>
-              <span className="sr-only">{copy.feedback}</span>
-            </span>
+            <div className="loop-timestamp">
+              <GlassSurface material="smoke" className="feedback-material">
+                <ParaIcon name="comment" />
+                <span aria-hidden="true">0:28</span>
+                <span className="sr-only">{copy.feedback}</span>
+              </GlassSurface>
+            </div>
             <span className="loop-next-instruction">
               {copy.instruction}
               <span aria-hidden="true">↗</span>

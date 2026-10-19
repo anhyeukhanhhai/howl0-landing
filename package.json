@@ -15,6 +15,7 @@
     "test:story": "node scripts/verify-story.mjs",
     "test:a11y": "node scripts/accessibility.mjs",
     "brand:sync": "node scripts/sync-brand-assets.mjs",
+    "brand:glass": "node scripts/sync-glass-assets.mjs",
     "test:materials": "node scripts/verify-materials.mjs"
   },
   "dependencies": {

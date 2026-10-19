@@ -3,7 +3,7 @@ import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/para-material/story";
+const out = ".qa/para-glass/story";
 await mkdir(out, { recursive: true });
 const browser = await chromium.launch();
 for (const [width, height] of [

@@ -8,6 +8,7 @@ import { PerspectiveSignal } from "@/components/PerspectiveSignal";
 import { SceneHeading } from "@/components/SceneHeading";
 import { ScrollScene } from "@/components/ScrollScene";
 import { ParaIcon } from "@/components/ParaIcon";
+import { GlassSurface } from "@/components/GlassSurface";
 
 export function PerspectiveSwitcher({
   locale,
@@ -82,22 +83,26 @@ export function PerspectiveSwitcher({
             ))}
             <span className="audience-tab-indicator" aria-hidden="true" />
           </div>
-          <PerspectiveSignal locale={locale} active={active} />
-          <div className="perspective-panes">
-            {content.items.map((item, index) => (
-              <div
-                className={`perspective-pane ${index === active ? "active" : ""}`}
-                key={item.name}
-                id={`perspective-panel-${index}`}
-                role="tabpanel"
-                tabIndex={index === active ? 0 : -1}
-                aria-hidden={index !== active}
-                aria-labelledby={`perspective-tab-${index}`}
-              >
-                <h3>{copy.perspectives[index]}</h3>
-                <p>{index === 2 ? copy.parentNote : item.copy}</p>
+          <div className="perspective-workspace">
+            <PerspectiveSignal locale={locale} active={active} />
+            <GlassSurface material="quiet" className="perspective-reading">
+              <div className="perspective-panes">
+                {content.items.map((item, index) => (
+                  <div
+                    className={`perspective-pane ${index === active ? "active" : ""}`}
+                    key={item.name}
+                    id={`perspective-panel-${index}`}
+                    role="tabpanel"
+                    tabIndex={index === active ? 0 : -1}
+                    aria-hidden={index !== active}
+                    aria-labelledby={`perspective-tab-${index}`}
+                  >
+                    <h3>{copy.perspectives[index]}</h3>
+                    <p>{index === 2 ? copy.parentNote : item.copy}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </GlassSurface>
           </div>
           <noscript>
             <div className="no-js-perspectives">

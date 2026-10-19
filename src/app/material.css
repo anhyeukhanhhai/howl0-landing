@@ -69,32 +69,6 @@ body .page-hero h1,
 body .faq-list summary {
   line-height: 1.35;
 }
-body .glass-surface {
-  background: var(--glass-paper);
-  color: var(--glass-ink);
-  border: 1px solid var(--para-border-strong);
-  border-radius: 12px;
-  box-shadow:
-    0 12px 32px #3b2f2a0d,
-    inset 0 1px 0 #f3ede2b3;
-}
-@supports (
-  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
-) {
-  body .glass-surface {
-    background: color-mix(in srgb, var(--glass-paper) 91%, transparent);
-    backdrop-filter: blur(12px);
-    border-color: color-mix(
-      in srgb,
-      var(--para-border-strong) 65%,
-      var(--para-ivory)
-    );
-  }
-  body .site-header {
-    background: color-mix(in srgb, var(--color-background) 94%, transparent);
-    backdrop-filter: blur(12px);
-  }
-}
 .expressive-icon {
   display: block;
   width: 112px;
@@ -838,9 +812,6 @@ body .para-figure .illustration-ground img {
   body .footer-main .brand-logo img {
     width: 280px;
   }
-  body .glass-surface {
-    backdrop-filter: none;
-  }
 }
 @media (max-height: 740px) {
   .studio-home .scene-loop {
@@ -921,15 +892,5 @@ body .para-figure .illustration-ground img {
   }
   .studio-home .hero-signal-path {
     transform: none;
-  }
-}
-@media (prefers-reduced-transparency: reduce) {
-  body .glass-surface,
-  body .site-header {
-    background: var(--glass-paper);
-    backdrop-filter: none;
-  }
-  body .site-header {
-    background: var(--color-background);
   }
 }

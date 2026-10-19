@@ -1,0 +1,486 @@
+/* Integration layout only. Material values/layers come from the supplied add-on.
+   Local stack: artwork 0, path 1, glass 2, readable content 3; header 50. */
+[data-para-glass="solid"] .para-glass__surface,
+[data-para-glass="solid"].para-glass > .para-glass__surface {
+  transition: none;
+}
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  .para-glass > .para-glass__surface {
+    transition: none;
+  }
+}
+body .site-header.para-glass {
+  position: sticky;
+  z-index: 50;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  color: var(--color-text);
+}
+body .site-header > .para-glass__surface {
+  border-width: 0 0 1px;
+}
+body .site-header > .para-glass__texture {
+  display: none;
+}
+.studio-home .hero-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+  gap: clamp(32px, 4vw, 64px);
+  padding-block: 40px 24px;
+}
+.studio-home .hero-copy {
+  position: relative;
+  z-index: 1;
+}
+.studio-home .hero-lead {
+  max-width: 40ch;
+  line-height: 1.75;
+}
+.studio-home .signal-sculpture {
+  isolation: auto;
+  z-index: 0;
+  aspect-ratio: 680 / 590;
+}
+.studio-home .signal-material {
+  inset: 5% 5% 2% 5%;
+  z-index: 0;
+  mask: none;
+  border-radius: 48% 48% 12% 48%;
+  opacity: 1;
+  background-image: url("/brand/para/resources/para-material-warm-grain.webp");
+  transform: rotate(-7deg);
+  animation: glass-ground-drift 11s ease-in-out infinite;
+}
+.studio-home .signal-sculpture > .hero-signal-path {
+  z-index: 1;
+}
+.studio-home .approved-listening {
+  inset: 0 0 7%;
+  z-index: 1;
+}
+.studio-home
+  .material-story:is([data-stage="2"], [data-stage="3"], [data-stage="4"])
+  .approved-listening {
+  opacity: 0.64;
+  scale: 0.94;
+}
+.studio-home .sculpture-timing {
+  z-index: 2;
+  color: var(--para-espresso);
+  top: 10%;
+  right: 7%;
+}
+.studio-home .assignment-capsule,
+.studio-home .recording-glass,
+.studio-home .feedback-label,
+.studio-home .loop-task-capsule,
+.studio-home .loop-timestamp {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  display: block;
+  z-index: 2;
+}
+.studio-home .assignment-capsule {
+  top: 61%;
+  left: 6%;
+  width: 78%;
+  min-height: 0;
+  animation: none;
+}
+.studio-home .assignment-material > .para-glass__content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 20px;
+  min-height: 56px;
+}
+.studio-home .assignment-material .para-glass__content > span:last-child {
+  margin-left: auto;
+}
+.studio-home .recording-glass {
+  top: 51%;
+  left: 5%;
+  width: 88%;
+  /* Opacity on a backdrop ancestor temporarily flattens the blur. Bring the
+     panel into place at full material strength; only the SVG markers fade. */
+  opacity: 1;
+  visibility: hidden;
+  transition:
+    transform 750ms var(--ease-phrase),
+    visibility 0s;
+}
+.studio-home
+  .material-story:is([data-stage="2"], [data-stage="3"], [data-stage="4"])
+  .recording-glass {
+  visibility: visible;
+  transition-delay: 160ms;
+}
+.studio-home
+  .material-story:is([data-stage="2"], [data-stage="3"], [data-stage="4"])
+  .assignment-capsule {
+  transition-duration: 650ms, 220ms;
+}
+.studio-home .recording-material > .para-glass__content {
+  padding: 20px 22px 16px;
+}
+.studio-home .feedback-label {
+  top: 35%;
+  right: 1%;
+}
+.studio-home .feedback-material > .para-glass__content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+}
+.studio-home .feedback-material .para-icon {
+  color: var(--para-ivory);
+}
+.studio-home .next-label {
+  z-index: 2;
+  bottom: 0;
+  right: 8%;
+  color: var(--para-espresso);
+}
+.studio-home .signal-story figcaption {
+  margin-top: 20px;
+}
+.studio-home .hero-story-controls {
+  margin-top: 10px;
+}
+.studio-home .hero-baseline {
+  display: none;
+}
+.studio-home .hero-handoff {
+  height: 68px;
+}
+.studio-home .scene-loop {
+  min-height: 128svh;
+}
+.studio-home .loop-sticky {
+  padding-block: 28px;
+  gap: 64px;
+}
+.studio-home .loop-intro {
+  max-width: 35ch;
+}
+.studio-home .loop-material {
+  inset: 18% 10% 15%;
+  mask: none;
+  border-radius: 48% 16% 48% 16%;
+  opacity: 0.8;
+}
+.studio-home .loop-recording-ground {
+  z-index: 0;
+}
+.studio-home .loop-recording-ground > .para-glass {
+  height: 100%;
+}
+.studio-home .loop-diagram > svg {
+  position: relative;
+  z-index: 1;
+}
+.studio-home .loop-task-capsule {
+  top: 12%;
+  left: 13%;
+}
+.studio-home .loop-task-capsule .para-glass__content {
+  min-height: 44px;
+  padding: 10px 14px;
+}
+.studio-home .loop-timestamp {
+  right: 12%;
+  top: 61%;
+}
+.studio-home .loop-timestamp .para-glass__content {
+  padding: 8px 12px;
+}
+.studio-home .loop-record-label {
+  z-index: 2;
+}
+.studio-home .loop-response-label {
+  z-index: 2;
+  top: 27%;
+  right: 16%;
+}
+.studio-home .scene-perspectives {
+  padding-block: 80px 120px;
+}
+.studio-home .perspective-scene-grid {
+  display: block;
+}
+.studio-home .perspective-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px 48px;
+  align-items: end;
+  margin-bottom: 40px;
+}
+.studio-home .perspective-intro .eyebrow {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+.studio-home .perspective-intro .scene-heading {
+  margin: 0;
+  font-size: clamp(40px, 4vw, 56px);
+}
+.studio-home .perspective-intro .text-link {
+  margin: 0 0 12px;
+}
+.studio-home .perspective-tabs {
+  max-width: 680px;
+}
+.studio-home .perspective-workspace {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.8fr);
+  align-items: center;
+  gap: 0;
+  margin-top: 24px;
+}
+.studio-home .perspective-workspace::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/brand/para/resources/para-material-quiet-grain.webp")
+    center / cover;
+  border-radius: 100px 12px 12px 12px;
+  pointer-events: none;
+}
+.studio-home .perspective-signal {
+  margin: 0;
+  padding: 24px;
+  position: relative;
+}
+.studio-home .perspective-material {
+  display: none;
+}
+.studio-home .perspective-reading {
+  margin: 24px;
+}
+.studio-home .perspective-panes {
+  background: transparent;
+  border: 0;
+  margin: 0;
+  padding: 28px;
+}
+.studio-home .perspective-pane h3 {
+  color: var(--para-espresso);
+  font-size: clamp(25px, 2.2vw, 32px);
+}
+.studio-home .perspective-pane p {
+  color: var(--para-espresso);
+  line-height: 1.75;
+}
+.studio-home .perspective-emblems {
+  top: -2%;
+  right: 8%;
+}
+.studio-home .perspective-art-label {
+  color: var(--para-espresso);
+}
+.studio-home .perspective-signal figcaption {
+  color: var(--para-espresso);
+}
+.studio-home .perspective-view {
+  transition-duration: 500ms, 650ms;
+}
+.studio-home .perspective-guide {
+  stroke: var(--para-saddle-brown);
+  opacity: 0.3;
+}
+.studio-home .perspective-wave,
+.studio-home .perspective-next,
+.studio-home .perspective-history {
+  stroke: var(--para-saddle-brown);
+}
+.studio-home .perspective-markers {
+  stroke: var(--para-espresso);
+}
+.studio-home .history-number {
+  fill: var(--para-espresso);
+}
+.studio-home .scene-closing {
+  padding-block: 80px;
+}
+.studio-home .waitlist-form {
+  box-shadow: none;
+}
+@keyframes glass-ground-drift {
+  0%,
+  100% {
+    transform: rotate(-7deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-4deg) translateY(-4px);
+  }
+}
+@media (max-width: 1199px) {
+  .studio-home .hero-grid {
+    gap: 28px;
+  }
+  .studio-home .approved-listening {
+    inset: 6% 14% 18%;
+  }
+  .studio-home .perspective-workspace {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  }
+  .studio-home .perspective-reading {
+    margin: 16px;
+  }
+}
+@media (max-width: 900px) {
+  .studio-home .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .studio-home .scene-loop {
+    min-height: 0;
+  }
+  .studio-home .loop-sticky {
+    padding-block: 48px;
+  }
+  .studio-home .perspective-intro {
+    display: block;
+  }
+  .studio-home .perspective-intro .scene-heading {
+    margin-block: 20px;
+  }
+  .studio-home .perspective-intro .text-link {
+    margin: 0;
+  }
+  .studio-home .perspective-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .studio-home .perspective-workspace::before {
+    inset: 0;
+    border-radius: 12px;
+  }
+  .studio-home .perspective-reading {
+    margin: 0 16px 16px;
+  }
+  .studio-home .perspective-signal {
+    padding: 20px 16px;
+  }
+}
+@media (max-width: 640px) {
+  .studio-home .hero-grid {
+    padding-block: 28px 12px;
+    gap: 24px;
+  }
+  .studio-home .signal-sculpture {
+    height: 290px;
+    width: 100%;
+    aspect-ratio: auto;
+  }
+  .studio-home .signal-material {
+    inset: 4% 4% 0 4%;
+  }
+  .studio-home .approved-listening {
+    inset: 0 18% 20%;
+  }
+  .studio-home .assignment-capsule {
+    top: 59%;
+    left: 5%;
+    width: 90%;
+  }
+  .studio-home .assignment-material > .para-glass__content {
+    padding: 12px 14px;
+    min-height: 52px;
+  }
+  .studio-home .recording-glass {
+    top: 47%;
+    left: 3%;
+    width: 94%;
+  }
+  .studio-home .recording-material > .para-glass__content {
+    padding: 14px;
+  }
+  .studio-home .feedback-label {
+    top: 25%;
+    right: 0;
+  }
+  .studio-home .feedback-material > .para-glass__content {
+    padding: 10px 12px;
+  }
+  .studio-home .next-label {
+    bottom: 0;
+    right: 8%;
+  }
+  .studio-home .hero-handoff {
+    height: 40px;
+  }
+  .studio-home .scene-perspectives {
+    padding-block: 48px 96px;
+  }
+  .studio-home .perspective-intro {
+    margin-bottom: 24px;
+  }
+  .studio-home .perspective-intro .scene-heading {
+    font-size: 36px;
+  }
+  .studio-home .perspective-panes {
+    padding: 20px;
+  }
+  .studio-home .perspective-pane h3 {
+    font-size: 23px;
+  }
+  .studio-home .perspective-emblems {
+    width: 72px;
+    height: 72px;
+    right: 3%;
+  }
+  .studio-home .perspective-emblem {
+    width: 72px;
+    height: 72px;
+  }
+  .studio-home .scene-closing {
+    padding-block: 48px;
+  }
+  .studio-home .loop-task-capsule .para-glass__content {
+    min-height: 36px;
+    padding: 8px 10px;
+  }
+}
+@media (max-height: 740px) {
+  .studio-home .scene-loop {
+    min-height: 0;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  body .site-header {
+    --para-glass-rgb: var(--para-glass-smoke-rgb);
+    --para-glass-solid: var(--para-glass-smoke-fallback);
+    --para-glass-border: var(--para-glass-smoke-border);
+    --para-glass-rim: var(--para-glass-smoke-rim);
+  }
+  .studio-home .perspective-pane h3 {
+    color: var(--para-espresso);
+  }
+  .studio-home .perspective-workspace::before {
+    background-color: var(--para-sand);
+  }
+  .studio-home .loop-record-label,
+  .studio-home .loop-response-label {
+    color: var(--para-espresso);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio-home .scene-loop {
+    min-height: 0;
+  }
+  .studio-home .signal-material {
+    animation: none;
+    transform: none;
+  }
+  .studio-home .approved-listening {
+    opacity: 0.64;
+  }
+  .studio-home .recording-glass {
+    visibility: visible;
+    transition: none;
+  }
+}
