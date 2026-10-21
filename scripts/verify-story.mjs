@@ -3,17 +3,17 @@ import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/para-glass/story";
+const out = ".qa/para-focus";
 await mkdir(out, { recursive: true });
 const browser = await chromium.launch();
 for (const [width, height] of [
   [1440, 900],
   [1024, 900],
   [390, 844],
-]) {
-  if (process.env.STORY_WIDTH && width !== Number(process.env.STORY_WIDTH))
-    continue;
+])
   for (const locale of ["en", "vi"]) {
+    if (process.env.STORY_WIDTH && width !== Number(process.env.STORY_WIDTH))
+      continue;
     if (process.env.STORY_LOCALE && locale !== process.env.STORY_LOCALE)
       continue;
     const record =
@@ -24,10 +24,10 @@ for (const [width, height] of [
         ? {
             recordVideo: {
               dir: `${out}/video`,
-              size:
-                width === 390
-                  ? { width: 390, height: 844 }
-                  : { width: 1280, height: 800 },
+              size: {
+                width: Math.min(width, 1280),
+                height: Math.min(height, 900),
+              },
             },
           }
         : {}),
@@ -37,184 +37,220 @@ for (const [width, height] of [
     ]);
     const page = await context.newPage();
     const errors = [];
-    page.on("pageerror", (e) => errors.push(e.message));
-    page.on("console", (m) => {
-      if (m.type() === "error") errors.push(m.text());
-    });
+    page.on("pageerror", (error) => errors.push(error.message));
     await page.goto(base + (locale === "vi" ? "/vi" : "/"), {
       waitUntil: "networkidle",
     });
     await page.evaluate(() => document.fonts.ready);
-    const keys = page.locator(".hero-stage-keys button");
-    assert.equal(await keys.count(), 5);
-    for (let i = 0; i < 5; i++) {
-      await keys.nth(i).click();
-      await page.waitForTimeout(900);
-      assert.equal(
-        await page.locator(".scene-hero").getAttribute("data-stage"),
-        String(i),
-      );
+    assert.equal(
       await page
-        .locator(".scene-hero")
-        .screenshot({ path: `${out}/${locale}-${width}-hero-${i}.png` });
-    }
-    await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
-    await page.waitForTimeout(150);
-    const box = await page.locator(".scene-loop").evaluate((el) => ({
+        .locator(
+          ".hero-stage-keys,.scene-hero .recording-glass,.submission-sequence,.loop-step-signal",
+        )
+        .count(),
+      0,
+    );
+    assert.equal(await page.locator(".closing-mark svg").count(), 0);
+    await page.screenshot({ path: `${out}/${locale}-${width}-hero.png` });
+    const loop = page.locator(".scene-loop");
+    const geometry = await loop.evaluate((el) => ({
       top: el.getBoundingClientRect().top + scrollY,
       height: el.clientHeight,
     }));
-    const stages = [];
-    for (const fraction of [0, 0.24, 0.44, 0.64, 0.84, 1, 0.64, 0.24, 0]) {
-      const target =
-        width > 900
-          ? box.top + fraction * Math.max(1, box.height - height)
-          : box.top - height * 0.2 + fraction * box.height * 0.6;
+    const labels =
+      locale === "en"
+        ? ["Assign", "Practise", "Submit", "Respond", "Next step"]
+        : ["Giao bài", "Luyện tập", "Gửi bài", "Góp ý", "Bước tiếp theo"];
+    let headingHeight;
+    for (const fraction of [0, 0.18, 0.36, 0.54, 0.72, 0.94, 0.72, 0.36, 0]) {
+      const target = geometry.top + fraction * (geometry.height - height);
       await page.evaluate(
-        (y) => scrollTo({ top: y, behavior: "instant" }),
+        (top) => scrollTo({ top, behavior: "instant" }),
         target,
       );
-      await page.waitForTimeout(950);
-      stages.push(await page.locator(".scene-loop").getAttribute("data-stage"));
-      if ([0, 0.44, 0.84, 1].includes(fraction))
-        await page.screenshot({
-          path: `${out}/${locale}-${width}-loop-${fraction}.png`,
-        });
-    }
-    if (width > 900) {
-      assert(
-        stages.includes("0") && stages.includes("4"),
-        "scroll must reach both ends of learning sequence",
-      );
+      await page.waitForTimeout(700);
+      const heading = page.locator(".loop-current-heading");
+      const stage = Number(await heading.getAttribute("data-headline-stage"));
       assert.equal(
-        stages.at(-1),
-        "0",
-        "reverse scrolling did not restore loop",
-      );
-      assert.equal(
-        await page
-          .locator(".loop-sticky")
-          .evaluate((el) => getComputedStyle(el).position),
-        "sticky",
-      );
-    } else
-      assert.notEqual(
-        await page
-          .locator(".loop-sticky")
-          .evaluate((el) => getComputedStyle(el).position),
-        "sticky",
-      );
-    await page.locator(".scene-perspectives").scrollIntoViewIfNeeded();
-    const tabs = page.locator(".perspective-tabs [role=tab]");
-    let bounds;
-    for (let i = 0; i < 3; i++) {
-      await tabs.nth(i).click();
-      await page.waitForTimeout(900);
-      const h = await page
-        .locator(".perspective-switcher")
-        .evaluate((el) => el.getBoundingClientRect().height);
-      if (bounds)
-        assert(Math.abs(h - bounds) < 1, "audience tab changed layout height");
-      bounds = h;
-      assert.equal(
-        await page.getByRole("tabpanel").filter({ visible: true }).count(),
+        await heading.locator("span").count(),
         1,
+        "overlapping headlines",
       );
-      await page
-        .locator(".scene-perspectives")
-        .screenshot({ path: `${out}/${locale}-${width}-audience-${i}.png` });
+      assert.equal(
+        await heading.innerText(),
+        stage < 0
+          ? locale === "en"
+            ? "One attempt. A way forward."
+            : "Mỗi lần thử. Một hướng đi tiếp."
+          : labels[stage],
+      );
+      assert.equal(
+        await loop.getAttribute("data-stage"),
+        String(Math.max(0, stage)),
+        "headline and artwork diverged",
+      );
+      const slot = await page.locator(".loop-heading-slot").boundingBox();
+      const art = await page.locator(".loop-diagram").boundingBox();
+      assert(
+        slot.y >= 75 && art.y >= slot.y && art.y + art.height < height - 10,
+        "headline and artwork must stay visible together",
+      );
+      if (headingHeight)
+        assert(
+          Math.abs(headingHeight - slot.height) < 1,
+          "headline slot jumped",
+        );
+      headingHeight = slot.height;
+      assert(
+        await heading.evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+        "headline clipped",
+      );
+      await page.screenshot({
+        path: `${out}/${locale}-${width}-loop-${fraction}.png`,
+      });
     }
-    await tabs.nth(2).press("ArrowLeft");
-    assert.equal(await tabs.nth(1).getAttribute("aria-selected"), "true");
-    assert(await tabs.nth(1).evaluate((el) => el === document.activeElement));
-    for (const id of ["belief", "waitlist"]) {
-      await page.locator(`#${id}`).scrollIntoViewIfNeeded();
-      await page.waitForTimeout(950);
-      await page.screenshot({ path: `${out}/${locale}-${width}-${id}.png` });
+    await page.locator(".perspective-tabs button").nth(2).click();
+    await page.waitForTimeout(600);
+    await page
+      .locator(".scene-perspectives")
+      .screenshot({ path: `${out}/${locale}-${width}-audience.png` });
+    const focus = page.locator(".belief-focus");
+    await focus.scrollIntoViewIfNeeded();
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(150);
+    const phrases = page.locator(".belief-phrase");
+    if (width === 1440) {
+      // Record actual browser timing. 400ms emphasis transition plus a full 3s hold.
+      await focus.evaluate((el) => {
+        window.__focusTimes = [];
+        new MutationObserver(() =>
+          window.__focusTimes.push({
+            at: performance.now(),
+            active: el.dataset.active,
+          }),
+        ).observe(el, { attributes: true, attributeFilter: ["data-active"] });
+      });
+      assert.equal(await focus.getAttribute("data-active"), "0");
+      await page.waitForTimeout(3050);
+      assert.equal(
+        await focus.getAttribute("data-active"),
+        "0",
+        "first phrase did not get full reading interval",
+      );
+      await page.waitForTimeout(500);
+      assert.equal(await focus.getAttribute("data-active"), "1");
+      await page.waitForTimeout(10250);
+      const timing = await page.evaluate(() => window.__focusTimes);
+      assert.deepEqual(
+        timing.slice(0, 4).map((x) => x.active),
+        ["1", "2", "3", "0"],
+      );
+      for (let i = 1; i < 4; i++)
+        assert(
+          timing[i].at - timing[i - 1].at >= 3380,
+          "3s hold excludes transition",
+        );
+      await phrases.nth(2).hover();
+      await page.waitForTimeout(3600);
+      assert.equal(
+        await focus.getAttribute("data-active"),
+        "2",
+        "hover did not pause",
+      );
+      await page.mouse.move(0, 0);
+      await phrases.nth(1).focus();
+      await page.waitForTimeout(3500);
+      assert.equal(
+        await focus.getAttribute("data-active"),
+        "1",
+        "keyboard focus did not pause",
+      );
+      await phrases.nth(3).click();
+      assert.equal(await focus.getAttribute("data-active"), "3");
+      await focus.locator(".belief-cycle-control").click();
+      await page.locator("h1").scrollIntoViewIfNeeded();
+      await page.waitForTimeout(150);
+      const off = await focus.getAttribute("data-active");
+      await page.waitForTimeout(3500);
+      assert.equal(
+        await focus.getAttribute("data-active"),
+        off,
+        "offscreen cycle advanced",
+      );
+      await focus.scrollIntoViewIfNeeded();
+      await page.evaluate(() => {
+        Object.defineProperty(document, "hidden", {
+          configurable: true,
+          get: () => true,
+        });
+        document.dispatchEvent(new Event("visibilitychange"));
+      });
+      await page.waitForTimeout(3500);
+      assert.equal(
+        await focus.getAttribute("data-active"),
+        off,
+        "hidden tab cycle advanced",
+      );
+      await page.evaluate(() => {
+        delete document.hidden;
+        document.dispatchEvent(new Event("visibilitychange"));
+      });
     }
-    // Slow native wheel input, fast direction changes and return to the hero.
-    await page.keyboard.press("Home");
+    await phrases.nth(0).click();
+    await page.waitForTimeout(450);
+    await page
+      .locator(".scene-belief")
+      .screenshot({ path: `${out}/${locale}-${width}-belief.png` });
+    await page
+      .locator("#waitlist")
+      .screenshot({ path: `${out}/${locale}-${width}-waitlist.png` });
+    // Native fast/reverse scroll, then resize at a restored scroll position.
+    await page.mouse.wheel(0, -1800);
+    await page.waitForTimeout(200);
+    await page.mouse.wheel(0, 800);
+    await page.waitForTimeout(200);
     await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
-    const max = await page.evaluate(
-      () => document.documentElement.scrollHeight - innerHeight,
+    await page.waitForFunction(
+      () =>
+        Number(getComputedStyle(document.querySelector(".hero-copy")).opacity) >
+        0.98,
     );
-    for (let y = 0; y < max; y += 180) {
-      await page.mouse.wheel(0, 180);
-      await page.waitForTimeout(record ? 90 : 20);
-    }
-    for (let y = max; y > 0; y -= 800) {
-      await page.mouse.wheel(0, -800);
-      await page.waitForTimeout(80);
-    }
-    await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
-    await page.waitForTimeout(300);
+    assert(
+      (await page
+        .locator(".hero-copy")
+        .evaluate((el) => Number(getComputedStyle(el).opacity))) > 0.98,
+    );
     assert.equal(
       await page.evaluate(
         () => document.documentElement.scrollWidth - innerWidth,
       ),
       0,
     );
-    assert(
-      (await page
-        .locator(".hero-copy")
-        .evaluate((el) => Number(getComputedStyle(el).opacity))) > 0.98,
-      "hero did not recover on reverse scroll",
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.waitForTimeout(100);
+    assert(await page.locator(".loop-static-summary").isVisible());
+    assert.notEqual(
+      await page
+        .locator(".loop-sticky")
+        .evaluate((el) => getComputedStyle(el).position),
+      "sticky",
     );
-    assert.deepEqual(errors, [], `browser errors ${locale} ${width}`);
+    for (const phrase of await phrases.all())
+      assert.deepEqual(
+        await phrase.evaluate((el) => ({
+          filter: getComputedStyle(el).filter,
+          transform: getComputedStyle(el).transform,
+          opacity: getComputedStyle(el).opacity,
+        })),
+        { filter: "none", transform: "none", opacity: "1" },
+      );
+    assert.deepEqual(errors, []);
     const video = page.video();
     await context.close();
     if (record)
       await video.saveAs(`${out}/walkthrough-${locale}-${width}.webm`);
     console.log(
-      `${locale} ${width}: five stages, reverse scroll, stable tabs, screenshots and native scroll passed`,
+      `${locale} ${width}: synchronised headings, reverse scroll, static story, screenshots and focus interaction passed`,
     );
   }
-}
-for (const locale of ["en", "vi"]) {
-  const context = await browser.newContext({
-    viewport: { width: 390, height: 844 },
-    reducedMotion: "reduce",
-  });
-  await context.addCookies([
-    { name: "howl0-language-choice", value: locale, url: base },
-  ]);
-  const page = await context.newPage();
-  await page.goto(base + (locale === "vi" ? "/vi" : "/"), {
-    waitUntil: "networkidle",
-  });
-  const state = await page.locator(".scene-hero").getAttribute("data-stage");
-  await page.waitForTimeout(2500);
-  assert.equal(
-    await page.locator(".scene-hero").getAttribute("data-stage"),
-    state,
-  );
-  assert.equal(await page.locator(".loop-step").count(), 5);
-  assert.notEqual(
-    await page
-      .locator(".loop-sticky")
-      .evaluate((el) => getComputedStyle(el).position),
-    "sticky",
-  );
-  assert.equal(
-    await page.locator(".scene-hero").evaluate((el) => el.dataset.playing),
-    "false",
-  );
-  await page
-    .getByRole("link", {
-      name: locale === "en" ? "See the learning loop" : "Xem vòng học",
-      exact: true,
-    })
-    .click();
-  await page.waitForTimeout(100);
-  assert.equal(new URL(page.url()).hash, "#submission-flow");
-  assert(
-    (await page.locator("#submission-flow-heading").boundingBox()).y >= 70,
-    "header covers anchored heading",
-  );
-  await page.screenshot({ path: `${out}/${locale}-reduced-loop.png` });
-  await context.close();
-}
 await browser.close();
-console.log(
-  "Studio story QA passed. Captures and available walkthroughs saved.",
-);

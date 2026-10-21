@@ -43,7 +43,6 @@ export function PerspectiveSwitcher({
     <ScrollScene id="perspectives" className="scene-perspectives">
       <div className="wrap perspective-scene-grid">
         <div className="perspective-intro">
-          <p className="eyebrow">{content.eyebrow}</p>
           <SceneHeading lines={copy.perspectivesLines} />
           <Link
             className="text-link"
@@ -98,7 +97,7 @@ export function PerspectiveSwitcher({
                     aria-labelledby={`perspective-tab-${index}`}
                   >
                     <h3>{copy.perspectives[index]}</h3>
-                    <p>{index === 2 ? copy.parentNote : item.copy}</p>
+                    {index === 2 && <p>{copy.parentNote}</p>}
                   </div>
                 ))}
               </div>

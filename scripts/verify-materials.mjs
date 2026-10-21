@@ -102,15 +102,12 @@ for (const width of [1440, 1024, 390])
           : "para-expressive-listening-grain.svg",
       ),
     );
-    const keys = page.locator(".hero-stage-keys button");
-    await keys.nth(3).click();
-    await page.waitForTimeout(950);
     await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
     await page.screenshot({
-      path: `${out}/${locale}-${width}-hero-feedback.png`,
+      path: `${out}/${locale}-${width}-hero.png`,
     });
     const glass = await page
-      .locator(".recording-material > .para-glass__surface")
+      .locator(".loop-recording-ground .para-glass__surface")
       .evaluate((el) => ({
         color: getComputedStyle(el).color,
         blur: getComputedStyle(el).backdropFilter,
@@ -119,7 +116,7 @@ for (const width of [1440, 1024, 390])
     assert.equal(glass.blur, `blur(${width > 640 ? 18 : 10}px) saturate(1)`);
     assert.equal(
       await page
-        .locator(".recording-material")
+        .locator(".loop-recording-ground > .para-glass")
         .evaluate((el) => getComputedStyle(el).opacity),
       "1",
     );
@@ -136,13 +133,13 @@ for (const width of [1440, 1024, 390])
     });
     assert.equal(
       await page
-        .locator(".recording-material > .para-glass__surface")
+        .locator(".loop-recording-ground .para-glass__surface")
         .evaluate((el) => getComputedStyle(el).backdropFilter),
       "none",
     );
     assert.equal(
       await page
-        .locator(".recording-material > .para-glass__surface")
+        .locator(".loop-recording-ground .para-glass__surface")
         .evaluate((el) => getComputedStyle(el).backgroundColor),
       "rgb(243, 237, 226)",
     );
@@ -152,7 +149,7 @@ for (const width of [1440, 1024, 390])
     );
     assert.equal(
       await page
-        .locator(".recording-material > .para-glass__surface")
+        .locator(".loop-recording-ground .para-glass__surface")
         .evaluate((el) => getComputedStyle(el).backdropFilter),
       "none",
     );
@@ -170,7 +167,7 @@ for (const width of [1440, 1024, 390])
     await page.waitForTimeout(200);
     assert.equal(
       await page
-        .locator(".loop-copy h2")
+        .locator(".loop-current-heading")
         .evaluate((el) => getComputedStyle(el).opacity),
       "1",
     );
@@ -208,7 +205,7 @@ await fallbackContext.addCookies([
 const fallback = await fallbackContext.newPage();
 await fallback.goto(base, { waitUntil: "networkidle" });
 assert(await fallback.locator("h1").isVisible());
-assert.equal(await fallback.locator(".loop-step").count(), 5);
+assert(await fallback.locator(".loop-static-summary").isVisible());
 await fallback.screenshot({ path: `${out}/no-js-mobile.png`, fullPage: true });
 await browser.close();
 console.log("No-JavaScript content passed.");

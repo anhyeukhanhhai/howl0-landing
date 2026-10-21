@@ -5,6 +5,7 @@ import { SceneHeading } from "@/components/SceneHeading";
 import { ScrollScene } from "@/components/ScrollScene";
 import { sceneCopy } from "@/lib/studio";
 import { ExpressiveIcon } from "@/components/ExpressiveIcon";
+import { BeliefFocus } from "@/components/BeliefFocus";
 export function BeliefMoment({
   content,
   locale,
@@ -26,9 +27,10 @@ export function BeliefMoment({
         <div className="belief-aperture" aria-hidden="true" />
         <div className="wrap belief-statement">
           <p className="eyebrow">{content.eyebrow}</p>
-          <ExpressiveIcon name="feedback" className="belief-emblem" />
+          <div className="belief-emblem-surface">
+            <ExpressiveIcon name="feedback" className="belief-emblem" />
+          </div>
           <SceneHeading lines={copy.beliefLines} />
-          <p className="belief-support">{copy.beliefCopy}</p>
           <div className="belief-signal" aria-hidden="true">
             <svg viewBox="0 0 1240 170" preserveAspectRatio="none">
               <path
@@ -43,14 +45,7 @@ export function BeliefMoment({
               <circle cx="560" cy="90" r="7" />
             </svg>
           </div>
-          <ul className="belief-cues">
-            {content.labels.map((label, index) => (
-              <li key={label}>
-                <span>0{index + 1}</span>
-                {label}
-              </li>
-            ))}
-          </ul>
+          <BeliefFocus labels={content.labels} locale={locale} />
         </div>
       </ScrollScene>
     );

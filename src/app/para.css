@@ -5,6 +5,7 @@
 @import "./glass/para-glass.css";
 @import "./glass-refinement.css";
 @import "./glass/para-glass-fallbacks.css";
+@import "./focus-refinement.css";
 
 @font-face {
   font-family: "Plus Jakarta Sans";

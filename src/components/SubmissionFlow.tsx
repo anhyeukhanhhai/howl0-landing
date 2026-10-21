@@ -1,10 +1,9 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { content, type Locale } from "@/lib/i18n";
 import { sceneCopy } from "@/lib/studio";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
-import { SceneHeading } from "@/components/SceneHeading";
 import { ParaIcon } from "@/components/ParaIcon";
 import { ExpressiveIcon } from "@/components/ExpressiveIcon";
 import { GlassSurface } from "@/components/GlassSurface";
@@ -12,8 +11,7 @@ import { GlassSurface } from "@/components/GlassSurface";
 const route =
   "M126 114C220 20 362 18 444 110S615 243 540 332S398 498 260 438S60 305 126 114";
 
-/** Adapted from Howl0's original SVG traveller. Native scroll draws a single
- * path; the five stages remain readable, even without JavaScript or motion. */
+/** One progress measurement drives the traveller, visual stage and headline. */
 export function SubmissionFlow({ locale }: { locale: Locale }) {
   const page = content[locale].home;
   const copy = sceneCopy(locale);
@@ -21,6 +19,7 @@ export function SubmissionFlow({ locale }: { locale: Locale }) {
   const path = useRef<SVGPathElement>(null);
   const traveller = useRef<SVGGElement>(null);
   const length = useRef(0);
+  const [stage, setStage] = useState(-1);
   const update = useCallback((value: number) => {
     const element = root.current;
     const curve = path.current;
@@ -28,17 +27,12 @@ export function SubmissionFlow({ locale }: { locale: Locale }) {
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const progress = reduced
       ? 1
-      : innerWidth > 900 && innerHeight > 740
-        ? value
-        : Math.min(
-            1,
-            Math.max(
-              0,
-              (innerHeight * 0.72 - element.getBoundingClientRect().top) /
-                (element.clientHeight * 0.85),
-            ),
-          );
-    element.dataset.stage = String(Math.min(4, Math.floor(progress * 5)));
+      : Math.max(0, Math.min(1, (value - 0.12) / 0.88));
+    const current =
+      reduced || value < 0.12 ? -1 : Math.min(4, Math.floor(progress * 5));
+    setStage((previous) => (previous === current ? previous : current));
+    element.dataset.enhanced = "true";
+    element.dataset.stage = String(current < 0 ? (reduced ? 4 : 0) : current);
     element.style.setProperty("--loop-progress", String(progress));
     length.current ||= curve.getTotalLength();
     const point = curve.getPointAtLength(
@@ -59,22 +53,16 @@ export function SubmissionFlow({ locale }: { locale: Locale }) {
       aria-labelledby="submission-flow-heading"
     >
       <div className="loop-sticky wrap">
-        <div className="loop-copy">
-          <p className="eyebrow">{page.loop.eyebrow}</p>
-          <SceneHeading id="submission-flow-heading" lines={copy.loopLines} />
-          <p className="loop-intro">{copy.loopIntro}</p>
-          <ol className="submission-sequence" aria-label={page.loop.eyebrow}>
-            {page.hero.stages.map((label, index) => (
-              <li className={`loop-step step-${index}`} key={label}>
-                <span className="loop-step-index">0{index + 1}</span>
-                <div>
-                  <h3>{label}</h3>
-                  <p>{copy.steps[index]}</p>
-                </div>
-                <span className="loop-step-signal" aria-hidden="true" />
-              </li>
-            ))}
-          </ol>
+        <div className="loop-heading-slot">
+          <h2
+            id="submission-flow-heading"
+            className="loop-current-heading"
+            data-headline-stage={stage}
+          >
+            <span key={stage}>
+              {stage < 0 ? copy.loopLines.join(" ") : page.hero.stages[stage]}
+            </span>
+          </h2>
         </div>
         <figure className="loop-composition">
           <div className="loop-diagram" role="img" aria-label={page.hero.aria}>
@@ -154,15 +142,14 @@ export function SubmissionFlow({ locale }: { locale: Locale }) {
               {copy.instruction}
               <span aria-hidden="true">↗</span>
             </span>
-            <span className="loop-return-label">{copy.continue}</span>
           </div>
-          <figcaption>
-            {copy.concept}
-            <br />
-            {copy.loopNote}
-          </figcaption>
+          <figcaption>{copy.concept}</figcaption>
+          <p className="loop-static-summary">{page.hero.aria}</p>
         </figure>
       </div>
+      <noscript>
+        <style>{`.studio-home .scene-loop{min-height:0}.studio-home .loop-sticky{position:relative;top:auto;min-height:0;padding-block:48px}`}</style>
+      </noscript>
     </section>
   );
 }

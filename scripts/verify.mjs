@@ -36,16 +36,18 @@ const pages = [
     "Những điều chúng tôi có thể chia sẻ khi PARA đang thành hình.",
   ],
 ];
-const viewports = [
-  [390, 844],
-  [430, 932],
-  [768, 1024],
-  [1024, 900],
-  [1440, 900],
-  [1920, 1080],
-  [2560, 1080],
-  [3440, 1440],
-];
+const viewports = process.env.INTERACTIONS_ONLY
+  ? []
+  : [
+      [390, 844],
+      [430, 932],
+      [768, 1024],
+      [1024, 900],
+      [1440, 900],
+      [1920, 1080],
+      [2560, 1080],
+      [3440, 1440],
+    ];
 const browser = await chromium.launch({ headless: true });
 await mkdir(out, { recursive: true });
 const assert = (condition, message) => {
@@ -174,6 +176,12 @@ for (const [width, height] of viewports) {
         waitUntil: "networkidle",
       });
       assert(response?.ok(), `${path} ${width}: direct route failed`);
+      assert(
+        !/[\p{Dash_Punctuation}\u2212]/u.test(
+          await page.locator("body").innerText(),
+        ),
+        `${path}: visible dash punctuation`,
+      );
       assert(
         await page
           .getByRole("heading", {
@@ -431,27 +439,22 @@ await page
 await page.goto(base, { waitUntil: "networkidle" });
 const hero = page.locator(".scene-hero");
 await page.mouse.move(0, 0);
-const initial = await hero.getAttribute("data-stage");
-await page.waitForTimeout(2400);
-assert(
-  (await hero.getAttribute("data-stage")) !== initial,
-  "visible ambient story did not advance",
-);
-await page.getByRole("button", { name: "Pause animation" }).click();
-const paused = await hero.getAttribute("data-stage");
-await page.waitForTimeout(2400);
-assert(
-  (await hero.getAttribute("data-stage")) === paused,
-  "pause did not stop story",
-);
-await page.getByRole("button", { name: "Next stage" }).click();
-assert(
-  (await hero.getAttribute("data-stage")) !== paused,
-  "manual next failed",
+await page.waitForTimeout(250);
+await hero.getByRole("button", { name: "Pause animation" }).click();
+await page.waitForFunction(
+  () => document.querySelector(".scene-hero").dataset.playing === "false",
 );
 assert(
-  (await page.locator(".hero-stage-keys button").count()) === 5,
-  "five stage labels missing",
+  (await hero.getAttribute("data-playing")) === "false",
+  "pause did not stop artwork",
+);
+assert(
+  (await page
+    .locator(
+      ".hero-stage-keys, .scene-hero .assignment-capsule, .submission-sequence",
+    )
+    .count()) === 0,
+  "duplicate hero sequence or loop sidebar remains",
 );
 await page
   .getByRole("link", { name: "See the learning loop", exact: true })
@@ -461,17 +464,15 @@ assert(
   "primary CTA must explain the product, not imply working registration",
 );
 await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
-await page.getByRole("button", { name: "Resume animation" }).click();
+await hero.getByRole("button", { name: "Resume animation" }).click();
 await page.mouse.move(0, 0);
 await page.evaluate(() =>
   scrollTo({ top: document.body.scrollHeight, behavior: "instant" }),
 );
 await page.waitForTimeout(150);
-const offscreen = await hero.getAttribute("data-stage");
-await page.waitForTimeout(2400);
 assert(
-  (await hero.getAttribute("data-stage")) === offscreen,
-  "offscreen story must pause",
+  (await hero.getAttribute("data-playing")) === "false",
+  "offscreen artwork must pause",
 );
 assert(
   (await page.locator("audio,video,input[type=file]").count()) === 0,
@@ -510,7 +511,7 @@ await mobile.waitForURL(`${base}/product`);
 await mobile.close();
 
 for (const [path, selector] of [
-  ["/", ".submission-sequence"],
+  ["/", ".loop-static-summary"],
   ["/vi/how-it-works", "#practice-loop"],
 ]) {
   const reduced = await browser.newPage({
@@ -532,8 +533,8 @@ for (const [path, selector] of [
     );
   } else {
     assert(
-      (await reduced.locator(".hero-stage-keys button:visible").count()) === 5,
-      "reduced-motion stages missing",
+      await reduced.locator(".loop-static-summary").isVisible(),
+      "reduced-motion story missing",
     );
     const state = await reduced
       .locator(".scene-hero")

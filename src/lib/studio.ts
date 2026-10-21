@@ -5,9 +5,9 @@ export const studio = {
   en: {
     heroLines: ["See the progress", "between lessons."],
     platform:
-      "PARA is a music-learning platform in development, connecting practice, teacher feedback and the next step.",
+      "PARA is a music learning platform in development, connecting practice, teacher feedback and the next step.",
     discover: "Explore PARA",
-    concept: "Concept sequence · Product in development",
+    concept: "Concept · Product in development",
     assignment: "Assignment link",
     recording: "Existing audio / video",
     feedback: "Teacher feedback",
@@ -35,12 +35,11 @@ export const studio = {
       "Understand the learning between lessons.",
     ],
     parentNote:
-      "Exploring an authorised, teacher-guided view—not oversight of every practice session.",
+      "An authorised view of progress, guided by the teacher. In exploration.",
     beliefLines: ["Feedback is a signal,", "not a verdict."],
     beliefCopy: "Every attempt helps reveal the next step.",
     closeLines: ["The next step", "is taking shape."],
-    closeCopy:
-      "PARA is in development. The learning continues—and so does the build.",
+    closeCopy: "PARA is in development.",
     closeAction: "Explore the product direction",
     openLoop: "An open loop, ready for what comes next.",
   },
@@ -77,12 +76,11 @@ export const studio = {
       "Hiểu hành trình học giữa những buổi học.",
     ],
     parentNote:
-      "Đang tìm hiểu một góc nhìn được cấp quyền, có định hướng từ giáo viên—không quản lý từng buổi luyện tập.",
+      "Đang tìm hiểu một góc nhìn được cấp quyền, có định hướng từ giáo viên.",
     beliefLines: ["Góp ý là tín hiệu để tiến bộ,", "không phải lời phán xét."],
     beliefCopy: "Mỗi lần luyện tập giúp làm rõ bước tiếp theo.",
     closeLines: ["Bước tiếp theo", "đang thành hình."],
-    closeCopy:
-      "PARA đang được phát triển. Việc học vẫn tiếp diễn—và quá trình xây dựng cũng vậy.",
+    closeCopy: "PARA đang được phát triển.",
     closeAction: "Khám phá định hướng sản phẩm",
     openLoop: "Một vòng mở, sẵn sàng cho bước tiếp theo.",
   },

@@ -80,13 +80,6 @@ export function PerspectiveSignal({
           </g>
           <circle className="perspective-origin" cx="600" cy="245" r="7" />
         </svg>
-        <p className="perspective-art-label">
-          {active === 0
-            ? copy.feedback
-            : active === 1
-              ? copy.nextPractice
-              : copy.continue}
-        </p>
       </div>
       <figcaption>{copy.concept}</figcaption>
     </figure>

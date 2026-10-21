@@ -6,7 +6,7 @@ import { WelcomeAnchorBridge } from "@/components/WelcomeAnchorBridge";
 import { ParaIcon } from "@/components/ParaIcon";
 
 export const metadata: Metadata = {
-  title: "Welcome to PARA — Choose your language",
+  title: "Welcome to PARA: Choose your language",
   description: "Choose English or Vietnamese to explore PARA.",
   robots: { index: false },
 };

@@ -14,16 +14,9 @@ export function WaitlistSection({ locale }: { locale: Locale }) {
     <ScrollScene id="waitlist" className="waitlist scene-closing">
       <div className="wrap waitlist-grid">
         <div>
-          <figure className="closing-mark" aria-label={copy.openLoop}>
-            <svg viewBox="0 0 440 220" fill="none" aria-hidden="true">
-              <path
-                pathLength="1"
-                d="M395 165C350 220 95 230 45 135C-5 40 135-15 255 35C335 68 300 130 365 135"
-              />
-              <circle cx="395" cy="165" r="5" />
-            </svg>
+          <div className="closing-mark">
             <BrandLogo width={280} height={76} footer />
-          </figure>
+          </div>
           <p className="eyebrow">{page.eyebrow}</p>
           <SceneHeading lines={copy.closeLines} />
           <p>{copy.closeCopy}</p>

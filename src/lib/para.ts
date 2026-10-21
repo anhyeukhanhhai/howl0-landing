@@ -21,7 +21,7 @@ export const paraContent = {
       "The teacher shares a clear practice task.",
       "The student opens a link and uploads an existing audio or video recording.",
       "The teacher gives specific feedback on the attempt.",
-      "The student knows what to practise next—and tries again.",
+      "The student knows what to practise next and tries again.",
     ],
     brandLabel: "THE PARA IDEA",
     brandCycle: "Practice → Assess → Review → Again",
@@ -32,7 +32,7 @@ export const paraContent = {
       "Time to explore the phrase between lessons.",
       "Open a link. Upload an existing audio or video recording.",
       "Useful guidance, in the context of the task.",
-      "A next step—and another attempt.",
+      "A next step, then another attempt.",
     ],
   },
   vi: {
@@ -64,7 +64,7 @@ export const paraContent = {
       "Luyện tập giữa những buổi học.",
       "Mở link. Gửi bản thu âm hoặc video đã có.",
       "Phản hồi hữu ích gắn với bài luyện tập.",
-      "Một bước tiếp theo—và một lần thử mới.",
+      "Một bước tiếp theo, rồi một lần thử mới.",
     ],
   },
 } as const;

@@ -22,7 +22,7 @@ export const content = {
     lang: "en",
     navigation: {
       label: "Main navigation",
-      homeLabel: "PARA Music — home",
+      homeLabel: "PARA Music, home",
       menu: "Menu",
       close: "Close",
       languageLabel: "Switch to Vietnamese",
@@ -38,7 +38,7 @@ export const content = {
       waitlist: "Build status",
     },
     metadata: {
-      title: "PARA — See progress between music lessons",
+      title: "PARA: See progress between music lessons",
       description:
         "PARA is building a clearer way to connect music practice, teacher feedback and progress between lessons for students, teachers and families.",
     },
@@ -48,7 +48,7 @@ export const content = {
         eyebrow: "MUSIC LEARNING, BETWEEN LESSONS",
         title: "See the progress between lessons.",
         intro:
-          "PARA is being built to connect assignments, recordings, teacher feedback and next steps in one music-learning journey.",
+          "PARA is being built to connect assignments, recordings, teacher feedback and next steps in one music learning journey.",
         primary: "See the learning loop",
         secondary: "Product direction",
         status:
@@ -93,7 +93,7 @@ export const content = {
     belief: {
       eyebrow: "OUR BELIEF",
       title: "Feedback is a signal, not a verdict.",
-      copy: "One recording never defines a student's ability. It shows where learning is now—and where it can go next.",
+      copy: "One recording never defines a student's ability. It shows where learning is now and where it can go next.",
       labels: [
         "What changed",
         "What to listen for",
@@ -194,7 +194,7 @@ export const content = {
         "Lessons show a moment. Results show an outcome. The practice, feedback and small improvements between them often remain scattered or invisible.",
       missingTitle: "Parents often see the performance, not the process.",
       missingCopy:
-        "PARA is exploring a clearer, teacher-led way for families to understand effort, feedback and development without turning learning into surveillance.",
+        "PARA is exploring a clearer way for families to understand effort, feedback and development, led by teachers and without turning learning into surveillance.",
       fragments: [
         "Practice task",
         "Student recording",
@@ -238,11 +238,11 @@ export const content = {
         {
           name: "Parent",
           title: "See the learning behind the result.",
-          copy: "Follow an authorised, teacher-guided view of effort and progress, so you can support the learner without needing to manage every practice session.",
+          copy: "Follow an authorised view of effort and progress, guided by the teacher, so you can support the learner without needing to manage every practice session.",
           benefits: [
             "Useful context",
             "Visible development",
-            "Better-informed support",
+            "More informed support",
           ],
         },
       ],
@@ -257,7 +257,7 @@ export const content = {
       profiles: [
         {
           name: "Henry Nguyen",
-          role: "Commercial Co-Founder",
+          role: "Commercial Cofounder",
           description:
             "The bassist and business mind behind PARA. Henry brings a musician's perspective to shaping how PARA connects with teachers, students and families.",
         },
@@ -271,7 +271,7 @@ export const content = {
       whyEyebrow: "WHY WE'RE BUILDING PARA",
       whyTitle: "Learning does not stop when a lesson ends.",
       whyCopy:
-        "We are building PARA to help teachers, students and families understand the work between lessons—starting with one simple way to submit practice, and keeping the next step in view.",
+        "We are building PARA to help teachers, students and families understand the work between lessons, starting with one simple way to submit practice and keeping the next step in view.",
       ctaTitle: "Follow the journey",
     },
     faq: {
@@ -298,7 +298,7 @@ export const content = {
         ],
         [
           "What will parents be able to see?",
-          "We are exploring an authorised, age-appropriate view of practice activity, teacher feedback and progress over time. The exact information and controls still require research with families, students and teachers.",
+          "We are exploring an authorised view of practice activity, teacher feedback and progress over time, appropriate to the learner's age. The exact information and controls still require research with families, students and teachers.",
         ],
         [
           "Does PARA replace the teacher?",
@@ -306,7 +306,7 @@ export const content = {
         ],
         [
           "Will students need to download an app?",
-          "The planned submission experience is browser-based, so students should be able to begin from a link. Final platform and device requirements remain subject to development and testing.",
+          "The planned submission experience runs in a browser, so students should be able to begin from a link. Final platform and device requirements remain subject to development and testing.",
         ],
         [
           "How much will PARA cost?",
@@ -331,7 +331,7 @@ export const content = {
     lang: "vi",
     navigation: {
       label: "Điều hướng chính",
-      homeLabel: "PARA Music — trang chủ",
+      homeLabel: "PARA Music, trang chủ",
       menu: "Trình đơn",
       close: "Đóng",
       languageLabel: "Chuyển sang tiếng Anh",
@@ -347,7 +347,7 @@ export const content = {
       waitlist: "Tiến độ phát triển",
     },
     metadata: {
-      title: "PARA — Nhìn thấy tiến bộ giữa những buổi học nhạc",
+      title: "PARA: Nhìn thấy tiến bộ giữa những buổi học nhạc",
       description:
         "PARA đang xây dựng một cách rõ ràng hơn để kết nối việc luyện tập, góp ý của giáo viên và hành trình tiến bộ giữa các buổi học cho học sinh, giáo viên và gia đình.",
     },
@@ -403,7 +403,7 @@ export const content = {
     belief: {
       eyebrow: "ĐIỀU PARA TIN TƯỞNG",
       title: "Góp ý là tín hiệu để tiến bộ, không phải lời phán xét.",
-      copy: "Một bản thu không thể định nghĩa năng lực của học sinh. Nó chỉ cho thấy hành trình đang ở đâu—và bước tiếp theo có thể là gì.",
+      copy: "Một bản thu không thể định nghĩa năng lực của học sinh. Nó chỉ cho thấy hành trình đang ở đâu và bước tiếp theo có thể là gì.",
       labels: [
         "Điều đã thay đổi",
         "Điều cần lắng nghe",
@@ -508,7 +508,7 @@ export const content = {
       missingTitle:
         "Phụ huynh thường thấy phần trình diễn, nhưng chưa chắc thấy được cả quá trình.",
       missingCopy:
-        "PARA đang tìm cách giúp gia đình hiểu rõ hơn về nỗ lực, góp ý và sự tiến bộ—dưới sự định hướng của giáo viên, chứ không biến việc học thành sự giám sát.",
+        "PARA đang tìm cách giúp gia đình hiểu rõ hơn về nỗ lực, góp ý và sự tiến bộ dưới sự định hướng của giáo viên, chứ không biến việc học thành sự giám sát.",
       fragments: [
         "Bài tập",
         "Bản thu của học sinh",
@@ -585,7 +585,7 @@ export const content = {
       whyEyebrow: "VÌ SAO CHÚNG TÔI XÂY DỰNG PARA",
       whyTitle: "Việc học không dừng lại khi buổi học kết thúc.",
       whyCopy:
-        "Chúng tôi xây dựng PARA để giáo viên, học sinh và gia đình hiểu rõ hơn việc học giữa các buổi học—bắt đầu từ một cách gửi bài đơn giản và giữ cho bước tiếp theo luôn rõ ràng.",
+        "Chúng tôi xây dựng PARA để giáo viên, học sinh và gia đình hiểu rõ hơn việc học giữa các buổi học, bắt đầu từ một cách gửi bài đơn giản và giữ cho bước tiếp theo luôn rõ ràng.",
       ctaTitle: "Theo dõi hành trình của PARA",
     },
     faq: {
