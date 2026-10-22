@@ -6,6 +6,7 @@ import { ScrollScene } from "@/components/ScrollScene";
 import { sceneCopy } from "@/lib/studio";
 import { ExpressiveIcon } from "@/components/ExpressiveIcon";
 import { BeliefFocus } from "@/components/BeliefFocus";
+import Image from "next/image";
 export function BeliefMoment({
   content,
   locale,
@@ -23,14 +24,26 @@ export function BeliefMoment({
   if (immersive) {
     const copy = sceneCopy(locale);
     return (
-      <ScrollScene id="belief" className="scene-belief">
+      <ScrollScene id="belief" className="scene-belief belief-with-photograph">
         <div className="belief-aperture" aria-hidden="true" />
+        <div className="belief-photograph" aria-hidden="true">
+          <Image
+            src="/images/performance/guitar-stage.webp"
+            alt=""
+            fill
+            sizes="(max-width: 900px) 100vw, (min-width: 1600px) 1120px, 78vw"
+            loading="lazy"
+          />
+        </div>
+        <div className="belief-photo-scrim" aria-hidden="true" />
         <div className="wrap belief-statement">
-          <p className="eyebrow">{content.eyebrow}</p>
-          <div className="belief-emblem-surface">
-            <ExpressiveIcon name="feedback" className="belief-emblem" />
+          <div className="belief-copy">
+            <p className="eyebrow">{content.eyebrow}</p>
+            <div className="belief-emblem-surface">
+              <ExpressiveIcon name="feedback" className="belief-emblem" />
+            </div>
+            <SceneHeading lines={copy.beliefLines} />
           </div>
-          <SceneHeading lines={copy.beliefLines} />
           <div className="belief-signal" aria-hidden="true">
             <svg viewBox="0 0 1240 170" preserveAspectRatio="none">
               <path

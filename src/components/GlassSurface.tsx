@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { PointerSurface } from "@/components/PointerSurface";
 
 /** Keep the backdrop surface separate from foreground content. Animate the
  * surrounding scene wrapper, never opacity/filter on this material root. */
@@ -18,19 +19,22 @@ export function GlassSurface({
   className = "",
   raised = false,
   rising = false,
+  interactive = false,
 }: {
   children?: ReactNode;
   material?: "ivory" | "smoke" | "quiet";
   className?: string;
   raised?: boolean;
   rising?: boolean;
+  interactive?: boolean;
 }) {
+  const Surface = interactive ? PointerSurface : "div";
   return (
-    <div
+    <Surface
       className={`para-glass para-glass--${material} ${raised ? "para-glass--raised" : ""} ${rising ? "para-glass--rising" : ""} ${className}`}
     >
       <GlassLayers />
       <div className="para-glass__content">{children}</div>
-    </div>
+    </Surface>
   );
 }

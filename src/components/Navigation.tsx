@@ -51,7 +51,7 @@ export function Navigation({ locale }: { locale: Locale }) {
   }, [open]);
 
   useEffect(() => {
-    const media = matchMedia("(min-width: 901px)");
+    const media = matchMedia("(min-width: 1101px)");
     const resize = () => {
       if (media.matches) setOpen(false);
     };

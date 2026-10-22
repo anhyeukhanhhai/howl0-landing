@@ -53,17 +53,25 @@ for (const [width, height] of [
     assert.equal(await page.locator(".closing-mark svg").count(), 0);
     await page.screenshot({ path: `${out}/${locale}-${width}-hero.png` });
     const loop = page.locator(".scene-loop");
-    const geometry = await loop.evaluate((el) => ({
-      top: el.getBoundingClientRect().top + scrollY,
-      height: el.clientHeight,
-    }));
+    const geometry = await loop.evaluate((el) => {
+      const journey = el.closest(".hero-loop-journey");
+      const root = journey || el;
+      return {
+        top: root.getBoundingClientRect().top + scrollY,
+        height: root.clientHeight,
+        intro: journey ? Number(journey.dataset.loopStart) : 0,
+      };
+    });
     const labels =
       locale === "en"
         ? ["Assign", "Practise", "Submit", "Respond", "Next step"]
         : ["Giao bài", "Luyện tập", "Gửi bài", "Góp ý", "Bước tiếp theo"];
     let headingHeight;
     for (const fraction of [0, 0.18, 0.36, 0.54, 0.72, 0.94, 0.72, 0.36, 0]) {
-      const target = geometry.top + fraction * (geometry.height - height);
+      const target =
+        geometry.top +
+        (geometry.intro + fraction * (1 - geometry.intro)) *
+          (geometry.height - height);
       await page.evaluate(
         (top) => scrollTo({ top, behavior: "instant" }),
         target,
@@ -115,6 +123,9 @@ for (const [width, height] of [
       .locator(".scene-perspectives")
       .screenshot({ path: `${out}/${locale}-${width}-audience.png` });
     const focus = page.locator(".belief-focus");
+    // Scrolling must not accidentally hover a phrase at the old tab pointer
+    // position before we measure its initial reading interval.
+    await page.mouse.move(0, 0);
     await focus.scrollIntoViewIfNeeded();
     await page.mouse.move(0, 0);
     await page.waitForTimeout(150);

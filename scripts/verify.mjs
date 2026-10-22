@@ -440,13 +440,13 @@ await page.goto(base, { waitUntil: "networkidle" });
 const hero = page.locator(".scene-hero");
 await page.mouse.move(0, 0);
 await page.waitForTimeout(250);
-await hero.getByRole("button", { name: "Pause animation" }).click();
-await page.waitForFunction(
-  () => document.querySelector(".scene-hero").dataset.playing === "false",
-);
 assert(
   (await hero.getAttribute("data-playing")) === "false",
-  "pause did not stop artwork",
+  "opening hero must remain calm before the scroll transition",
+);
+assert(
+  (await hero.locator(".gradient-wave,.hero-visual").count()) === 0,
+  "opening hero must not compete with the word transition",
 );
 assert(
   (await page
@@ -464,7 +464,6 @@ assert(
   "primary CTA must explain the product, not imply working registration",
 );
 await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
-await hero.getByRole("button", { name: "Resume animation" }).click();
 await page.mouse.move(0, 0);
 await page.evaluate(() =>
   scrollTo({ top: document.body.scrollHeight, behavior: "instant" }),

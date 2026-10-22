@@ -84,7 +84,12 @@ export function PerspectiveSwitcher({
           </div>
           <div className="perspective-workspace">
             <PerspectiveSignal locale={locale} active={active} />
-            <GlassSurface material="quiet" className="perspective-reading">
+            <GlassSurface
+              material="quiet"
+              raised
+              interactive
+              className="perspective-reading"
+            >
               <div className="perspective-panes">
                 {content.items.map((item, index) => (
                   <div

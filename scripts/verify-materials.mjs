@@ -92,16 +92,14 @@ for (const width of [1440, 1024, 390])
         .evaluate((el) => Math.round(el.getBoundingClientRect().width)),
       140,
     );
-    const art = await page
-      .locator(".approved-listening img")
-      .evaluate((img) => img.currentSrc);
-    assert(
-      art.endsWith(
-        width >= 1200
-          ? `para-art-03-listen-${locale}-grain.svg`
-          : "para-expressive-listening-grain.svg",
-      ),
+    assert.equal(await page.locator(".para-word-portal").count(), 1);
+    assert.equal(
+      await page
+        .locator('.para-word-portal defs > g[id$="-word"] path')
+        .count(),
+      4,
     );
+    assert.equal(await page.locator(".simple-hero .hero-visual").count(), 0);
     await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
     await page.screenshot({
       path: `${out}/${locale}-${width}-hero.png`,

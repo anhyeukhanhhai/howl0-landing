@@ -1,18 +1,37 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import {
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type Ref,
+} from "react";
 import { content, type Locale } from "@/lib/i18n";
 import { sceneCopy } from "@/lib/studio";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { ParaIcon } from "@/components/ParaIcon";
 import { ExpressiveIcon } from "@/components/ExpressiveIcon";
 import { GlassSurface } from "@/components/GlassSurface";
+import { LoopWaves } from "@/components/LoopWaves";
 
 const route =
   "M126 114C220 20 362 18 444 110S615 243 540 332S398 498 260 438S60 305 126 114";
 
 /** One progress measurement drives the traveller, visual stage and headline. */
-export function SubmissionFlow({ locale }: { locale: Locale }) {
+export type SubmissionFlowHandle = { update: (value: number) => void };
+
+export function SubmissionFlow({
+  locale,
+  coordinated = false,
+  flowRef,
+  waveActive = true,
+}: {
+  locale: Locale;
+  coordinated?: boolean;
+  flowRef?: Ref<SubmissionFlowHandle>;
+  waveActive?: boolean;
+}) {
   const page = content[locale].home;
   const copy = sceneCopy(locale);
   const root = useRef<HTMLElement>(null);
@@ -43,16 +62,23 @@ export function SubmissionFlow({ locale }: { locale: Locale }) {
       `translate(${point.x.toFixed(2)} ${point.y.toFixed(2)})`,
     );
   }, []);
-  useScrollProgress(root, { mode: "pin", onProgress: update });
+  useImperativeHandle(flowRef, () => ({ update }), [update]);
+  useScrollProgress(root, {
+    enabled: !coordinated,
+    mode: "pin",
+    onProgress: update,
+    settleMs: 55,
+  });
   return (
     <section
       ref={root}
-      id="submission-flow"
+      id={coordinated ? "learning-loop" : "submission-flow"}
       className="scene-loop"
       data-stage="0"
       aria-labelledby="submission-flow-heading"
     >
       <div className="loop-sticky wrap">
+        <LoopWaves locale={locale} active={waveActive} />
         <div className="loop-heading-slot">
           <h2
             id="submission-flow-heading"
@@ -66,7 +92,6 @@ export function SubmissionFlow({ locale }: { locale: Locale }) {
         </div>
         <figure className="loop-composition">
           <div className="loop-diagram" role="img" aria-label={page.hero.aria}>
-            <div className="loop-material" aria-hidden="true" />
             <div className="loop-symbols" aria-hidden="true">
               {[
                 "assignment",
@@ -83,7 +108,7 @@ export function SubmissionFlow({ locale }: { locale: Locale }) {
               ))}
             </div>
             <div className="loop-recording-ground" aria-hidden="true">
-              <GlassSurface rising />
+              <GlassSurface raised rising />
             </div>
             <svg viewBox="0 0 680 540" fill="none" aria-hidden="true">
               <path className="loop-route-base" d={route} />

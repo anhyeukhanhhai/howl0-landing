@@ -6,6 +6,11 @@
 @import "./glass-refinement.css";
 @import "./glass/para-glass-fallbacks.css";
 @import "./focus-refinement.css";
+@import "./finish.css";
+@import "./photography.css";
+@import "./interaction-motion.css";
+@import "./loop-waves.css";
+@import "./hero-loop-journey.css";
 
 @font-face {
   font-family: "Plus Jakarta Sans";
