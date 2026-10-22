@@ -2,12 +2,12 @@ import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const out = ".qa/reposition";
+const out = ".qa/para-material/routes";
 const pages = [
   [
     "",
     "See the progress between lessons.",
-    "Thấy được từng bước tiến bộ giữa những buổi học.",
+    "Thấy từng bước tiến giữa những buổi học.",
   ],
   [
     "product",
@@ -32,19 +32,22 @@ const pages = [
   ["people", "Meet Henry and Aaron.", "Gặp gỡ Henry và Aaron."],
   [
     "faq",
-    "What we know while howl0 takes shape.",
-    "Những điều chúng tôi có thể chia sẻ khi howl0 đang thành hình.",
+    "What we know while PARA takes shape.",
+    "Những điều chúng tôi có thể chia sẻ khi PARA đang thành hình.",
   ],
 ];
-const viewports = [
-  [390, 844],
-  [430, 932],
-  [768, 1024],
-  [1440, 900],
-  [1920, 1080],
-  [2560, 1080],
-  [3440, 1440],
-];
+const viewports = process.env.INTERACTIONS_ONLY
+  ? []
+  : [
+      [390, 844],
+      [430, 932],
+      [768, 1024],
+      [1024, 900],
+      [1440, 900],
+      [1920, 1080],
+      [2560, 1080],
+      [3440, 1440],
+    ];
 const browser = await chromium.launch({ headless: true });
 await mkdir(out, { recursive: true });
 const assert = (condition, message) => {
@@ -59,7 +62,7 @@ for (const [width, height] of viewports) {
     `${width}: first visit did not show welcome`,
   );
   assert(
-    await page.getByRole("heading", { name: "Welcome to howl0." }).isVisible(),
+    await page.getByRole("heading", { name: "Welcome to PARA." }).isVisible(),
     `${width}: welcome heading missing`,
   );
   assert(
@@ -128,10 +131,7 @@ await anchored.close();
 
 const directSubpage = await browser.newPage();
 await directSubpage.goto(`${base}/people`, { waitUntil: "networkidle" });
-await directSubpage
-  .getByRole("link", { name: "Join the waitlist" })
-  .first()
-  .click();
+await directSubpage.getByRole("link", { name: "Build status" }).first().click();
 await directSubpage.waitForURL(`${base}/#waitlist`);
 assert(
   await directSubpage.locator("#waitlist").isVisible(),
@@ -152,6 +152,11 @@ async function revealPage(page) {
     await page.waitForTimeout(25);
   }
   await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+  await page.evaluate(() =>
+    Promise.all(
+      [...document.images].map((img) => img.decode().catch(() => {})),
+    ),
+  );
 }
 
 for (const [width, height] of viewports) {
@@ -171,6 +176,12 @@ for (const [width, height] of viewports) {
         waitUntil: "networkidle",
       });
       assert(response?.ok(), `${path} ${width}: direct route failed`);
+      assert(
+        !/[\p{Dash_Punctuation}\u2212]/u.test(
+          await page.locator("body").innerText(),
+        ),
+        `${path}: visible dash punctuation`,
+      );
       assert(
         await page
           .getByRole("heading", {
@@ -194,6 +205,14 @@ for (const [width, height] of viewports) {
           overflow: document.documentElement.scrollWidth - innerWidth,
           mains: document.querySelectorAll("main").length,
           h1s: document.querySelectorAll("h1").length,
+          staleBrand:
+            /howl0/i.test(document.body.innerText) ||
+            [...document.images].some((img) =>
+              img.src.includes("/brand/howl0/"),
+            ),
+          literalArtwork: [...document.images].some((img) =>
+            /\/illustrations\/|\/para-scene-/.test(img.src),
+          ),
           clipped,
           heroSeparated: (() => {
             const copy = document.querySelector(".home-hero .hero-copy");
@@ -210,22 +229,24 @@ for (const [width, height] of viewports) {
           })(),
           heroContained: (() => {
             const hero = document.querySelector(".home-hero");
-            const logo = document.querySelector(".home-hero .hero-loop");
-            const message = document.querySelector(
-              ".home-hero .preview-message",
-            );
-            if (!hero || !logo || !message) return true;
-            const bottom = hero.getBoundingClientRect().bottom;
+            const visual = document.querySelector(".home-hero .hero-visual");
             return (
-              logo.getBoundingClientRect().bottom <= bottom + 1 &&
-              message.getBoundingClientRect().bottom <= bottom + 1
+              !hero ||
+              !visual ||
+              visual.getBoundingClientRect().bottom <=
+                hero.getBoundingClientRect().bottom + 1
             );
           })(),
         };
       });
       assert(layout.lang === locale, `${path}: html lang ${layout.lang}`);
+      assert(!layout.staleBrand, `${path}: old brand remains visible`);
       assert(
-        layout.title.includes("howl0") && layout.description,
+        !layout.literalArtwork,
+        `${path}: literal musician artwork remains`,
+      );
+      assert(
+        layout.title.includes("PARA") && layout.description,
         `${path}: localized metadata missing`,
       );
       assert(
@@ -266,6 +287,7 @@ for (const [width, height] of viewports) {
         await page.screenshot({
           path: `${out}/${locale}-${slug || "home"}-${width}x${height}.png`,
           fullPage: true,
+          animations: "disabled",
         });
       }
       await page.close();
@@ -339,7 +361,7 @@ assert(
   "audience tabs keyboard failed",
 );
 await page.goto(`${base}/faq`, { waitUntil: "networkidle" });
-await page.getByText("What is howl0?", { exact: true }).click();
+await page.getByText("What is PARA?", { exact: true }).click();
 assert(
   await page
     .getByText(/music learning progress platform in development/)
@@ -372,41 +394,89 @@ for (const locale of ["en", "vi"]) {
     (await form.locator("select,textarea").count()) === 0,
     `${locale}: removed fields remain`,
   );
-  await form
-    .getByRole("button", {
-      name: locale === "en" ? "Join the waitlist" : "Đăng ký nhận tin",
-    })
-    .click();
   assert(
-    !(await form
-      .locator('[name="name"]')
-      .evaluate((node) => node.checkValidity())),
-    `${locale}: name not required`,
+    await form.getByRole("button").isDisabled(),
+    `${locale}: pending backend must disable submission`,
   );
-  await form.locator('[name="name"]').fill("Test Name");
-  await form.locator('[name="email"]').fill("test@example.com");
-  await form
-    .getByRole("button", {
-      name: locale === "en" ? "Join the waitlist" : "Đăng ký nhận tin",
-    })
-    .click();
-  await form
-    .getByRole("status")
-    .getByText(
-      locale === "en" ? /not accepting submissions yet/ : /chưa nhận thông tin/,
-    )
-    .waitFor();
   assert(
-    !(await form
+    (await form.locator("input:disabled").count()) === 2,
+    `${locale}: unavailable fields must be disabled`,
+  );
+  assert(
+    await form
+      .getByText(
+        locale === "en"
+          ? /Submissions are not saved yet/
+          : /Thông tin hiện chưa được lưu/,
+      )
+      .isVisible(),
+    `${locale}: honest development notice missing`,
+  );
+  assert(
+    (await form
       .getByText(
         locale === "en"
           ? "You're in the loop. We'll keep you posted."
-          : "Bạn đã vào nhịp cùng howl0. Chúng tôi sẽ sớm cập nhật.",
+          : "Bạn đã vào nhịp cùng PARA. Chúng tôi sẽ sớm cập nhật.",
       )
-      .count()),
+      .count()) === 0,
     `${locale}: false success`,
   );
 }
+await page
+  .context()
+  .addCookies([{ name: "howl0-language-choice", value: "en", url: base }]);
+await page.goto(`${base}/#waitlist`, { waitUntil: "networkidle" });
+await page.getByRole("link", { name: "Switch to Vietnamese" }).click();
+await page.waitForURL(`${base}/vi#waitlist`);
+assert(
+  await page.locator("#waitlist").isVisible(),
+  "language switch lost waitlist anchor",
+);
+await page
+  .context()
+  .addCookies([{ name: "howl0-language-choice", value: "en", url: base }]);
+await page.goto(base, { waitUntil: "networkidle" });
+const hero = page.locator(".scene-hero");
+await page.mouse.move(0, 0);
+await page.waitForTimeout(250);
+assert(
+  (await hero.getAttribute("data-playing")) === "false",
+  "opening hero must remain calm before the scroll transition",
+);
+assert(
+  (await hero.locator(".gradient-wave,.hero-visual").count()) === 0,
+  "opening hero must not compete with the word transition",
+);
+assert(
+  (await page
+    .locator(
+      ".hero-stage-keys, .scene-hero .assignment-capsule, .submission-sequence",
+    )
+    .count()) === 0,
+  "duplicate hero sequence or loop sidebar remains",
+);
+await page
+  .getByRole("link", { name: "See the learning loop", exact: true })
+  .click();
+assert(
+  new URL(page.url()).hash === "#submission-flow",
+  "primary CTA must explain the product, not imply working registration",
+);
+await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+await page.mouse.move(0, 0);
+await page.evaluate(() =>
+  scrollTo({ top: document.body.scrollHeight, behavior: "instant" }),
+);
+await page.waitForTimeout(150);
+assert(
+  (await hero.getAttribute("data-playing")) === "false",
+  "offscreen artwork must pause",
+);
+assert(
+  (await page.locator("audio,video,input[type=file]").count()) === 0,
+  "concept must not imply a functioning upload or player",
+);
 await page.close();
 
 const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
@@ -426,12 +496,21 @@ assert(
   "mobile Escape failed",
 );
 await menu.click();
+await mobile.setViewportSize({ width: 1440, height: 900 });
+await mobile.waitForFunction(() => !document.querySelector("main").inert);
+assert(
+  (await mobile.locator(".menu-toggle").getAttribute("aria-expanded")) ===
+    "false",
+  "desktop resize did not close menu",
+);
+await mobile.setViewportSize({ width: 390, height: 844 });
+await menu.click();
 await mobile.getByRole("link", { name: "Chuyển sang tiếng Anh" }).click();
 await mobile.waitForURL(`${base}/product`);
 await mobile.close();
 
 for (const [path, selector] of [
-  ["/", ".submission-sequence"],
+  ["/", ".loop-static-summary"],
   ["/vi/how-it-works", "#practice-loop"],
 ]) {
   const reduced = await browser.newPage({
@@ -448,8 +527,22 @@ for (const [path, selector] of [
   );
   if (path.includes("how-it-works")) {
     assert(
-      (await reduced.locator(selector).getAttribute("data-stage")) === "4",
+      (await reduced.locator(".practice-step").count()) === 5,
       "reduced-motion loop is incomplete",
+    );
+  } else {
+    assert(
+      await reduced.locator(".loop-static-summary").isVisible(),
+      "reduced-motion story missing",
+    );
+    const state = await reduced
+      .locator(".scene-hero")
+      .getAttribute("data-stage");
+    await reduced.waitForTimeout(2400);
+    assert(
+      (await reduced.locator(".scene-hero").getAttribute("data-stage")) ===
+        state,
+      "reduced motion must not loop",
     );
   }
   await reduced.screenshot({

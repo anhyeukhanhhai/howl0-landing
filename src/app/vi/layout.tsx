@@ -1,14 +1,5 @@
-import "../globals.css";
-import "../scroll.css";
-import "../responsive-motion.css";
-import "../multi-page.css";
-import "../theme.css";
-import "@fontsource/archivo/400.css";
-import "@fontsource/archivo/600.css";
-import "@fontsource/archivo/700.css";
-import "@fontsource/be-vietnam-pro/400.css";
-import "@fontsource/be-vietnam-pro/500.css";
-import "@fontsource/be-vietnam-pro/600.css";
+import "../para.css";
+import { BrandHead } from "@/components/BrandHead";
 import { Navigation } from "@/components/Navigation";
 import { SiteFooter } from "@/components/SiteFooter";
 import { content } from "@/lib/i18n";
@@ -24,6 +15,9 @@ export default function VietnameseLayout({
 }) {
   return (
     <html lang="vi" data-scroll-behavior="smooth">
+      <head>
+        <BrandHead />
+      </head>
       <body>
         <a className="skip-link" href="#main">
           {content.vi.skip}

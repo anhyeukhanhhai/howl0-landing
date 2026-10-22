@@ -1,6 +1,8 @@
-# howl0 website
+# PARA website
 
-A responsive editorial website for howl0, built with Next.js App Router, TypeScript, Tailwind CSS and focused custom CSS. The approved identity assets are in `public/brand/howl0/`.
+The existing howl0 Next.js application, rebranded to PARA. The current website follows `design-resources/PARA_Brand_Resources`: the approved Musical Window logo, Sandalwood colours and grain material system supersede earlier packs. Shared English/Vietnamese components and established routes remain in place.
+
+See [PARA_MATERIAL_HANDOFF.md](PARA_MATERIAL_HANDOFF.md) for the current assets, glass/motion system and verification. [PARA_STUDIO_HANDOFF.md](PARA_STUDIO_HANDOFF.md) and [PARA_IMPLEMENTATION.md](PARA_IMPLEMENTATION.md) record preceding revisions.
 
 ## Run locally
 
@@ -9,34 +11,35 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:3000. Quality checks: `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm run build`, `npm run test:visual`, and `npm run test:a11y`. Run the visual and accessibility scripts while the server is running. Set `BASE_URL` when the server uses a different port, for example `BASE_URL=http://localhost:3001 npm run test:visual`.
+Open http://localhost:3000. For production verification, run `npm run build` followed by `npm start`.
 
-## Information architecture and content
+Checks: `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm run build`. With a server running, use `npm run test:visual`, `npm run test:devices`, `npm run test:story`, `npm run test:materials`, `npm run test:a11y`, and `COLOR_SCHEME=dark npm run test:a11y`. Set `BASE_URL` to use a different port. Current screenshots and two scroll walkthrough videos are generated under ignored `.qa/para-material/`.
 
-English is the default at `/`. The same page components render Vietnamese at `/vi` with equivalent `/product`, `/how-it-works`, `/why-howl0`, `/for-you` and `/faq` subpages. Approved English and Vietnamese copy lives in `src/lib/i18n.ts`, sourced from `02-howl0-website-content-en-vi.md`; page markup is shared in `src/components/pages/`.
+## Brand sources and assets
 
-The homepage leads with progress between lessons, then the teacher-led learning loop, three perspectives, the feedback belief and the waitlist. The one-link submission remains the easy entry point on `/how-it-works`. `/for-educators` and `/vi/for-educators` permanently redirect to their `/for-you` pages. Legacy `/about`, `/who-its-for` and `/why-howlo` also retain their English redirects.
+- `design-resources/PARA_Brand_Resources/`: controlling production logo geometry, five-colour palette, typography, icon families, EN/VI listening artwork and raster-grain materials. Explicitly marked app/favicon proposals are excluded.
+- `public/brand/para/resources/`: exact production copies, local WOFF2 fonts, OFL licences and `asset-provenance.json`. `npm run brand:sync` rebuilds this explicit allowlist from the package. Source assets are not edited.
+- `src/app/para.css` and `para-tokens.css`: shared presentation and semantic colour/type roles. Legacy variable names are compatibility aliases to the new palette, not old colours.
+- `studio.css` retains the established five-scene choreography; `material.css` applies the new artwork, typography and selective glass. Historical assets remain on disk but are not rendered by current pages.
 
-The language switch follows the equivalent path. Navigation and footer links remain in the selected language, including the homepage waitlist anchor. Explicit URLs are never automatically redirected by a stored preference. Both root layouts set their own `<html lang>` and metadata; active navigation uses `aria-current`, and the mobile menu manages focus and Escape.
+Headlines use Plus Jakarta Sans 600; body text uses Be Vietnam Pro 400–600. Espresso, Ivory, Sand and Saddle Brown carry the interface, with Cool Grey confined to supplied artwork. Device dark mode uses the exact Ivory logo and inverse reading colours. Only the variable heading font and body Regular are preloaded. Solid logos are used at small sizes; larger closing/footer logos use the approved grain exports. Grain stays inside artwork, not on text or controls.
 
-## Motion and responsive behaviour
+## Routes and content
 
-The home hero shows a five-second CSS learning-loop preview. It plays once, then settles; the home loop sequence takes 4.8 seconds. Both pause outside the viewport or when the browser tab is hidden through `useVisibleAnimation`. The parent progress update is a secondary view, outside the teacher/student loop. The full `/how-it-works` sequence draws an open SVG route and moves its task marker from scroll progress in either direction.
+First-time visits to `/` open `/welcome`. Language selection uses the existing validated `/choose-language/[locale]?next=…` handler and `howl0-language-choice` cookie so returning visitors retain their choice.
 
-The page uses passive `scroll` listeners and one animation-frame update per visible scene. `src/hooks/useScrollProgress.ts` writes a CSS progress property without re-rendering React per frame; it remeasures after resize, orientation changes, font loading, and page restoration. `ScrollScene` shares this behaviour. `Reveal` gives selected groups a 420ms transform entrance while keeping headings at full opacity. Decorative layers can fade; essential text is never hidden behind a reveal or mask. The submission sequence uses transform and colour animation, and audience text remains in normal flow during tab changes.
+The seven shared page pairs are `/` ↔ `/vi`, plus `/product`, `/how-it-works`, `/why-howl0`, `/for-you`, `/people` and `/faq` under both locale roots. Existing educator and legacy redirects remain. The old `why-howl0` URL is intentional. The waitlist anchor survives language switching.
 
-At widths above 1100px, hero layouts use a bounded two-column grid. Tablets use the accessible menu at 900px and below; page compositions stack below that width. The full submission journey pins for about 270vh on desktop and 235vh on tablet, with its art and row sizes capped by viewport height. Below 761px it becomes a shorter sequential layout. Text stays within the centred 1320px content area on ultrawide displays. Reduced motion shows the completed preview and a static five-stage journey without parallax or pinning.
+Core copy remains in `src/lib/i18n.ts`, adapted from the approved original content and v2 bilingual copy. `src/lib/studio.ts` holds the latest brief's concise bilingual scene copy; `src/lib/para.ts` retains supporting resource-pack captions. Product capabilities remain qualified as intended or in development. Henry and Aaron's approved roles and music backgrounds remain.
 
-The Playwright visual suite checks all 12 paired routes at 390×844, 430×932, 768×1024, 1440×900, 1920×1080, 2560×1080 and 3440×1440. It covers direct routing, redirects, browser history, responsive overflow, mobile navigation and language switching, audience tabs, FAQ, waitlist states and reduced motion. Screenshots are written to the ignored `.qa/reposition/` directory.
+The homepage has five connected scenes: learning signal → five-stage learning loop → three perspectives → feedback belief → open-loop development status. Approved listening artwork, a floating assignment capsule, recording waveform, timestamp markers and next-practice path express the same journey. Glass is selective, uses opaque fallbacks and honours reduced transparency. Mobile drops artwork backdrop blur and uses expressive symbols rather than miniature text inside detailed illustrations. The primary CTA explains the product, rather than implying registration is operational. Legacy `#waitlist` anchors still work.
 
-## Waitlist integration
+The hero uses an 11-second ambient sequence with explicit Pause/Resume and manual stages. It pauses over the artwork, while offscreen or when the document is hidden. Manual selection pauses playback. Reduced motion disables ambient movement and pinning, with the five stages and complete learning story visible. The desktop learning loop uses a short native-scroll sticky scene; mobile and short screens use normal flow. Audience tabs change only through user interaction and reserve their text height. There is no audio, grading, live upload or fake progress percentage.
 
-`src/lib/waitlist.ts` is a development adapter. The form has exactly name and email fields, but it sends and stores **no data** and reports that submissions are unavailable. Connect an approved HTTPS endpoint, validate and store only those two fields, provide the required privacy and consent mechanisms, and return only after the service confirms storage. Do not put API credentials in client code. Research questions are handled later by email, not on this form.
+## Waitlist and remaining decisions
 
-## Before public launch
+The name/email form is visibly disabled while its backend is pending. No data is transmitted or stored, and no success state is displayed. `src/lib/waitlist.ts` remains the development adapter for future integration.
 
-- Connect the waitlist service and confirm consent, unsubscribe, retention and privacy copy for families and minors.
-- Replace footer contact, privacy, terms and social placeholder text with approved destinations.
-- Set `NEXT_PUBLIC_SITE_URL` to the approved production URL to enable absolute canonical and social preview image URLs.
+The supplied compact favicon is still a proposal, so no replacement favicon or social image has been invented. Submission domains, contact details, legal identity and privacy wording need separate approval before being changed. No PARA submission domain has been invented. New v2 copy and translated technical labels should receive native Vietnamese editorial review before launch.
 
-Deployment can use the configured Git remote or any Next.js compatible host. For a Vercel preview, import this repository, set the root to `/`, and deploy the feature branch.
+Set `NEXT_PUBLIC_SITE_URL` only to the agreed canonical website origin. This work does not change hosting, deploy, push or create a commit.

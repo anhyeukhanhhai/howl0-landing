@@ -1,8 +1,16 @@
+import { ParaFigure } from "@/components/ParaFigure";
+import { paraContent } from "@/lib/para";
+import type { Locale } from "@/lib/i18n";
+import { SceneHeading } from "@/components/SceneHeading";
 import { ScrollScene } from "@/components/ScrollScene";
-
+import { sceneCopy } from "@/lib/studio";
+import { ExpressiveIcon } from "@/components/ExpressiveIcon";
+import { BeliefFocus } from "@/components/BeliefFocus";
+import Image from "next/image";
 export function BeliefMoment({
   content,
-  compact = false,
+  locale,
+  immersive = false,
 }: {
   content: {
     eyebrow: string;
@@ -10,29 +18,73 @@ export function BeliefMoment({
     copy: string;
     labels: readonly string[];
   };
-  compact?: boolean;
+  locale: Locale;
+  immersive?: boolean;
 }) {
+  if (immersive) {
+    const copy = sceneCopy(locale);
+    return (
+      <ScrollScene id="belief" className="scene-belief belief-with-photograph">
+        <div className="belief-aperture" aria-hidden="true" />
+        <div className="belief-photograph" aria-hidden="true">
+          <Image
+            src="/images/performance/guitar-stage.webp"
+            alt=""
+            fill
+            sizes="(max-width: 900px) 100vw, (min-width: 1600px) 1120px, 78vw"
+            loading="lazy"
+          />
+        </div>
+        <div className="belief-photo-scrim" aria-hidden="true" />
+        <div className="wrap belief-statement">
+          <div className="belief-copy">
+            <p className="eyebrow">{content.eyebrow}</p>
+            <div className="belief-emblem-surface">
+              <ExpressiveIcon name="feedback" className="belief-emblem" />
+            </div>
+            <SceneHeading lines={copy.beliefLines} />
+          </div>
+          <div className="belief-signal" aria-hidden="true">
+            <svg viewBox="0 0 1240 170" preserveAspectRatio="none">
+              <path
+                className="belief-wave-echo"
+                d="M0 90C100 20 170 160 280 90S450 20 560 90S730 160 840 90S1010 20 1240 90"
+              />
+              <path
+                className="belief-wave-main"
+                pathLength="1"
+                d="M0 90C100 20 170 160 280 90S450 20 560 90S730 160 840 90S1010 20 1240 90"
+              />
+              <circle cx="560" cy="90" r="7" />
+            </svg>
+          </div>
+          <BeliefFocus labels={content.labels} locale={locale} />
+        </div>
+      </ScrollScene>
+    );
+  }
   return (
-    <ScrollScene
-      id="belief"
-      stages={4}
-      className={`belief belief-scroll surface-noise ${compact ? "belief-compact" : ""}`}
-    >
-      <div className="wrap belief-inner">
-        <p className="eyebrow light">{content.eyebrow}</p>
-        <h2>{content.title}</h2>
-        <p>{content.copy}</p>
-        <div className="belief-wave" aria-hidden="true">
-          <svg viewBox="0 0 1200 180" preserveAspectRatio="none">
-            <path d="M0 100 C120 20 170 180 300 100 S480 20 600 100 S780 180 900 100 S1080 20 1200 100" />
-          </svg>
+    <section id="belief" className="belief section-pad">
+      <div className="wrap belief-grid">
+        <div>
+          <p className="eyebrow">{content.eyebrow}</p>
+          <h2>{content.title}</h2>
+          <p>{content.copy}</p>
+          <ol className="feedback-markers">
+            {content.labels.map((label, index) => (
+              <li key={label}>
+                <span>0{index + 1}</span>
+                {label}
+              </li>
+            ))}
+          </ol>
         </div>
-        <div className="feedback-markers">
-          {content.labels.map((label) => (
-            <span key={label}>{label}</span>
-          ))}
-        </div>
+        <ParaFigure
+          asset="feedback-wave"
+          locale={locale}
+          caption={paraContent[locale].concept}
+        />
       </div>
-    </ScrollScene>
+    </section>
   );
 }

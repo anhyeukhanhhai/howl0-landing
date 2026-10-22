@@ -10,7 +10,11 @@ export function ForYouPage({ locale }: { locale: Locale }) {
       <PageHero eyebrow={page.eyebrow} title={page.title} intro={page.intro} />
       <section className="audiences audience-page section-pad">
         <div className="wrap">
-          <AudienceTabs audience={page.views} label={page.tabsLabel} />
+          <AudienceTabs
+            audience={page.views}
+            label={page.tabsLabel}
+            locale={locale}
+          />
         </div>
       </section>
       <PageCta locale={locale} title={page.ctaTitle} />

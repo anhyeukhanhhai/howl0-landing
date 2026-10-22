@@ -1,6 +1,8 @@
 import { PageCta } from "@/components/PageCta";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
+import { ParaFigure } from "@/components/ParaFigure";
+import { ExpressiveIcon } from "@/components/ExpressiveIcon";
 import { content, type Locale } from "@/lib/i18n";
 
 export function ProductPage({ locale }: { locale: Locale }) {
@@ -8,12 +10,9 @@ export function ProductPage({ locale }: { locale: Locale }) {
   return (
     <main id="main" className="page-enter">
       <PageHero eyebrow={page.eyebrow} title={page.title} intro={page.intro}>
-        <div className="page-signal-mark product-hero-art" aria-hidden="true">
-          <img
-            src="/brand/howl0/02-symbols/howl0-return-loop-master.svg"
-            alt=""
-          />
-          <span>{page.visual}</span>
+        <div>
+          <ParaFigure asset="rhythm-grid" locale={locale} eager />
+          <p className="flow-summary">{page.visual}</p>
         </div>
       </PageHero>
       <section
@@ -26,9 +25,12 @@ export function ProductPage({ locale }: { locale: Locale }) {
             <h2 id="product-pillars">{page.pillars[2][1]}</h2>
           </Reveal>
           <ol className="platform-directions">
-            {page.pillars.map(([number, title, copy]) => (
+            {page.pillars.map(([number, title, copy], index) => (
               <li key={title}>
                 <span>{number}</span>
+                <ExpressiveIcon
+                  name={["recording", "feedback", "progress"][index]}
+                />
                 <h3>{title}</h3>
                 <p>{copy}</p>
               </li>

@@ -6,5 +6,5 @@ export default defineConfig([
   ...nextTs,
   // Approved SVG identity assets are served directly and retain their exact paths.
   { rules: { "@next/next/no-img-element": "off" } },
-  globalIgnores([".next/**", "out/**", "next-env.d.ts"]),
+  globalIgnores([".next/**", "out/**", "next-env.d.ts", "design-resources/**"]),
 ]);
