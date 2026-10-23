@@ -307,9 +307,6 @@ body .site-header > .para-glass__texture {
 .studio-home .scene-closing {
   padding-block: 80px;
 }
-.studio-home .waitlist-form {
-  box-shadow: none;
-}
 @keyframes glass-ground-drift {
   0%,
   100% {

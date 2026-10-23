@@ -178,7 +178,8 @@ for (const [width, height] of [
       );
       await phrases.nth(3).click();
       assert.equal(await focus.getAttribute("data-active"), "3");
-      await focus.locator(".belief-cycle-control").click();
+      await phrases.nth(3).evaluate((el) => el.blur());
+      await page.mouse.move(0, 0);
       await page.locator("h1").scrollIntoViewIfNeeded();
       await page.waitForTimeout(150);
       const off = await focus.getAttribute("data-active");

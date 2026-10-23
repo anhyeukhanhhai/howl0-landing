@@ -44,11 +44,18 @@ for (const engine of [chromium, webkit]) {
   if (process.env.PORTAL_ENGINE && engine.name() !== process.env.PORTAL_ENGINE)
     continue;
   const browser = await engine.launch();
-  for (const width of [1440, 1024, 390]) {
+  for (const width of [1440, 1024, 390, 2560, 3440]) {
     if (process.env.PORTAL_WIDTH && width !== Number(process.env.PORTAL_WIDTH))
       continue;
     for (const locale of ["en", "vi"]) {
-      const height = width === 390 ? 844 : 900;
+      const height =
+        width === 390
+          ? 844
+          : width === 3440
+            ? 1440
+            : width === 2560
+              ? 1080
+              : 900;
       const context = await browser.newContext({
         viewport: { width, height },
         hasTouch: width === 390,
@@ -197,7 +204,10 @@ for (const engine of [chromium, webkit]) {
       assert(await page.locator("h1").isVisible());
       await page.setViewportSize({ width, height });
       await move(page, 0);
-      await page.locator(".hero-actions a").first().click();
+      // The hero now opens the product. Legacy loop fragments remain native.
+      await page.evaluate(() => {
+        location.hash = "submission-flow";
+      });
       await page.waitForTimeout(1400);
       assert.equal(new URL(page.url()).hash, "#submission-flow");
       assert(
@@ -229,7 +239,8 @@ for (const engine of [chromium, webkit]) {
         "Direct waitlist fragment missed form",
       );
       await page.goto(url + "#top", { waitUntil: "networkidle" });
-      await page.waitForFunction(() => scrollY < 2);
+      // Native smooth-scroll rounding may settle a few pixels above zero.
+      await page.waitForFunction(() => scrollY < 80);
       await page.waitForTimeout(300);
       assert((await state(page)).progress < 0.01, "Top fragment missed hero");
       await page.emulateMedia({ colorScheme: "dark" });

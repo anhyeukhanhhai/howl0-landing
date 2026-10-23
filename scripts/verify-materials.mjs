@@ -121,7 +121,7 @@ for (const width of [1440, 1024, 390])
     if (width <= 640)
       assert.equal(
         await page
-          .locator(".perspective-reading > .para-glass__surface")
+          .locator(".practice-session")
           .evaluate((el) => getComputedStyle(el).backdropFilter),
         "none",
       );
@@ -182,7 +182,9 @@ for (const width of [1440, 1024, 390])
       );
     }
     await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.locator(".hero-actions .button-primary").click();
+    await page.evaluate(() => {
+      location.hash = "submission-flow";
+    });
     assert.equal(new URL(page.url()).hash, "#submission-flow");
     assert(
       (await page.locator("#submission-flow-heading").boundingBox()).y >= 80,

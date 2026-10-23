@@ -45,17 +45,14 @@ for (const [width, height] of [
       waitUntil: "networkidle",
     });
     await page.evaluate(() => document.fonts.ready);
-    const images = page.locator('img[src*="%2Fimages%2Fperformance%2F"]');
+    const images = page.locator(".reel-track > .reel-sequence img");
     assert.equal(await images.count(), 3);
     for (const img of await images.all())
       assert.equal(await img.getAttribute("loading"), "lazy");
-    assert.equal(
-      await page.locator(".belief-photograph img").getAttribute("alt"),
-      "",
-    );
-    for (const img of await page.locator(".performance-print img").all())
+    assert.equal(await page.locator("#belief .belief-photograph").count(), 0);
+    for (const img of await images.all())
       assert((await img.getAttribute("alt")).length > 10);
-    const before = await page.locator(".performance-portraits").boundingBox();
+    const before = await page.locator(".reel-viewport").boundingBox();
     for (const id of ["belief", "waitlist"]) {
       await page.evaluate(
         (id) =>
@@ -68,27 +65,33 @@ for (const [width, height] of [
           }),
         id,
       );
-      await page
-        .locator("#" + id + " img")
-        .evaluateAll((imgs) => Promise.all(imgs.map((img) => img.decode())));
+      await page.locator("#" + id + " img").evaluateAll((imgs) =>
+        Promise.all(
+          imgs.map((img) => {
+            img.loading = "eager";
+            return img.decode();
+          }),
+        ),
+      );
       await page.waitForTimeout(650);
       await page.screenshot({ path: `${out}/${locale}-${width}-${id}.png` });
       await page
         .locator("#" + id)
         .screenshot({ path: `${out}/${locale}-${width}-${id}-full.png` });
     }
-    const after = await page.locator(".performance-portraits").boundingBox();
+    const after = await page.locator(".reel-viewport").boundingBox();
     assert(
       Math.abs(before.height - after.height) < 1,
       "Image loading changed reserved layout height",
     );
     assert.equal(
       await page
-        .locator(".belief-photograph img")
+        .locator(".reel-track > .reel-sequence img")
+        .first()
         .evaluate((img) => getComputedStyle(img).objectFit),
       "contain",
     );
-    for (const img of await page.locator(".performance-print img").all()) {
+    for (const img of await images.all()) {
       assert(
         await img.evaluate(
           (el) =>
@@ -122,14 +125,14 @@ for (const [width, height] of [
     await page.emulateMedia({ reducedMotion: "reduce" });
     assert.equal(
       await page
-        .locator(".belief-photograph img")
+        .locator(".reel-track")
         .evaluate((el) => getComputedStyle(el).transform),
       "none",
     );
     assert.equal(
       await page
-        .locator(".performance-portraits")
-        .evaluate((el) => getComputedStyle(el).transform),
+        .locator(".reel-copies")
+        .evaluate((el) => getComputedStyle(el).display),
       "none",
     );
     assert.deepEqual(errors, []);

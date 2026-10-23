@@ -189,12 +189,6 @@
 .studio-home .belief-phrase:focus-visible {
   outline-color: var(--para-sand);
 }
-.studio-home .belief-cycle-control {
-  color: var(--para-ivory);
-  margin: 16px 0 0 auto;
-  width: fit-content;
-  display: flex;
-}
 .studio-home .closing-mark {
   width: fit-content;
   max-width: 100%;
@@ -366,9 +360,6 @@
     opacity: 1;
     transform: none;
     transition: none;
-  }
-  .studio-home .belief-cycle-control {
-    display: none;
   }
 }
 @media (forced-colors: active) {
