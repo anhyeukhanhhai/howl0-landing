@@ -4,3 +4,4 @@
 # Supplied resources and byte-for-byte production asset copies.
 design-resources/
 public/brand/para/
+.qa/

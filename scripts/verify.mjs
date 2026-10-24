@@ -30,11 +30,7 @@ const pages = [
     "Một hành trình, với vai trò rõ ràng hơn cho mỗi người.",
   ],
   ["people", "Meet Henry and Aaron.", "Gặp gỡ Henry và Aaron."],
-  [
-    "faq",
-    "What we know while PARA takes shape.",
-    "Những điều chúng tôi có thể chia sẻ khi PARA đang thành hình.",
-  ],
+  ["faq", "Your questions about PARA.", "Những câu hỏi của bạn về PARA."],
 ];
 const viewports = process.env.INTERACTIONS_ONLY
   ? []
@@ -131,11 +127,12 @@ await anchored.close();
 
 const directSubpage = await browser.newPage();
 await directSubpage.goto(`${base}/people`, { waitUntil: "networkidle" });
-await directSubpage.getByRole("link", { name: "Build status" }).first().click();
-await directSubpage.waitForURL(`${base}/#waitlist`);
 assert(
-  await directSubpage.locator("#waitlist").isVisible(),
-  "first-time visitor from People did not reach waitlist",
+  (await directSubpage
+    .getByRole("link", { name: "Try for free" })
+    .first()
+    .getAttribute("href")) === "https://paramuzic.com",
+  "People conversion must link directly to the product",
 );
 await directSubpage.close();
 
@@ -364,7 +361,7 @@ await page.goto(`${base}/faq`, { waitUntil: "networkidle" });
 await page.getByText("What is PARA?", { exact: true }).click();
 assert(
   await page
-    .getByText(/music learning progress platform in development/)
+    .getByText(/music learning platform focused on practice/)
     .isVisible(),
   "FAQ accordion failed",
 );
@@ -385,42 +382,18 @@ for (const locale of ["en", "vi"]) {
   await page.goto(`${base}${locale === "en" ? "/" : "/vi"}#waitlist`, {
     waitUntil: "networkidle",
   });
-  const form = page.locator(".waitlist-form");
+  const closing = page.locator("#waitlist");
   assert(
-    (await form.locator("input").count()) === 2,
-    `${locale}: form has more than two inputs`,
+    (await closing.locator("form,input,select,textarea").count()) === 0,
+    `${locale}: obsolete waitlist controls remain`,
   );
   assert(
-    (await form.locator("select,textarea").count()) === 0,
-    `${locale}: removed fields remain`,
-  );
-  assert(
-    await form.getByRole("button").isDisabled(),
-    `${locale}: pending backend must disable submission`,
-  );
-  assert(
-    (await form.locator("input:disabled").count()) === 2,
-    `${locale}: unavailable fields must be disabled`,
-  );
-  assert(
-    await form
-      .getByText(
-        locale === "en"
-          ? /Submissions are not saved yet/
-          : /Thông tin hiện chưa được lưu/,
-      )
-      .isVisible(),
-    `${locale}: honest development notice missing`,
-  );
-  assert(
-    (await form
-      .getByText(
-        locale === "en"
-          ? "You're in the loop. We'll keep you posted."
-          : "Bạn đã vào nhịp cùng PARA. Chúng tôi sẽ sớm cập nhật.",
-      )
-      .count()) === 0,
-    `${locale}: false success`,
+    (await closing
+      .getByRole("link", {
+        name: locale === "en" ? "Try for free" : "Dùng thử miễn phí",
+      })
+      .getAttribute("href")) === "https://paramuzic.com",
+    `${locale}: closing conversion destination is wrong`,
   );
 }
 await page
@@ -456,12 +429,11 @@ assert(
     .count()) === 0,
   "duplicate hero sequence or loop sidebar remains",
 );
-await page
-  .getByRole("link", { name: "See the learning loop", exact: true })
-  .click();
 assert(
-  new URL(page.url()).hash === "#submission-flow",
-  "primary CTA must explain the product, not imply working registration",
+  (await hero
+    .getByRole("link", { name: "Try for free", exact: true })
+    .getAttribute("href")) === "https://paramuzic.com",
+  "primary CTA must open the available product",
 );
 await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
 await page.mouse.move(0, 0);
@@ -554,5 +526,5 @@ for (const [path, selector] of [
 
 await browser.close();
 console.log(
-  "Bilingual routing, redirects, history, tabs, FAQ, form, mobile menu and reduced motion passed",
+  "Bilingual routing, redirects, history, tabs, FAQ, product CTAs, mobile menu and reduced motion passed",
 );

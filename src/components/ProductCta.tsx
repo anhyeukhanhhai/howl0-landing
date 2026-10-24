@@ -1,0 +1,48 @@
+import type { MouseEventHandler } from "react";
+import { content, type Locale } from "@/lib/i18n";
+import { PRODUCT_URL } from "@/lib/product";
+import { ParaIcon } from "@/components/ParaIcon";
+
+/** The anchor is stationary; only its decorative material responds to input. */
+export function ProductCta({
+  locale,
+  size = "regular",
+  tone = "espresso",
+  className = "",
+  compartment = false,
+  onClick,
+}: {
+  locale: Locale;
+  size?: "compact" | "regular" | "large";
+  tone?: "espresso" | "ivory";
+  className?: string;
+  compartment?: boolean;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
+}) {
+  return (
+    <a
+      href={PRODUCT_URL}
+      className={`product-cta ${className}`}
+      data-size={size}
+      data-tone={tone}
+      onClick={onClick}
+    >
+      <span className="product-cta-material" aria-hidden="true">
+        <span className="product-cta-gradient" />
+        <span className="product-cta-glass" />
+        <span className="product-cta-grain" />
+        <span className="product-cta-edge" />
+      </span>
+      <span className="product-cta-label">
+        {content[locale].conversion.button}
+      </span>
+      {compartment ? (
+        <span className="product-cta-compartment" aria-hidden="true">
+          <ParaIcon name="arrow-right" />
+        </span>
+      ) : (
+        <ParaIcon name="arrow-right" />
+      )}
+    </a>
+  );
+}

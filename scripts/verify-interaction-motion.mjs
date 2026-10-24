@@ -16,6 +16,8 @@ const luminance = (rgb) =>
     );
 await mkdir(out, { recursive: true });
 for (const engine of [chromium, webkit]) {
+  if (process.env.MOTION_ENGINE && process.env.MOTION_ENGINE !== engine.name())
+    continue;
   const browser = await engine.launch();
   for (const width of [1440, 1024, 390]) {
     if (process.env.MOTION_WIDTH && Number(process.env.MOTION_WIDTH) !== width)
@@ -47,7 +49,7 @@ for (const engine of [chromium, webkit]) {
       assert.equal(await page.locator(".para-word-portal").count(), 1);
       assert.equal(await hero.getAttribute("data-playing"), "false");
       await page.waitForTimeout(500);
-      const cta = page.locator(".hero-actions .button-primary");
+      const cta = page.locator(".hero-actions .product-cta");
       const before = await cta.boundingBox();
       await page.mouse.move(
         before.x + before.width * 0.8,
@@ -55,26 +57,13 @@ for (const engine of [chromium, webkit]) {
       );
       await page.waitForTimeout(350);
       const after = await cta.boundingBox();
-      const paint = await cta.evaluate((el) => {
-        const style = getComputedStyle(el);
-        return [style.color, style.backgroundColor].map((value) =>
-          value
-            .match(/[\d.]+/g)
-            .slice(0, 3)
-            .map(Number),
-        );
-      });
-      // Conservative brightest-point composite, using full 0.30 alpha even
-      // though the CTA caps the shared light at 80% (effective alpha 0.24).
-      const bright = paint[1].map(
-        (value, index) => value * 0.7 + [243, 237, 226][index] * 0.3,
-      );
-      const levels = [luminance(paint[0]), luminance(bright)].sort(
-        (a, b) => b - a,
-      );
-      assert(
-        (levels[0] + 0.05) / (levels[1] + 0.05) >= 4.5,
-        "CTA highlight reduces label contrast",
+      // Actual composited gradient/grain contrast is sampled by
+      // verify-product-cta; a transparent anchor has no nominal fill to test.
+      assert.equal(
+        await cta
+          .locator(".product-cta-label")
+          .evaluate((el) => getComputedStyle(el).opacity),
+        "1",
       );
       assert(
         Math.abs(before.x - after.x) < 0.1 &&
@@ -82,42 +71,50 @@ for (const engine of [chromium, webkit]) {
         "CTA target moved",
       );
       if (!touch) {
-        assert.equal(await cta.getAttribute("data-pointer-active"), "true");
+        assert.equal(
+          await cta
+            .locator(".product-cta-material")
+            .evaluate((el) => getComputedStyle(el).transform !== "none"),
+          true,
+        );
       }
       await page.screenshot({
         path: `${out}/${engine.name()}-${locale}-${width}-hero.png`,
       });
       const pane = page.locator(".perspective-pane.active");
+      await page.keyboard.press("Tab");
       await pane.focus();
       await page.waitForTimeout(400);
       assert.equal(
-        await page
-          .locator(".perspective-reading > .surface-light")
-          .evaluate((el) => getComputedStyle(el).opacity),
-        "0.75",
-        "Keyboard focus lacks the equivalent surface state",
+        await pane.evaluate((el) => getComputedStyle(el).outlineStyle),
+        "solid",
+        "Keyboard focus is not visible",
       );
       await page.locator(".perspective-tabs button").nth(2).click();
       await page.waitForTimeout(450);
-      const photo = page.locator(".performance-print-duo");
+      const photo = page.locator(".reel-viewport");
       await photo.scrollIntoViewIfNeeded();
       await page.waitForTimeout(200);
       const box = await photo.boundingBox();
       await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.25);
       await page.waitForTimeout(550);
-      const tilt = await page
-        .locator(".performance-print-duo .performance-photo-depth")
-        .evaluate((el) => getComputedStyle(el).transform);
+      const playback = await page
+        .locator(".reel-track")
+        .evaluate((el) => el.getAnimations()[0].playState);
       if (touch)
         assert(
           await page.evaluate(() => matchMedia("(pointer: coarse)").matches),
         );
-      if (touch) assert.equal(tilt, "none", "Tilt enabled on touch");
-      else assert(tilt.startsWith("matrix3d("), "Desktop photo depth absent");
-      await page.locator(".closing-editorial").screenshot({
+      assert.equal(playback, "running", "Visible reel is not moving");
+      await page.locator(".performance-reel").screenshot({
         path: `${out}/${engine.name()}-${locale}-${width}-photos.png`,
       });
       await page.emulateMedia({ reducedMotion: "reduce" });
+      await page.waitForFunction(
+        () =>
+          getComputedStyle(document.querySelector(".reel-track")).transform ===
+          "none",
+      );
       assert.equal(
         await page
           .locator(".para-word-portal")
@@ -126,14 +123,13 @@ for (const engine of [chromium, webkit]) {
       );
       assert.equal(
         await page
-          .locator(".performance-photo-depth")
-          .first()
+          .locator(".reel-track")
           .evaluate((el) => getComputedStyle(el).transform),
         "none",
       );
       assert.equal(
-        await photo
-          .locator(".surface-light")
+        await page
+          .locator(".reel-copies")
           .evaluate((el) => getComputedStyle(el).display),
         "none",
       );
@@ -157,9 +153,9 @@ for (const engine of [chromium, webkit]) {
         );
       }
       assert.equal(
-        await photo
-          .locator(".surface-light")
-          .evaluate((el) => getComputedStyle(el).display),
+        await page
+          .locator(".practice-session")
+          .evaluate((el) => getComputedStyle(el).backdropFilter),
         "none",
       );
       assert.equal(
@@ -177,7 +173,13 @@ for (const engine of [chromium, webkit]) {
         .locator(".site-header .nav-cta")
         .evaluate((el) => {
           const paint = getComputedStyle(el);
-          return [paint.color, paint.backgroundColor];
+          // The stationary anchor is transparent. In this solid preference
+          // state the actual paint belongs to its inner glass surface.
+          return [
+            paint.color,
+            getComputedStyle(el.querySelector(".product-cta-glass"))
+              .backgroundColor,
+          ];
         });
       assert.notEqual(
         navPaint[0],
@@ -204,7 +206,7 @@ for (const engine of [chromium, webkit]) {
         engine.name(),
         locale,
         width,
-        "quiet opening, stable CTA, keyboard glass, photo depth, touch and preference fallbacks passed",
+        "quiet opening, stable CTA, session focus, reel, touch and preference fallbacks passed",
       );
       await context.close();
     }
@@ -225,7 +227,7 @@ for (const engine of [chromium, webkit]) {
     "none",
   );
   assert(await page.locator("h1").isVisible());
-  assert(await page.locator(".hero-actions .button-primary").isVisible());
+  assert(await page.locator(".hero-actions .product-cta").isVisible());
   await page.screenshot({
     path: `${out}/${engine.name()}-static-fallback.png`,
   });

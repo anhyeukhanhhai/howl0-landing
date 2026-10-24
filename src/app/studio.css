@@ -850,10 +850,6 @@
   padding-block: 88px;
   background: var(--color-background);
 }
-.studio-home .waitlist-grid {
-  gap: 112px;
-  align-items: center;
-}
 .studio-home .closing-mark {
   width: min(320px, 100%);
   position: relative;
@@ -892,21 +888,6 @@
 }
 .studio-home .scene-closing .text-link {
   margin-top: 20px;
-}
-.studio-home .waitlist-form {
-  padding: 32px;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-background);
-}
-.studio-home .field input {
-  border-radius: 6px;
-}
-.studio-home .form-note {
-  font-size: 12px;
-}
-.studio-home .consent-note {
-  font-size: 11px;
 }
 
 @keyframes studio-line-in {
@@ -970,9 +951,6 @@
   }
   .studio-home .perspective-intro .scene-heading {
     font-size: 64px;
-  }
-  .studio-home .waitlist-grid {
-    gap: 56px;
   }
 }
 /* Vietnamese phrases are sized independently, avoiding a one-word final line. */
@@ -1060,10 +1038,6 @@
   }
   .studio-home .scene-belief .scene-heading {
     font-size: clamp(64px, 9vw, 90px);
-  }
-  .studio-home .waitlist-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
   }
 }
 @media (max-width: 640px) {
@@ -1292,19 +1266,12 @@
   .studio-home .scene-closing {
     padding-block: 48px;
   }
-  .studio-home .waitlist-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
-  }
   .studio-home .closing-mark {
     width: 270px;
     margin-bottom: 28px;
   }
   .studio-home .scene-closing .scene-heading {
     font-size: 52px;
-  }
-  .studio-home .waitlist-form {
-    padding: 24px;
   }
 }
 @media (prefers-color-scheme: dark) {

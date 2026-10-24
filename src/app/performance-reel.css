@@ -1,0 +1,84 @@
+.performance-reel {
+  --reel-height: clamp(220px, 32svh, 460px);
+  --reel-gap: clamp(14px, 1.2vw, 36px);
+  margin: 0;
+  width: 100%;
+}
+.reel-viewport {
+  position: relative;
+  isolation: isolate;
+  height: var(--reel-height);
+  width: 100%;
+  overflow: clip;
+  mask-image:
+    linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent),
+    linear-gradient(180deg, transparent, #000 7%, #000 93%, transparent);
+  mask-composite: intersect;
+}
+.reel-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+}
+.reel-sequence {
+  display: flex;
+  align-items: stretch;
+  gap: var(--reel-gap);
+  padding-right: var(--reel-gap);
+  width: var(--reel-period, max-content);
+  height: 100%;
+  flex: none;
+}
+.reel-copies {
+  display: contents;
+}
+.reel-frame {
+  flex: none;
+  height: 100%;
+  overflow: clip;
+  border-radius: 4px;
+  opacity: 0.9;
+}
+.reel-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: saturate(0.8) contrast(0.92) sepia(0.06);
+}
+.reel-viewport::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: url("/brand/para/glass/para-film-grain-256.png") repeat;
+  opacity: 0.035;
+}
+@media (prefers-color-scheme: dark) {
+  .reel-frame {
+    opacity: 0.76;
+  }
+}
+@media (max-width: 700px) {
+  .performance-reel {
+    --reel-height: clamp(200px, 32svh, 300px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reel-track {
+    transform: none !important;
+    width: 100%;
+  }
+  .reel-sequence {
+    width: 100%;
+    padding: 0;
+  }
+  .reel-frame {
+    flex: 1;
+    min-width: 0;
+    aspect-ratio: auto !important;
+  }
+  .reel-copies {
+    display: none;
+  }
+}

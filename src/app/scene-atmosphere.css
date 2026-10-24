@@ -1,0 +1,169 @@
+/* One contained sticky wave field, one canvas, one document brightness value.
+   No section owns a colour field or a background transition anymore. */
+.studio-home.shared-wave-environment {
+  position: relative;
+  isolation: isolate;
+  --wave-base: var(--para-paper-soft);
+  --wave-haze: var(--para-ivory);
+  --wave-ink: var(--para-espresso);
+  --wave-muted: var(--para-saddle-brown);
+  --wave-grain: url("/brand/para/glass/para-film-grain-256.png");
+  --wave-progress: 0;
+}
+.shared-wave-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.shared-wave-viewport {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: clip;
+}
+.shared-wave-layer .loop-atmosphere {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  pointer-events: none;
+}
+.shared-wave-layer
+  :is(.loop-waves-fallback, .loop-waves-effect, .loop-waves-scrim) {
+  position: absolute;
+  inset: 0;
+}
+.shared-wave-layer .loop-waves-fallback {
+  background:
+    radial-gradient(ellipse at 76% 65%, rgb(139 94 52 / 24%), transparent 72%),
+    radial-gradient(ellipse at 15% 85%, var(--para-sand), transparent 68%),
+    var(--wave-base);
+}
+.shared-wave-layer .loop-waves-effect {
+  opacity: 0;
+}
+.shared-wave-layer [data-wave-state="ready"] .loop-waves-effect {
+  opacity: 0.74;
+}
+.shared-wave-layer .loop-waves-scrim {
+  /* One continuous light source, not a crossfade between section scenes.
+     Only its opacity follows unsmoothed scroll. No animated filters. */
+  background: radial-gradient(
+    ellipse at 28% 14%,
+    var(--wave-haze),
+    transparent 85%
+  );
+  opacity: calc(0.12 + var(--wave-progress) * 0.2);
+}
+.shared-wave-layer .loop-atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--wave-grain) repeat;
+  background-size: 256px 256px;
+  opacity: 0.055;
+  pointer-events: none;
+}
+.studio-home
+  > :is(.hero-loop-journey, .scene-perspectives, .scene-belief, .final-scene) {
+  position: relative;
+  z-index: 1;
+}
+.studio-home .hero-loop-journey,
+.studio-home
+  :is(
+    .scene-loop,
+    .loop-sticky,
+    .scene-perspectives,
+    .scene-belief,
+    .final-scene
+  ) {
+  background: transparent;
+  border: 0;
+}
+.studio-home :is(.scene-perspectives, .scene-belief, .final-scene)::before,
+.studio-home .belief-aperture,
+.studio-home .belief-focus::before {
+  display: none;
+}
+.studio-home :is(.scene-perspectives, .scene-belief, .final-scene) {
+  color: var(--wave-ink);
+}
+.studio-home .perspective-workspace::before,
+.studio-home .perspective-workspace::after {
+  background: none;
+}
+.studio-home .perspective-handoff {
+  z-index: 1;
+}
+.studio-home .perspective-handoff path {
+  fill: none;
+}
+.studio-home
+  .scene-belief
+  :is(.scene-heading, .headline-mask:last-child, .belief-phrase),
+.studio-home .final-utilities button {
+  color: var(--wave-ink);
+}
+.studio-home .scene-belief :is(.eyebrow, .belief-phrase-index) {
+  color: var(--wave-muted);
+}
+.studio-home .belief-phrase {
+  border-color: color-mix(in srgb, var(--wave-ink) 24%, transparent);
+}
+.studio-home .belief-phrase:focus-visible {
+  outline-color: var(--wave-muted);
+}
+.studio-home
+  .belief-focus[data-available="true"]
+  .belief-phrase[aria-pressed="true"] {
+  border-color: var(--wave-muted);
+}
+.studio-home .belief-signal {
+  color: var(--wave-muted);
+}
+.studio-home .belief-signal :is(path, circle) {
+  stroke: var(--wave-muted);
+}
+.studio-home .final-utilities button:focus-visible {
+  outline-color: var(--wave-ink);
+}
+@media (prefers-color-scheme: dark) {
+  .studio-home.shared-wave-environment {
+    --wave-base: var(--para-espresso-strong);
+    --wave-haze: var(--para-saddle-brown);
+    --wave-ink: var(--para-ivory);
+    --wave-muted: var(--para-sand);
+  }
+  .shared-wave-layer .loop-waves-fallback {
+    background:
+      radial-gradient(
+        ellipse at 76% 65%,
+        rgb(139 94 52 / 24%),
+        transparent 72%
+      ),
+      var(--wave-base);
+  }
+  .shared-wave-layer [data-wave-state="ready"] .loop-waves-effect {
+    opacity: 0.5;
+  }
+  .studio-home .perspective-art-label {
+    color: var(--wave-ink);
+  }
+  .studio-home :is(.perspective-wave, .perspective-next, .perspective-history) {
+    stroke: var(--para-sand);
+  }
+  .studio-home .perspective-signal figcaption {
+    color: var(--wave-ink);
+  }
+}
+@media (max-width: 700px) {
+  .shared-wave-layer [data-wave-state="ready"] .loop-waves-effect {
+    opacity: 0.5;
+  }
+}
+@media (prefers-reduced-motion: reduce), (forced-colors: active) {
+  .shared-wave-layer .loop-waves-effect {
+    display: none;
+  }
+}

@@ -16,6 +16,8 @@ for (const tone of ["light", "dark"])
     "01_LOGO/Grain_Gradient/Web",
     `para-horizontal-${tone}-grain-optical.svg`,
   );
+for (const tone of ["light", "dark"])
+  add("01_LOGO/Grain_Gradient/Web", `para-symbol-${tone}-grain-optical.svg`);
 add(
   "03_TYPOGRAPHY/Fonts_and_Licences/plusjakartasans",
   "PlusJakartaSans[wght].woff2",

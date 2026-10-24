@@ -529,14 +529,6 @@ body .para-figure .illustration-ground img {
   width: min(280px, 100%);
   min-width: 0;
 }
-.studio-home .waitlist-grid {
-  gap: 80px;
-}
-.studio-home .waitlist-form {
-  background: var(--color-background);
-  border-color: var(--color-control-border);
-  box-shadow: 0 8px 24px #3b2f2a08;
-}
 @keyframes material-drift {
   0%,
   100% {
@@ -625,9 +617,6 @@ body .para-figure .illustration-ground img {
   .studio-home .belief-emblem {
     width: 112px;
     height: 112px;
-  }
-  .studio-home .waitlist-grid {
-    gap: 40px;
   }
   .studio-home .closing-mark .brand-logo {
     left: 0;

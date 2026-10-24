@@ -11,6 +11,12 @@
 @import "./interaction-motion.css";
 @import "./loop-waves.css";
 @import "./hero-loop-journey.css";
+@import "./product-cta.css";
+@import "./final-scene.css";
+@import "./scene-atmosphere.css";
+@import "./homepage-composition.css";
+@import "./performance-reel.css";
+@import "./hero-session.css";
 
 @font-face {
   font-family: "Plus Jakarta Sans";
@@ -555,62 +561,12 @@ img {
 .waitlist {
   background: var(--para-rose);
 }
-.waitlist-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 96px;
-}
 .waitlist h2 {
   max-width: 15ch;
 }
 .waitlist h2 + p {
   margin-top: 24px;
   max-width: 50ch;
-}
-.form-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  color: var(--color-action);
-  font-size: 14px;
-  font-weight: 500;
-}
-.form-note .para-icon {
-  margin-top: 3px;
-}
-.field {
-  margin-block: 20px;
-}
-.field label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-.field input {
-  width: 100%;
-  min-height: 48px;
-  padding: 10px 14px;
-  border: 1px solid var(--para-control-border);
-  border-radius: 4px;
-  color: var(--para-cocoa);
-  background: var(--para-paper);
-  font-size: 16px;
-}
-.field input:disabled {
-  background: var(--para-disabled);
-  opacity: 1;
-  cursor: not-allowed;
-}
-.form-submit {
-  width: 100%;
-  margin-top: 8px;
-}
-.consent-note {
-  margin-top: 24px;
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--color-text-muted);
 }
 
 /* Shared supporting pages retain their complete original content. */
@@ -1227,7 +1183,6 @@ img {
   .belief-grid {
     gap: 64px;
   }
-  .waitlist-grid,
   .page-hero-grid {
     gap: 64px;
   }
@@ -1296,7 +1251,6 @@ img {
   .section-heading-grid,
   .perspective-panel,
   .belief-grid,
-  .waitlist-grid,
   .page-hero-grid,
   .principle-grid,
   .practice-grid,
@@ -1577,9 +1531,6 @@ img {
   .signal-wave,
   .signal-loop-berry {
     stroke: var(--para-rose);
-  }
-  .waitlist .form-note {
-    color: var(--para-paper);
   }
   .welcome-choices a:not(:first-child) {
     color: var(--para-paper);
