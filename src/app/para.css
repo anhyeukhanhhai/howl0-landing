@@ -50,6 +50,9 @@
 :root {
   color-scheme: light;
   --header-height: 88px;
+  --header-occupied-height: calc(
+    var(--header-height) + env(safe-area-inset-top, 0px)
+  );
   --section-space: 96px;
 }
 * {
@@ -57,7 +60,7 @@
 }
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 112px;
+  scroll-padding-top: calc(var(--header-occupied-height) + 24px);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }

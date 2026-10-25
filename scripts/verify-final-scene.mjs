@@ -10,11 +10,22 @@ for (const engine of [chromium, webkit]) {
   const browser = await engine.launch();
   for (const locale of ["en", "vi"]) {
     for (const [width, height] of [
+      [3440, 1440],
+      [2560, 1080],
       [1920, 1080],
       [1440, 900],
+      [1440, 768],
+      [1440, 565],
+      [1280, 600],
       [1280, 720],
       [1024, 768],
       [390, 844],
+      [390, 700],
+      [390, 680],
+      [390, 580],
+      [390, 550],
+      [700, 760],
+      [844, 390],
       [700, 450],
     ]) {
       const context = await browser.newContext({ viewport: { width, height } });
@@ -91,17 +102,59 @@ for (const engine of [chromium, webkit]) {
         const end = document
           .querySelector(".final-scene")
           .getBoundingClientRect();
+        const rect = (selector) =>
+          document.querySelector(selector).getBoundingClientRect().toJSON();
         return {
           overflow: document.documentElement.scrollWidth - innerWidth,
           tail: document.documentElement.scrollHeight - (end.bottom + scrollY),
+          header: rect(".site-header"),
+          logo: rect(".brand"),
+          title: rect(".final-available"),
+          reel: rect(".performance-reel"),
+          next: rect(".final-next"),
+          action: rect(".final-action"),
+          controls: rect(".final-utilities"),
         };
       });
       assert(dimensions.overflow <= 1, JSON.stringify(dimensions));
       assert(Math.abs(dimensions.tail) <= 1, JSON.stringify(dimensions));
+      assert(dimensions.logo.top >= 0 && dimensions.logo.bottom <= height);
+      for (const [key, clearance] of [
+        ["title", 24],
+        ["reel", 16],
+        ["next", 16],
+        ["action", 16],
+        ["controls", 16],
+      ]) {
+        const region = dimensions[key];
+        if (region.bottom > 0 && region.top < height)
+          assert(
+            region.top >= dimensions.header.bottom + clearance - 1,
+            `${locale} ${width}x${height}: ${key} intersects the header`,
+          );
+      }
+      assert(
+        dimensions.title.bottom <= dimensions.reel.top,
+        "Upper statement enters the film reel row",
+      );
+      assert(
+        dimensions.reel.bottom <= dimensions.next.top,
+        "Film reel enters the lower statement row",
+      );
+      assert(
+        Math.max(dimensions.next.bottom, dimensions.action.bottom) <=
+          dimensions.controls.top,
+        "Lower statement or action enters the utility row",
+      );
       await page.screenshot({
-        path: `.qa/final-scene/${engine.name()}-${locale}-${width}.png`,
+        path: `.qa/final-scene/${engine.name()}-${locale}-${width}x${height}.png`,
       });
       await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "dark" });
+      await page.waitForFunction(
+        () =>
+          getComputedStyle(document.querySelector(".reel-track")).transform ===
+          "none",
+      );
       assert.equal(
         await scene
           .locator(".reel-track")
@@ -109,8 +162,21 @@ for (const engine of [chromium, webkit]) {
         "none",
       );
       await page.screenshot({
-        path: `.qa/final-scene/${engine.name()}-${locale}-${width}-dark.png`,
+        path: `.qa/final-scene/${engine.name()}-${locale}-${width}x${height}-dark.png`,
       });
+      await page.goto(base + path + "#waitlist");
+      await page.evaluate(() => document.fonts.ready);
+      const anchor = await page.evaluate(() => ({
+        header: document.querySelector(".site-header").getBoundingClientRect()
+          .bottom,
+        heading: document
+          .querySelector(".final-available")
+          .getBoundingClientRect().top,
+      }));
+      assert(
+        anchor.heading >= anchor.header + 23,
+        `${locale} ${width}x${height}: ending anchor obscures the headline`,
+      );
       await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
       assert(await page.locator(".brand").isVisible());
       await page.setViewportSize({ width: 1281, height });
