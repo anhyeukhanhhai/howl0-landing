@@ -5,6 +5,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BrandLogo } from "@/components/BrandLogo";
 import { ParaIcon } from "@/components/ParaIcon";
 import { ProductCta } from "@/components/ProductCta";
+import { EditorialHeader } from "@/components/EditorialHeader";
 import {
   content,
   homeHref,
@@ -85,6 +86,8 @@ export function Navigation({ locale }: { locale: Locale }) {
     event.preventDefault();
     links[(index + direction + links.length) % links.length]?.focus();
   }
+
+  if (locale === "en" && pathname === "/") return <EditorialHeader />;
 
   return (
     <header className="site-header integrated-header">
