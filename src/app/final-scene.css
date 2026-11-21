@@ -1,5 +1,6 @@
 /* Local quiet glass protects controls without painting a full-width header. */
 body .site-header.integrated-header {
+  padding-block-start: env(safe-area-inset-top, 0px);
   background: transparent;
   border: 0;
   box-shadow: none;
@@ -67,11 +68,11 @@ body .integrated-header .language-switch {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    inset: var(--header-height) 12px 12px;
+    inset: var(--header-occupied-height) 12px 12px;
     margin: 0;
     padding: 24px;
     gap: 8px;
-    max-height: calc(100dvh - var(--header-height) - 12px);
+    max-height: calc(100dvh - var(--header-occupied-height) - 12px);
     overflow-y: auto;
     overscroll-behavior: contain;
     background: var(--color-background);
@@ -95,22 +96,25 @@ body .integrated-header .language-switch {
 /* One normal-flow ending. Scroll progress moves decoration only. */
 .studio-home .final-scene {
   --ending-gutter: clamp(24px, 4vw, 160px);
+  --ending-header-gap: clamp(24px, 2.5svh, 36px);
   position: relative;
   isolation: isolate;
   overflow: clip;
   display: flex;
   flex-direction: column;
-  min-height: 0;
-  padding: clamp(40px, 5vw, 80px) 0 20px;
+  min-height: 100svh;
+  padding: calc(var(--header-occupied-height) + var(--ending-header-gap)) 0 20px;
   background: var(--para-ivory);
   color: var(--para-espresso);
-  /* The document already supplies 112px anchor padding for the header. */
 }
 .final-composition {
   display: flex;
   flex-direction: column;
-  gap: clamp(28px, 3vw, 64px);
-  padding-bottom: 36px;
+  gap: clamp(20px, 2svh, 30px);
+  padding-bottom: clamp(16px, 2svh, 24px);
+}
+.final-scene .performance-reel {
+  --reel-height: clamp(190px, 24svh, 320px);
 }
 .studio-home .final-available,
 .studio-home .final-next {
@@ -196,6 +200,7 @@ body .final-action > .product-cta-compartment {
 }
 .final-utilities {
   margin-inline: var(--ending-gutter);
+  margin-top: auto;
   display: flex;
   justify-content: space-between;
   gap: 24px;
@@ -227,8 +232,11 @@ body .final-action > .product-cta-compartment {
   .final-composition {
     display: flex;
     flex-direction: column;
-    gap: 32px;
-    padding-bottom: 36px;
+    gap: clamp(20px, 2svh, 28px);
+    padding-bottom: clamp(16px, 2svh, 24px);
+  }
+  .final-scene .performance-reel {
+    --reel-height: clamp(175px, 25svh, 220px);
   }
   .studio-home .final-available,
   .studio-home .final-next {
@@ -263,6 +271,89 @@ body .final-action > .product-cta-compartment {
   }
   body .integrated-header :is(.brand, .language-switch, .menu-toggle) {
     backdrop-filter: none;
+  }
+}
+@media (min-width: 701px) and (max-height: 850px) {
+  .studio-home .final-scene {
+    padding-bottom: 16px;
+  }
+  .final-composition {
+    gap: 14px;
+    padding-bottom: 0;
+  }
+  .final-scene .performance-reel {
+    --reel-height: clamp(140px, 20svh, 170px);
+  }
+  .final-utilities {
+    padding-top: 12px;
+  }
+}
+@media (min-width: 701px) and (max-height: 650px) {
+  .studio-home .final-scene {
+    padding-bottom: 20px;
+  }
+  .final-composition {
+    gap: clamp(20px, 2svh, 30px);
+    padding-bottom: clamp(16px, 2svh, 24px);
+  }
+  .final-scene .performance-reel {
+    --reel-height: clamp(190px, 24svh, 320px);
+  }
+  .studio-home .final-composition > .final-available {
+    margin-bottom: clamp(180px, 28svh, 220px);
+  }
+  .final-utilities {
+    padding-top: 16px;
+  }
+}
+@media (max-width: 480px) and (max-height: 800px),
+  (min-width: 481px) and (max-width: 700px) and (max-height: 900px) {
+  .studio-home .final-scene {
+    padding-bottom: 8px;
+  }
+  .final-composition {
+    gap: 14px;
+    padding-bottom: 0;
+  }
+  .final-scene .performance-reel {
+    --reel-height: 155px;
+  }
+  .final-next-step {
+    gap: 20px;
+  }
+  .final-utilities {
+    padding-top: 8px;
+    row-gap: 0;
+  }
+}
+@media (max-width: 480px) and (max-height: 680px) {
+  .studio-home .final-composition > .final-available {
+    margin-bottom: clamp(240px, 36svh, 280px);
+  }
+}
+@media (max-width: 480px) and (max-height: 580px) {
+  .final-next-step {
+    margin-top: 300px;
+  }
+}
+@media (min-width: 481px) and (max-width: 700px) and (max-height: 610px) {
+  .final-next-step {
+    margin-top: 320px;
+  }
+}
+@media (min-width: 481px) and (max-width: 700px) and (min-height: 611px) and (max-height: 760px) {
+  .studio-home .final-composition > .final-available {
+    margin-bottom: 240px;
+  }
+}
+@media (min-width: 481px) and (max-width: 700px) and (max-height: 450px) {
+  .studio-home .final-next {
+    font-size: clamp(30px, 7vw, 40px);
+  }
+}
+@media (min-width: 701px) and (max-height: 565px) {
+  .final-next-step {
+    margin-top: 320px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
